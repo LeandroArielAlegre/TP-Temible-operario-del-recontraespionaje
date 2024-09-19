@@ -5,77 +5,77 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/com.ibm.icu_75.1.0.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/com.ibm.icu_75.1.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/com.ibm.icu_75.1.0.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/com.ibm.icu_75.1.0.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/jakarta.annotation-api_2.1.1.jar" sourcepath="C:/Users/leand/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1-sources.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/jakarta.annotation-api_2.1.1.jar" sourcepath="C:/Users/leand/.m2/repository/jakarta/annotation/jakarta.annotation-api/2.1.1/jakarta.annotation-api-2.1.1-sources.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.core.commands_3.12.100.v20240424-0956.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.core.commands_3.12.100.v20240424-0956.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.core.commands_3.12.100.v20240424-0956.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.core.commands_3.12.100.v20240424-0956.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.core.runtime_3.31.100.v20240524-2010.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.core.runtime_3.31.100.v20240524-2010.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.core.runtime_3.31.100.v20240524-2010.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.core.runtime_3.31.100.v20240524-2010.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.e4.ui.di_1.5.400.v20240321-1245.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.e4.ui.di_1.5.400.v20240321-1245.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.e4.ui.di_1.5.400.v20240321-1245.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.e4.ui.di_1.5.400.v20240321-1245.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.common_3.19.100.v20240524-2011.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.common_3.19.100.v20240524-2011.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.common_3.19.100.v20240524-2011.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.common_3.19.100.v20240524-2011.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.registry_3.12.100.v20240524-2011.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.registry_3.12.100.v20240524-2011.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.registry_3.12.100.v20240524-2011.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.equinox.registry_3.12.100.v20240524-2011.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.jface_3.34.0.v20240502-1134.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.jface_3.34.0.v20240502-1134.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.jface_3.34.0.v20240502-1134.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.jface_3.34.0.v20240502-1134.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.jface.text_3.25.100.v20240524-2010.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.jface.text_3.25.100.v20240524-2010.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.jface.text_3.25.100.v20240524-2010.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.jface.text_3.25.100.v20240524-2010.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.osgi_3.20.0.v20240509-1421.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.osgi_3.20.0.v20240509-1421.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.osgi_3.20.0.v20240509-1421.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.osgi_3.20.0.v20240509-1421.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.126.0.v20240528-0813.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.126.0.v20240528-0813.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.126.0.v20240528-0813.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.swt.win32.win32.x86_64_3.126.0.v20240528-0813.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.text_3.14.100.v20240524-2010.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.text_3.14.100.v20240524-2010.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.text_3.14.100.v20240524-2010.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.text_3.14.100.v20240524-2010.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.ui.forms_3.13.300.v20240424-0956.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.ui.forms_3.13.300.v20240424-0956.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.ui.forms_3.13.300.v20240424-0956.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.ui.forms_3.13.300.v20240424-0956.jar">
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.ui.workbench_3.132.0.v20240524-2010.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.ui.workbench_3.132.0.v20240524-2010.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.ui.workbench_3.132.0.v20240524-2010.jar" sourcepath="C:/Users/leand/Downloads/eclipse-jee-2024-06-R-win32-x86_64/eclipse/plugins/org.eclipse.ui.workbench_3.132.0.v20240524-2010.jar">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/leand/Downloads/JMapViewer.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/JMapViewer.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
