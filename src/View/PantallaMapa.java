@@ -23,7 +23,6 @@ public class PantallaMapa {
 	private JFrame frame;
 	private JMapViewer mapa;
 	private Sonido sonido;
-	private int zoomDefault = 12;
 	private Coordinate coordinate = new Coordinate(-34.521, -58.719);
 	
 	
@@ -75,15 +74,6 @@ public class PantallaMapa {
 		mapa.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-			    int newZoom = mapa.getZoom();
-			    if (zoomDefault < newZoom) {
-			    	mapa.setZoom(zoomDefault);
-			    }
-			    
-			    if (zoomDefault >
-				 newZoom) {
-			    	mapa.setZoom(zoomDefault);
-			    }
 			    mapa.setDisplayPosition(coordinate, 12);
 			
 			}
