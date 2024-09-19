@@ -14,6 +14,8 @@ import Modelo.Sonido;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.ActionEvent;
 
 public class PantallaMapa {
@@ -21,6 +23,11 @@ public class PantallaMapa {
 	private JFrame frame;
 	private JMapViewer mapa;
 	private Sonido sonido;
+	private int zoomDefault = 12;
+	private Coordinate coordinate = new Coordinate(-34.521, -58.719);
+	
+	
+	
 
 	/**
 	 * Launch the application.
@@ -50,23 +57,39 @@ public class PantallaMapa {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		Sonido sonido = new Sonido();
+		sonido = new Sonido();
 		frame.setBounds(400, 200, 800, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		mapa = new JMapViewer();
+		mapa.setFocusable(false);
 		mapa.setZoomControlsVisible(false);
 		
 	
-		Coordinate coordinate = new Coordinate(-34.521, -58.719);
-		mapa.setDisplayPosition(coordinate, 12);
+		
+		mapa.setDisplayPosition(this.coordinate, 12);
 		mapa.setScrollWrapEnabled(false);  
-		MapMarkerDot marcador1 = new MapMarkerDot("Aquí", coordinate);
+		MapMarkerDot marcador1 = new MapMarkerDot("Aquí", this.coordinate);
 		marcador1.getStyle().setBackColor(Color.blue);
 		marcador1.getStyle().setColor(Color.blue);
-		
-		
-		
+		mapa.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent arg0) {
+			    int newZoom = mapa.getZoom();
+			    if (zoomDefault < newZoom) {
+			    	mapa.setZoom(zoomDefault);
+			    }
+			    
+			    if (zoomDefault >
+				 newZoom) {
+			    	mapa.setZoom(zoomDefault);
+			    }
+			    mapa.setDisplayPosition(coordinate, 12);
+			
+			}
+			
+		});
+	
 		
 		Coordinate coordinate2 = new Coordinate(-34.521, -58.709);
 		MapMarkerDot marcador2 = new MapMarkerDot("Otro", coordinate2);
@@ -74,9 +97,9 @@ public class PantallaMapa {
 		marcador2.getStyle().setColor(Color.yellow);
 		mapa.addMapMarker(marcador2);
 		mapa.addMapMarker(marcador1);
-		
-		
+	
 		frame.getContentPane().add(mapa);
+		
 		
 		
 		sonido.reproducirSonido("/resources/espiasTheme.wav", "menu");
