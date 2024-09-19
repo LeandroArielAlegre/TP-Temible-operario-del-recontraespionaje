@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
+import org.openstreetmap.gui.jmapviewer.DefaultMapController;
 import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 
@@ -14,6 +15,9 @@ import Modelo.Sonido;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+
+import java.awt.event.MouseEvent;
+
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.ActionEvent;
@@ -23,7 +27,8 @@ public class PantallaMapa {
 	private JFrame frame;
 	private JMapViewer mapa;
 	private Sonido sonido;
-	private Coordinate coordinate = new Coordinate(-34.521, -58.719);
+	private Coordinate mapaActual = new Coordinate(-34.521, -58.719);
+	private int zoomActual = 12;
 	
 	
 	
@@ -66,15 +71,32 @@ public class PantallaMapa {
 		
 	
 		
-		mapa.setDisplayPosition(this.coordinate, 12);
+		mapa.setDisplayPosition(this.mapaActual, zoomActual);
 		mapa.setScrollWrapEnabled(false);  
-		MapMarkerDot marcador1 = new MapMarkerDot("Aquí", this.coordinate);
+		MapMarkerDot marcador1 = new MapMarkerDot("Aquí", this.mapaActual);
 		marcador1.getStyle().setBackColor(Color.blue);
 		marcador1.getStyle().setColor(Color.blue);
+		
+		 new DefaultMapController(mapa){
+
+			    @Override
+			    public void mouseClicked(MouseEvent e) {
+			    	mapa.setDisplayPosition(mapaActual, zoomActual);
+			    }
+			    
+			    public void mouseReleased(MouseEvent e) {
+			    	mapa.setDisplayPosition(mapaActual, zoomActual);
+			    }
+			    
+			    public void mousePressed(MouseEvent e) {
+			    	mapa.setDisplayPosition(mapaActual, zoomActual);
+			    }
+			};
+		
 		mapa.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
-			    mapa.setDisplayPosition(coordinate, 12);
+			    mapa.setDisplayPosition(mapaActual, zoomActual);
 			
 			}
 			
