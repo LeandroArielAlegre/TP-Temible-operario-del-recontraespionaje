@@ -7,6 +7,5 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="src/JMapViewer.jar"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="C:/Users/leand/Downloads/JMapViewer.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
