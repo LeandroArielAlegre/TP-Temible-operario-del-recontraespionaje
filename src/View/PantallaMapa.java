@@ -333,8 +333,7 @@ public class PantallaMapa {
 			verticeEnMapa.getStyle().setBackColor(Color.yellow);
 			verticeEnMapa.getStyle().setColor(Color.yellow);
 			mapa.addMapMarker(verticeEnMapa);
-			mapa.addMapMarker(verticeEnMapa);
-			mapa.addMapMarker(verticeEnMapa);
+			
 			
 			//Guardamos el vertices localmente en un HashMap
 			hashMapVertices.put(nombreVertice, vertice);
