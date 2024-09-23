@@ -1,4 +1,4 @@
-package Modelo;
+package CasosDeTest;
 
 public class TestUnitariosLogicaDeMapa {
 

@@ -1,4 +1,4 @@
-package View;
+package CasosDeTest;
 
 public class TestUnitarioPantallaMapa {
 

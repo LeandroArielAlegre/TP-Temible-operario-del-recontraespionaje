@@ -13,6 +13,7 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 import Modelo.Sonido;
+import Modelo.LogicaDeMapa;
 import Presentador.PresentadorMapa;
 
 import javax.swing.JButton;
@@ -38,11 +39,12 @@ public class PantallaMapa {
 	private JFrame frame;
 	private JMapViewer mapa;
 	private Sonido sonido;
+	private LogicaDeMapa logicaDeMapa;
 	private Coordinate mapaActual = new Coordinate(-34.521, -58.719);
 	private int zoomActual = 12;
 	private PresentadorMapa presentadorMapa;
-	private JTextField textFieldCoordenadasY;
-	private JTextField textFieldCoordenadasX;
+	private JTextField textFieldParaCoordenadaY;
+	private JTextField textFieldParaCoordenadaX;
 	private JTextField textfieldNombreVertice;
 	//private JPanel panelMapa;
 	//private JPanel panelControles;
@@ -84,8 +86,8 @@ public class PantallaMapa {
 		frame = new JFrame();
 		sonido = new Sonido();
 		hashMapVertices = new HashMap<>();
-		presentadorMapa = new PresentadorMapa();
-		frame.setBounds(400, 200, 800, 800);
+//		presentadorMapa = new PresentadorMapa();
+		frame.setBounds(400, 200, 600, 600);
 		//frame.getContentPane().setLayout(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -114,12 +116,11 @@ public class PantallaMapa {
 		mapa.setScrollWrapEnabled(false);  
 		
 		
-		 new DefaultMapController(mapa){
+		new DefaultMapController(mapa){
 
 			    @Override
 			    public void mouseClicked(MouseEvent e) {
-			    	
-			    
+			    				    
 			  
 			    	// Convertimos la posición del clic (en píxeles) a coordenadas geográficas
 	                Coordinate coord = (Coordinate) mapa.getPosition(e.getPoint());
@@ -128,8 +129,8 @@ public class PantallaMapa {
 	                String coordenadaX = String.valueOf(coord.getLat());
 	                String coordenadaY = String.valueOf(coord.getLon());
 	                
-	                textFieldCoordenadasY.setText(coordenadaY);
-			    	textFieldCoordenadasX.setText(coordenadaX);
+	                textFieldParaCoordenadaY.setText(coordenadaY);
+			    	textFieldParaCoordenadaX.setText(coordenadaX);
 			    	
 			    	mapa.setDisplayPosition(mapaActual, zoomActual);
 			    }
@@ -197,7 +198,7 @@ public class PantallaMapa {
 						+ "problema.");
 			}
 		});
-		btnIntroducción.setBounds(23, 650, 173, 100);
+		btnIntroducción.setBounds(23, 462, 173, 88);
 		mapa.add(btnIntroducción);
 		
 		
@@ -212,14 +213,14 @@ public class PantallaMapa {
 			public void actionPerformed(ActionEvent e) {
 				
 				//Nota!!!! Se deberia agregar mas verificaciones, para que el usuario no meta cualquier valor
-				if(textFieldCoordenadasX.getText() != null && textFieldCoordenadasY.getText() != null &&  textfieldNombreVertice.getText() !=null) {
-					Double CoordenadasX =  Double.parseDouble(textFieldCoordenadasX.getText());
-					Double CoordenadasY =  Double.parseDouble(textFieldCoordenadasY.getText());
+				if(textFieldParaCoordenadaX.getText() != null && textFieldParaCoordenadaY.getText() != null &&  textfieldNombreVertice.getText() !=null) {
+					Double CoordenadasX =  Double.parseDouble(textFieldParaCoordenadaX.getText());
+					Double CoordenadasY =  Double.parseDouble(textFieldParaCoordenadaY.getText());
 					String nombreVertice = textfieldNombreVertice.getText().toString();
 					crearVerticeEnMapa(CoordenadasX, CoordenadasY, nombreVertice);
 					textfieldNombreVertice.setText("");
-					textFieldCoordenadasX.setText("");
-					textFieldCoordenadasY.setText("");
+					textFieldParaCoordenadaX.setText("");
+					textFieldParaCoordenadaY.setText("");
 					
 				}else {
 					JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
@@ -265,13 +266,13 @@ public class PantallaMapa {
 		JLabel labelCoordX = new JLabel("" + mapaActual.getLat());
 		labelCoordX.setForeground(new Color(255, 0, 0));
 		labelCoordX.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		labelCoordX.setBounds(23, 579, 109, 33);
+		labelCoordX.setBounds(23, 374, 109, 33);
 		mapa.add(labelCoordX);
 		
 		JLabel labelCoordY = new JLabel(" " + mapaActual.getLon());
 		labelCoordY.setForeground(new Color(255, 0, 0));
 		labelCoordY.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		labelCoordY.setBounds(23, 613, 109, 33);
+		labelCoordY.setBounds(23, 418, 109, 33);
 		mapa.add(labelCoordY);
 	}
 
@@ -279,44 +280,44 @@ public class PantallaMapa {
 	private void colocarTexfields() {
 		//TEXTFIELDS!!!!!!!!!!!!!!!!!!!!!
 		
-		textFieldCoordenadasY = new JTextField();
+		textFieldParaCoordenadaY = new JTextField();
 		String placeHolderTextFieldCoordenadasY ="Ingrese las Coordenada Y";
-		agregarPlaceHolderTexfield(textFieldCoordenadasY, placeHolderTextFieldCoordenadasY);
-		textFieldCoordenadasY.setBounds(206, 689, 173, 23);
-		mapa.add(textFieldCoordenadasY);
-		textFieldCoordenadasY.setColumns(10);
+		agregarPlaceHolderTexfield(textFieldParaCoordenadaY, placeHolderTextFieldCoordenadasY);
+		textFieldParaCoordenadaY.setBounds(206, 527, 173, 23);
+		mapa.add(textFieldParaCoordenadaY);
+		textFieldParaCoordenadaY.setColumns(10);
 		
-		textFieldCoordenadasX = new JTextField();
+		textFieldParaCoordenadaX = new JTextField();
 		String placeHolderTextFieldCoordenadasX ="Ingrese las Coordenada X";
-		agregarPlaceHolderTexfield(textFieldCoordenadasX, placeHolderTextFieldCoordenadasX);
-		textFieldCoordenadasX.setColumns(10);
-		textFieldCoordenadasX.setBounds(206, 650, 173, 23);
-		mapa.add(textFieldCoordenadasX);
+		agregarPlaceHolderTexfield(textFieldParaCoordenadaX, placeHolderTextFieldCoordenadasX);
+		textFieldParaCoordenadaX.setColumns(10);
+		textFieldParaCoordenadaX.setBounds(206, 495, 173, 23);
+		mapa.add(textFieldParaCoordenadaX);
 		
 		
 		
 		textfieldNombreVertice = new JTextField();
-		String placeHolderTextFieldNombreVertice ="Ingrese nombre de vertice";
+		String placeHolderTextFieldNombreVertice ="Ingrese nombre de vertice a ingresar";
 		agregarPlaceHolderTexfield(textfieldNombreVertice, placeHolderTextFieldNombreVertice);
 		textfieldNombreVertice.setToolTipText("");
 		
-		textfieldNombreVertice.setBounds(206, 619, 173, 20);
+		textfieldNombreVertice.setBounds(206, 462, 173, 20);
 		mapa.add(textfieldNombreVertice);
 		textfieldNombreVertice.setColumns(10);
 		
 		
 		
 		textFieldVertice2 = new JTextField();
-		String placeHolderTextFieldVertice2 ="Ingrese nombre de vertice";
+		String placeHolderTextFieldVertice2 ="Ingrese nombre de vertice para agregar arista";
 		agregarPlaceHolderTexfield(textFieldVertice2, placeHolderTextFieldVertice2);
-		textFieldVertice2.setBounds(394, 690, 178, 22);
+		textFieldVertice2.setBounds(389, 495, 178, 22);
 		mapa.add(textFieldVertice2);
 		textFieldVertice2.setColumns(10);
 		
 		textFieldVertice1 = new JTextField();
-		String placeHolderTextFieldVertice ="Ingrese nombre de vertice";
+		String placeHolderTextFieldVertice ="Ingrese el segundo nombre de vertice para agregar una arista";
 		agregarPlaceHolderTexfield(textFieldVertice1, placeHolderTextFieldVertice);
-		textFieldVertice1.setBounds(394, 659, 178, 23);
+		textFieldVertice1.setBounds(389, 461, 178, 23);
 		mapa.add(textFieldVertice1);
 		textFieldVertice1.setColumns(10);
 	}
