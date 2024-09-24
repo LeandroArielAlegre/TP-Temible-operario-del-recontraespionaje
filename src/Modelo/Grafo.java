@@ -3,34 +3,36 @@ package Modelo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 
 public class Grafo
 {
-	// Representamos el grafo por su matriz de vecinos
-	//private boolean[][] A;
-	private ArrayList  <HashSet <Integer>> arrayListVecinos;
-	//private int contador ;
+	// Representamos el grafo por su lista de vecinos
+	
+	private HashMap  <Integer, HashMap<Integer,Integer>> HashMapVecinos;
+	
+
 	
 	// La cantidad de vertices esta predeterminada desde el constructor
-	public Grafo(int vertices)
+	public Grafo(int[] nombre)
 	{
-		arrayListVecinos = new ArrayList<HashSet <Integer>>();
+		HashMapVecinos = new HashMap  <Integer, HashMap<Integer,Integer>>();
 		//A = new boolean[vertices][vertices];
-		for(int i = 0; i< vertices; i++) {
-			arrayListVecinos.add(new HashSet<Integer>());
+		for(int i = 0; i< nombre.length; i++) {
+			HashMapVecinos.put(nombre[i],new HashMap<Integer,Integer>());
 		}
 	}
 	
 	
 	
-	/*
+	
 	//GRAFO VACIO
 		public Grafo()
 		{
-			arrayListVecinos = new ArrayList<HashSet <Integer>>();	
+			HashMapVecinos = new HashMap  <Integer, HashMap<Integer,Integer>>();
 		
 	}
 	
@@ -38,14 +40,14 @@ public class Grafo
 		
 		
 		if(estaGrafoVacio()) {
-			HashSet<Integer> nuevoSet = new HashSet<>();
-		    nuevoSet.add(vertice);
-		    arrayListVecinos.add(nuevoSet); // Aquí sí es necesario añadirlo al ArrayList
+			HashMap<Integer,Integer> conjuntoDeVecinos = new HashMap<>();
+			conjuntoDeVecinos.put(vertice, null);
+		    HashMapVecinos.put(vertice ,conjuntoDeVecinos); // Aquí sí es necesario añadirlo al ArrayList
 		}else {
 			if(verificarVertice(vertice)){
 				throw new IllegalArgumentException("El vértice ya existe.");
 			}else {
-				arrayListVecinos.add(new HashSet<Integer>(vertice));
+				HashMapVecinos.put(vertice ,new HashMap<Integer,Integer>());
 			}
 		
 		}
@@ -61,22 +63,25 @@ public class Grafo
 		
 	
 	public boolean estaGrafoVacio() {
-		if(arrayListVecinos.size() == 0) {
+		if(HashMapVecinos.size() == 0) {
 			return true;
 		}
 		return false;
 	}
 	
-	*/
+	
 	// Agregado de aristas
 		public void agregarArista(int i, int j)
-	
+		
 		{
 			
+			//Probabilidad de encuentro entre espias
+			Random randomProbabilidad = new Random();
+			Integer probabilidad = (Integer) randomProbabilidad.nextInt(2);
 			if( verificarVertice(i) && verificarVertice(j)) {
 				if(!existeArista(i,j)) {
-					arrayListVecinos.get(i).add(j);
-					arrayListVecinos.get(j).add(i);
+					HashMapVecinos.get(i).put(j,probabilidad);
+					HashMapVecinos.get(j).put(i,probabilidad);
 				}else {
 					throw new IllegalArgumentException("No existe la Arista: " + i + " , " + j);
 				}
@@ -96,8 +101,8 @@ public class Grafo
 		{
 			if(verificarVertice(i) && verificarVertice(j)) {
 				if(existeArista(i,j)) {
-					arrayListVecinos.get(i).add(j);
-					arrayListVecinos.get(j).add(i);
+					HashMapVecinos.get(i).remove(j);
+					HashMapVecinos.get(j).remove(i);
 				}else {
 					throw new IllegalArgumentException("No existe la Arista: " + i + " , " + j);
 				}
@@ -110,13 +115,13 @@ public class Grafo
 		// Informa si existe la arista especificada
 		public boolean existeArista(int i, int j)
 		{
-		return arrayListVecinos.get(i).contains(j);
+		return HashMapVecinos.get(i).containsKey(j);
 			
 		}
 	
 		private boolean verificarVertice(int i)
 		{
-			if(arrayListVecinos.get(i) != null) {
+			if(HashMapVecinos.get(i) != null) {
 				return true;
 			}
 			return false;
@@ -125,16 +130,16 @@ public class Grafo
 		// Cantidad de vertices
 		public int tamano()
 		{
-			return arrayListVecinos.size();
+			return HashMapVecinos.size();
 		}
 	
 	
 	
 	//Vecinos (arraylistVeciones.get(i).vecinos(ArrayListVecinos.get(i);
-		public HashSet <Integer> vecinos(int i )
+		public HashMap <Integer,Integer> vecinosDeVertice(int i )
 		{
 			if(verificarVertice(i)) {
-				HashSet<Integer> ret = arrayListVecinos.get(i);
+				HashMap<Integer,Integer> ret = HashMapVecinos.get(i);
 				return ret;
 				
 			}else {
@@ -147,7 +152,7 @@ public class Grafo
 		public int grado(int i)
 		{
 			verificarVertice(i);
-			return vecinos(i).size();
+			return vecinosDeVertice(i).size();
 		}
 	
 	

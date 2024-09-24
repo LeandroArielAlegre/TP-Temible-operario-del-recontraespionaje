@@ -18,7 +18,7 @@ public class PresentadorMapa {
 	public boolean crearVertice(Coordinate vertice) {
 		
 		/*
-		if(logicaDeGrafoEspias.crearVertice(vertice)) {
+		if(logicaDeGrafoEspias.crearVertice("hola")) {
 			return true;
 		}*/
 		//Devuelve True si pudo incluir el vertice en el grafo 

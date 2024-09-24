@@ -7,12 +7,12 @@ public class LogicaDeGrafoEspias {
 	
 
 	public LogicaDeGrafoEspias() {
-		grafoEspias = new Grafo(0);
+		grafoEspias = new Grafo();
 		
 	}
 	
 	/*
-	public boolean crearVertice(int vertice) {
+	public boolean crearVertice(String vertice) {
 		try {
 			grafoEspias.agregarVertice(vertice);
 			return true;
