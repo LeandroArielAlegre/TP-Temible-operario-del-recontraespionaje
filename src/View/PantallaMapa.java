@@ -48,7 +48,6 @@ public class PantallaMapa {
 	private JTextField textFieldParaCoordenadaY;
 	private JTextField textFieldParaCoordenadaX;
 	private JTextField textfieldNombreVertice;
-	private JPanel panelMapa;
 	private JPanel panelControles;
 	private HashMap <String ,Coordinate> hashMapVertices;
 	private JButton btnCrearArista;
@@ -98,13 +97,6 @@ public class PantallaMapa {
 		panelControles.setBounds(10, 11, 786, 615);
 		panelControles.setLayout(null);
 		frame.getContentPane().add(panelControles);
-				
-		
-		
-		//panel
-		panelMapa = new JPanel();
-		panelMapa.setBounds(200, 200, 100, 100);
-		panelControles.add(panelMapa);
 	
 		// LA PREGUNTA
 		preguntarFormaDeCargarEspias();
@@ -273,14 +265,14 @@ public class PantallaMapa {
 		JLabel labelCoordX = new JLabel("" + mapaActual.getLat());
 		labelCoordX.setForeground(new Color(255, 0, 0));
 		labelCoordX.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		labelCoordX.setBounds(23, 374, 109, 33);
+		labelCoordX.setBounds(23, 462, 109, 33);
 		//mapa.add(labelCoordX);
 		panelControles.add(labelCoordX);
 		
 		JLabel labelCoordY = new JLabel(" " + mapaActual.getLon());
 		labelCoordY.setForeground(new Color(255, 0, 0));
 		labelCoordY.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		labelCoordY.setBounds(23, 418, 109, 33);
+		labelCoordY.setBounds(23, 495, 109, 33);
 		//mapa.add(labelCoordY);
 		panelControles.add(labelCoordY);
 	}
