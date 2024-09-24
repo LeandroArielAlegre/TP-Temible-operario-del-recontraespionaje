@@ -13,10 +13,13 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 import Modelo.Sonido;
-import Modelo.LogicaDeMapa;
+import Modelo.LogicaDeGrafoEspias;
 import Presentador.PresentadorMapa;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -39,15 +42,14 @@ public class PantallaMapa {
 	private JFrame frame;
 	private JMapViewer mapa;
 	private Sonido sonido;
-	private LogicaDeMapa logicaDeMapa;
 	private Coordinate mapaActual = new Coordinate(-34.521, -58.719);
 	private int zoomActual = 12;
 	private PresentadorMapa presentadorMapa;
 	private JTextField textFieldParaCoordenadaY;
 	private JTextField textFieldParaCoordenadaX;
 	private JTextField textfieldNombreVertice;
-	//private JPanel panelMapa;
-	//private JPanel panelControles;
+	private JPanel panelMapa;
+	private JPanel panelControles;
 	private HashMap <String ,Coordinate> hashMapVertices;
 	private JButton btnCrearArista;
 	private JTextField textFieldVertice2;
@@ -86,27 +88,135 @@ public class PantallaMapa {
 		frame = new JFrame();
 		sonido = new Sonido();
 		hashMapVertices = new HashMap<>();
-//		presentadorMapa = new PresentadorMapa();
-		frame.setBounds(400, 200, 600, 600);
-		//frame.getContentPane().setLayout(null);
+    	presentadorMapa = new PresentadorMapa();
+		frame.setBounds(400, 200, 833, 676);
+		frame.getContentPane().setLayout(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		
+		//panelcontrol
+		panelControles = new JPanel();
+		panelControles.setBounds(10, 11, 786, 615);
+		panelControles.setLayout(null);
+		frame.getContentPane().add(panelControles);
+				
 		
 		
 		//panel
-		//panelMapa = new JPanel();
-		//panelMapa.setBounds(150, 150, 600, 650);
-		//frame.getContentPane().add(panelMapa);
+		panelMapa = new JPanel();
+		panelMapa.setBounds(200, 200, 100, 100);
+		panelControles.add(panelMapa);
+	
+		// LA PREGUNTA
+		preguntarFormaDeCargarEspias();
 		
-		//panelcontrol
-		//panelControles = new JPanel();
-		//panelControles.setBounds(500, 11, 250, 450);
-		//panelControles.setLayout(null);
+		
+		
+		
+		MapMarkerDot marcador1 = new MapMarkerDot("Soy una prueba", this.mapaActual);
+		marcador1.getStyle().setBackColor(Color.blue);
+		marcador1.getStyle().setColor(Color.blue);
+		
+		
+		
+		
+		//Colocar coordenadas con un click
+		
+		
+		
+		//muestra coordenadas actuales
+		ImprimirCoordenadasActuales();
+		
+		
+		
+		//sonido.reproducirSonido("/resources/espiasTheme.wav", "menu");
+		JButton btnIntroducción = new JButton("Cliqueame ");
+		btnIntroducción.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Tenemos una conjunto de espias en territorio enemigo, y necesitamos enviarles un mensaje\r\n"
+						+ "a todos ellos. La comunicaci´on se realiza de manera personal entre cada par de esp´ıas: se\r\n"
+						+ "encuentran en un punto preacordado y se pasan el mensaje en un papel que se autodestruye\r\n"
+						+ "luego de unos segundos. No todos los pares de esp´ıas pueden encontrarse, y representamos\r\n"
+						+ "esta situaci´on por medio de un grafo G = (V, E) con un v´ertice por cada esp´ıa y una arista\r\n"
+						+ "por cada par de esp´ıas que pueden encontrarse. Para cada arista ij ∈ E, tenemos adem´as la\r\n"
+						+ "probabilidad pij ∈ [0, 1] de que el enemigo intercepte a los esp´ıas durante el encuentro y se\r\n"
+						+ "arruine el operativo.\r\n"
+						+ "Para enviarles el mismo mensaje a toda nuestra red de espias, buscamos un ´arbol generador de\r\n"
+						+ "G y los mensajes se transmiten a lo largo de las aristas de este ´arbol generador. Un cuello de\r\n"
+						+ "botella de un ´arbol generador es su arista de mayor peso. En nuestro caso, buscamos un ´arbol\r\n"
+						+ "generador con el cuello de botella m´as peque˜no posible (es decir, buscamos minimizar el riesgo\r\n"
+						+ "del encuentro m´as peligroso). Este problema se denomina ´arbol generador con m´ınimo cuello\r\n"
+						+ "de botella. Todo ´arbol generador m´ınimo es tambi´en un ´arbol generador con m´ınimo cuello\r\n"
+						+ "de botella, de modo que podemos aplicar los Algoritmos de Prim o Kruskal para resolver este\r\n"
+						+ "problema.");
+			}
+		});
+		btnIntroducción.setBounds(23, 539, 132, 42);
+		//mapa.add(btnIntroducción);
+		panelControles.add(btnIntroducción);
+		
+		
+		
+		
+		
+		
+		JButton btnCrearVertice = new JButton("Crea un vertice");
+		btnCrearVertice.setBounds(166, 558, 173, 23);
+		//mapa.add(btnCrearVertice);
+		panelControles.add(btnCrearVertice);
+		btnCrearVertice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//Nota!!!! Se deberia agregar mas verificaciones, para que el usuario no meta cualquier valor
+				if(textFieldParaCoordenadaX.getText() != null && textFieldParaCoordenadaY.getText() != null &&  textfieldNombreVertice.getText() !=null) {
+					Double CoordenadasX =  Double.parseDouble(textFieldParaCoordenadaX.getText());
+					Double CoordenadasY =  Double.parseDouble(textFieldParaCoordenadaY.getText());
+					String nombreVertice = textfieldNombreVertice.getText().toString();
+					crearVerticeEnMapa(CoordenadasX, CoordenadasY, nombreVertice);
+					textfieldNombreVertice.setText("");
+					textFieldParaCoordenadaX.setText("");
+					textFieldParaCoordenadaY.setText("");
+					
+				}else {
+					JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
+				}
+				
+			}
+		});
+		
+		//Coloco los textFields en la pantalla
+		colocarTexfields();
+		
+		//BOTON crear arista
+		
+		btnCrearArista = new JButton("Crea una arista");
+		btnCrearArista.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textFieldVertice1.getText() != null  && textFieldVertice2.getText() !=null) {
+					String nombreVertice1 = textFieldVertice1.getText().toString();
+					String nombreVertice2 = textFieldVertice2.getText().toString();
+					
+					
+					//Si los vertices existen, creo arista
+					if(hashMapVertices.containsKey(nombreVertice1) && hashMapVertices.containsKey(nombreVertice2)) {
+						crearAristaEnMapa(hashMapVertices.get(nombreVertice1), hashMapVertices.get(nombreVertice2) );
+						textFieldVertice1.setText("");
+						textFieldVertice2.setText("");
+					}
+					
+				}
+				
+			}
+		});
+		btnCrearArista.setBounds(384, 556, 132, 27);
+		//mapa.add(btnCrearArista);
+		panelControles.add(btnCrearArista);
+		
 		
 		
 		
 		mapa = new JMapViewer();
+		mapa.setBounds(0, 0, 786, 457);
+		panelControles.add(mapa);
 		mapa.setFocusable(false);
 		mapa.setZoomControlsVisible(false);
 		
@@ -152,110 +262,7 @@ public class PantallaMapa {
 			}
 			
 		});
-	
-		
-		
-		
-		MapMarkerDot marcador1 = new MapMarkerDot("Soy una prueba", this.mapaActual);
-		marcador1.getStyle().setBackColor(Color.blue);
-		marcador1.getStyle().setColor(Color.blue);
 		mapa.addMapMarker(marcador1);
-	
-		frame.getContentPane().add(mapa);
-		//panelMapa.add(mapa);
-		
-		
-		
-		
-		//Colocar coordenadas con un click
-		
-		
-		
-		//muestra coordenadas actuales
-		ImprimirCoordenadasActuales();
-		
-		
-		
-		//sonido.reproducirSonido("/resources/espiasTheme.wav", "menu");
-		JButton btnIntroducción = new JButton("Cliqueame ");
-		btnIntroducción.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showMessageDialog(null, "Tenemos una conjunto de espias en territorio enemigo, y necesitamos enviarles un mensaje\r\n"
-						+ "a todos ellos. La comunicaci´on se realiza de manera personal entre cada par de esp´ıas: se\r\n"
-						+ "encuentran en un punto preacordado y se pasan el mensaje en un papel que se autodestruye\r\n"
-						+ "luego de unos segundos. No todos los pares de esp´ıas pueden encontrarse, y representamos\r\n"
-						+ "esta situaci´on por medio de un grafo G = (V, E) con un v´ertice por cada esp´ıa y una arista\r\n"
-						+ "por cada par de esp´ıas que pueden encontrarse. Para cada arista ij ∈ E, tenemos adem´as la\r\n"
-						+ "probabilidad pij ∈ [0, 1] de que el enemigo intercepte a los esp´ıas durante el encuentro y se\r\n"
-						+ "arruine el operativo.\r\n"
-						+ "Para enviarles el mismo mensaje a toda nuestra red de espias, buscamos un ´arbol generador de\r\n"
-						+ "G y los mensajes se transmiten a lo largo de las aristas de este ´arbol generador. Un cuello de\r\n"
-						+ "botella de un ´arbol generador es su arista de mayor peso. En nuestro caso, buscamos un ´arbol\r\n"
-						+ "generador con el cuello de botella m´as peque˜no posible (es decir, buscamos minimizar el riesgo\r\n"
-						+ "del encuentro m´as peligroso). Este problema se denomina ´arbol generador con m´ınimo cuello\r\n"
-						+ "de botella. Todo ´arbol generador m´ınimo es tambi´en un ´arbol generador con m´ınimo cuello\r\n"
-						+ "de botella, de modo que podemos aplicar los Algoritmos de Prim o Kruskal para resolver este\r\n"
-						+ "problema.");
-			}
-		});
-		btnIntroducción.setBounds(23, 462, 173, 88);
-		mapa.add(btnIntroducción);
-		
-		
-		
-		
-		
-		
-		JButton btnCrearVertice = new JButton("Crea un vertice");
-		btnCrearVertice.setBounds(206, 723, 173, 23);
-		mapa.add(btnCrearVertice);
-		btnCrearVertice.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//Nota!!!! Se deberia agregar mas verificaciones, para que el usuario no meta cualquier valor
-				if(textFieldParaCoordenadaX.getText() != null && textFieldParaCoordenadaY.getText() != null &&  textfieldNombreVertice.getText() !=null) {
-					Double CoordenadasX =  Double.parseDouble(textFieldParaCoordenadaX.getText());
-					Double CoordenadasY =  Double.parseDouble(textFieldParaCoordenadaY.getText());
-					String nombreVertice = textfieldNombreVertice.getText().toString();
-					crearVerticeEnMapa(CoordenadasX, CoordenadasY, nombreVertice);
-					textfieldNombreVertice.setText("");
-					textFieldParaCoordenadaX.setText("");
-					textFieldParaCoordenadaY.setText("");
-					
-				}else {
-					JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
-				}
-				
-			}
-		});
-		
-		//Coloco los textFields en la pantalla
-		colocarTexfields();
-		
-		//BOTON crear arista
-		
-		btnCrearArista = new JButton("Crea una arista");
-		btnCrearArista.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(textFieldVertice1.getText() != null  && textFieldVertice2.getText() !=null) {
-					String nombreVertice1 = textFieldVertice1.getText().toString();
-					String nombreVertice2 = textFieldVertice2.getText().toString();
-					
-					
-					//Si los vertices existen, creo arista
-					if(hashMapVertices.containsKey(nombreVertice1) && hashMapVertices.containsKey(nombreVertice2)) {
-						crearAristaEnMapa(hashMapVertices.get(nombreVertice1), hashMapVertices.get(nombreVertice2) );
-						textFieldVertice1.setText("");
-						textFieldVertice2.setText("");
-					}
-					
-				}
-				
-			}
-		});
-		btnCrearArista.setBounds(394, 723, 132, 27);
-		mapa.add(btnCrearArista);
-		
 	
 		
 		
@@ -267,13 +274,15 @@ public class PantallaMapa {
 		labelCoordX.setForeground(new Color(255, 0, 0));
 		labelCoordX.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		labelCoordX.setBounds(23, 374, 109, 33);
-		mapa.add(labelCoordX);
+		//mapa.add(labelCoordX);
+		panelControles.add(labelCoordX);
 		
 		JLabel labelCoordY = new JLabel(" " + mapaActual.getLon());
 		labelCoordY.setForeground(new Color(255, 0, 0));
 		labelCoordY.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		labelCoordY.setBounds(23, 418, 109, 33);
-		mapa.add(labelCoordY);
+		//mapa.add(labelCoordY);
+		panelControles.add(labelCoordY);
 	}
 
 	//COLOCA TEXTFIELDS!!!!!!!!!!!!!!!!!
@@ -283,16 +292,18 @@ public class PantallaMapa {
 		textFieldParaCoordenadaY = new JTextField();
 		String placeHolderTextFieldCoordenadasY ="Ingrese las Coordenada Y";
 		agregarPlaceHolderTexfield(textFieldParaCoordenadaY, placeHolderTextFieldCoordenadasY);
-		textFieldParaCoordenadaY.setBounds(206, 527, 173, 23);
-		mapa.add(textFieldParaCoordenadaY);
+		textFieldParaCoordenadaY.setBounds(166, 524, 173, 23);
+		//mapa.add(textFieldParaCoordenadaY);
+		panelControles.add(textFieldParaCoordenadaY);
 		textFieldParaCoordenadaY.setColumns(10);
 		
 		textFieldParaCoordenadaX = new JTextField();
 		String placeHolderTextFieldCoordenadasX ="Ingrese las Coordenada X";
 		agregarPlaceHolderTexfield(textFieldParaCoordenadaX, placeHolderTextFieldCoordenadasX);
 		textFieldParaCoordenadaX.setColumns(10);
-		textFieldParaCoordenadaX.setBounds(206, 495, 173, 23);
-		mapa.add(textFieldParaCoordenadaX);
+		textFieldParaCoordenadaX.setBounds(166, 490, 173, 23);
+		//mapa.add(textFieldParaCoordenadaX);
+		panelControles.add(textFieldParaCoordenadaX);
 		
 		
 		
@@ -301,8 +312,10 @@ public class PantallaMapa {
 		agregarPlaceHolderTexfield(textfieldNombreVertice, placeHolderTextFieldNombreVertice);
 		textfieldNombreVertice.setToolTipText("");
 		
-		textfieldNombreVertice.setBounds(206, 462, 173, 20);
-		mapa.add(textfieldNombreVertice);
+		textfieldNombreVertice.setBounds(166, 462, 173, 20);
+		
+		//mapa.add(textfieldNombreVertice);
+		panelControles.add(textfieldNombreVertice);
 		textfieldNombreVertice.setColumns(10);
 		
 		
@@ -310,15 +323,17 @@ public class PantallaMapa {
 		textFieldVertice2 = new JTextField();
 		String placeHolderTextFieldVertice2 ="Ingrese nombre de vertice para agregar arista";
 		agregarPlaceHolderTexfield(textFieldVertice2, placeHolderTextFieldVertice2);
-		textFieldVertice2.setBounds(389, 495, 178, 22);
-		mapa.add(textFieldVertice2);
+		textFieldVertice2.setBounds(376, 524, 178, 22);
+		//mapa.add(textFieldVertice2);
+		panelControles.add(textFieldVertice2);
 		textFieldVertice2.setColumns(10);
 		
 		textFieldVertice1 = new JTextField();
 		String placeHolderTextFieldVertice ="Ingrese el segundo nombre de vertice para agregar una arista";
 		agregarPlaceHolderTexfield(textFieldVertice1, placeHolderTextFieldVertice);
-		textFieldVertice1.setBounds(389, 461, 178, 23);
-		mapa.add(textFieldVertice1);
+		textFieldVertice1.setBounds(376, 490, 178, 23);
+		//mapa.add(textFieldVertice1);
+		panelControles.add(textFieldVertice1);
 		textFieldVertice1.setColumns(10);
 	}
 	
@@ -389,5 +404,35 @@ public class PantallaMapa {
 		    }
 		});
 		
+	}
+	private void preguntarFormaDeCargarEspias() {
+		
+		// Creamos un JComboBox con las opciones
+        String[] eleccionCargaEspias = { "Manual", "Archivo" };
+        JComboBox<String> comboBoxEleccion = new JComboBox<>(eleccionCargaEspias);
+        comboBoxEleccion.setSelectedIndex(1);
+
+        // Creamos un JLabel para mostrar el texto
+        JLabel label = new JLabel("Seleccione el método de carga:");
+
+        // Creamos un JPanel para contener el JLabel y el JComboBox
+        JPanel panelInfo = new JPanel();
+        panelInfo.add(label);
+        panelInfo.add(comboBoxEleccion);
+
+        // Mostramos el JOptionPane con el panel
+        int resultado = JOptionPane.showConfirmDialog(null, panelInfo, 
+                "¿De qué manera quiere cargar a los espías?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if(resultado == JOptionPane.OK_OPTION) {
+        	String seleccion = (String) comboBoxEleccion.getSelectedItem();
+        	JOptionPane.showMessageDialog(null, "Usted selecciona la opcion: " + seleccion);
+            //System.out.println("Método seleccionado: " + seleccion);
+        
+        }else if(resultado == JOptionPane.CANCEL_OPTION || resultado == JOptionPane.CLOSED_OPTION) {
+        	System.exit(0);
+        	//System.out.println("me cierro");
+        }
+        	
+        
 	}
 }

@@ -22,13 +22,52 @@ public class Grafo
 		for(int i = 0; i< vertices; i++) {
 			arrayListVecinos.add(new HashSet<Integer>());
 		}
-		
 	}
 	
 	
 	
+	/*
+	//GRAFO VACIO
+		public Grafo()
+		{
+			arrayListVecinos = new ArrayList<HashSet <Integer>>();	
+		
+	}
 	
+	public void agregarVertice(int vertice) {
+		
+		
+		if(estaGrafoVacio()) {
+			HashSet<Integer> nuevoSet = new HashSet<>();
+		    nuevoSet.add(vertice);
+		    arrayListVecinos.add(nuevoSet); // Aquí sí es necesario añadirlo al ArrayList
+		}else {
+			if(verificarVertice(vertice)){
+				throw new IllegalArgumentException("El vértice ya existe.");
+			}else {
+				arrayListVecinos.add(new HashSet<Integer>(vertice));
+			}
+		
+		}
+			
+		
+			
 	
+		
+			
+			
+		
+	}
+		
+	
+	public boolean estaGrafoVacio() {
+		if(arrayListVecinos.size() == 0) {
+			return true;
+		}
+		return false;
+	}
+	
+	*/
 	// Agregado de aristas
 		public void agregarArista(int i, int j)
 	
