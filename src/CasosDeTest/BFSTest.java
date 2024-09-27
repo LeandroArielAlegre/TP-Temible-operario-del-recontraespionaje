@@ -64,6 +64,12 @@ public class BFSTest {
     public void alcanzablesInconexoTest() {
         Grafo g = inicializarGrafoInconexo();
         String[] esperado = {"0", "1", "2", "3", "4"};
+//        for (String s: esperado) {
+//        System.out.print(s);
+//        }
+//        for (Object s: BFS.alcanzables(g, "0").toArray()) {
+//            System.out.print(s);
+//            }
         assertArrayEquals(esperado, BFS.alcanzables(g, "0").toArray());
     }
 

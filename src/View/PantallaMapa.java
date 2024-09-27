@@ -340,6 +340,7 @@ public class PantallaMapa {
 			MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, vertice);
 			verticeEnMapa.getStyle().setBackColor(Color.yellow);
 			verticeEnMapa.getStyle().setColor(Color.yellow);
+
 			mapa.addMapMarker(verticeEnMapa);
 			
 			
@@ -366,7 +367,7 @@ public class PantallaMapa {
 	        // Crear el polígono (en este caso una línea)
 	        MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
 	        
-	        
+	        arista.setColor(Color.green);
 	        mapa.addMapPolygon(arista);
 	        JOptionPane.showMessageDialog(null, "Se creo la Arista Satisfactoriamente");
 		}else {

@@ -1,6 +1,8 @@
 package CasosDeTest;
 
 import static org.junit.Assert.*;
+
+import java.util.ArrayList;
 import java.util.Set;
 import org.junit.Test;
 
@@ -132,7 +134,7 @@ public class GrafoTest
 		Grafo grafo = diamanteConVerticeAislado();
 		setsIguales(new String[] {"0", "3", "4"}, grafo.vecinosDeVertice("2"));
 	}
-//	int[] {0, 3, 4}
+
 	@Test
 	public void vecinosVaciosTest()
 	{
@@ -147,13 +149,17 @@ public class GrafoTest
 		grafo.eliminarArista("0", "3");
 		setsIguales(new String[] {"2"}, grafo.vecinosDeVertice("0"));
 	}
-	
-	private void setsIguales(String[] esperado, Set<String> obtenido) 
+//	@Test
+//	public void  obtenerPesoTest() {
+//		Grafo grafo = diamanteConVerticeAislado();
+//		assertEquals(1,grafo.obtenerPesoArista("0","2"));
+//	}
+	private void setsIguales(String[] esperado, ArrayList<String> arrayList) 
 	{
 		for(String elemento: esperado)
-			assertTrue(obtenido.contains(elemento));		
+			assertTrue(arrayList.contains(elemento));		
 	}
-
+	
 	private Grafo diamanteConVerticeAislado()
 	{
 		Grafo grafo = new Grafo();

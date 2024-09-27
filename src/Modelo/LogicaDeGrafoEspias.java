@@ -1,13 +1,14 @@
 package Modelo;
 
 public class LogicaDeGrafoEspias {
-	private Grafo grafoEspias;
+//	private Grafo grafoEspias;
+	private Arbol arbolDeEspias;
 	private BFS bfsEspias;
 	
 	
 
 	public LogicaDeGrafoEspias() {
-		grafoEspias = new Grafo();
+		arbolDeEspias = new Arbol();
 		
 	}
 	

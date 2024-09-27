@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class Grafo {
 
     public void agregarArista(String nombre1, String nombre2) {
         if (!nombresAIndices.containsKey(nombre1) || !nombresAIndices.containsKey(nombre2)) {
-            throw new IllegalArgumentException("Uno o ambos vértices no existen.");
+            throw new IllegalArgumentException("Alguno de los vértices ingresados no existen.");
         }
 
         if (nombre1.equals(nombre2)) {
@@ -52,7 +53,7 @@ public class Grafo {
             grafo.get(nombre2).put(nombre1, probabilidadDeEncuentro);
         }
     }
-
+//    !formaCircuito(nombre1,nombre2,)
     public void eliminarArista(String nombre1, String nombre2) {
         if (!existeArista(nombre1, nombre2)) {
             throw new IllegalArgumentException("No existe la arista: " + nombre1 + " , " + nombre2);
@@ -64,16 +65,28 @@ public class Grafo {
     public boolean existeArista(String nombre1, String nombre2) {
         return grafo.containsKey(nombre1) && grafo.get(nombre1).containsKey(nombre2);
     }
-
+    
+    public int obtenerPesoArista(String nombre1,String nombre2) {
+    	if(existeArista(nombre1,nombre2)) {
+    		return grafo.get(nombre1).get(nombre2).intValue();
+    	}
+    	return 0;
+    }
     public int tamano() {
         return grafo.size();
     }
 
-    public Set<String> vecinosDeVertice(String nombre) {
+    public ArrayList<String> vecinosDeVertice(String nombre) {
+    	ArrayList<String> ret= new ArrayList<>();
+
+    	
         if (!grafo.containsKey(nombre)) {
             throw new IllegalArgumentException("El vértice no existe: " + nombre);
         }
-        return new HashSet<>(grafo.get(nombre).keySet());
+        for(String s : grafo.get(nombre).keySet()) {
+    		ret.add(s);
+    	}
+        return ret;
     }
 
     public int gradoDeVertice(String nombre) {
