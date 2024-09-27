@@ -37,7 +37,7 @@ public class BFSTest {
         Grafo g = new Grafo();
         g.agregarVertice("0");
         g.agregarVertice("1");
-        g.agregarArista("0", "1");
+        g.agregarArista("0", "1",1);
         assertTrue(BFS.esConexo(g));
     }
 
@@ -82,13 +82,13 @@ public class BFSTest {
         g.agregarVertice("4");
         g.agregarVertice("5");
         g.agregarVertice("6");
-        g.agregarArista("0", "1");
-        g.agregarArista("0", "2");
-        g.agregarArista("1", "2");
-        g.agregarArista("1", "3");
-        g.agregarArista("2", "4");
-        g.agregarArista("3", "4");
-        g.agregarArista("5", "6");
+        g.agregarArista("0", "1",1);
+        g.agregarArista("0", "2",0);
+        g.agregarArista("1", "2",1);
+        g.agregarArista("1", "3",1);
+        g.agregarArista("2", "4",0);
+        g.agregarArista("3", "4",1);
+        g.agregarArista("5", "6",1);
         
         return g;        
     }
@@ -99,12 +99,12 @@ public class BFSTest {
         g.agregarVertice("1");
         g.agregarVertice("2");
         g.agregarVertice("3");
-        g.agregarArista("0", "1");
-        g.agregarArista("0", "2");
-        g.agregarArista("0", "3");
-        g.agregarArista("1", "2");
-        g.agregarArista("1", "3");
-        g.agregarArista("2", "3");
+        g.agregarArista("0", "1",1);
+        g.agregarArista("0", "2",0);
+        g.agregarArista("0", "3",1);
+        g.agregarArista("1", "2",1);
+        g.agregarArista("1", "3",1);
+        g.agregarArista("2", "3",0);
         
         return g;        
     }

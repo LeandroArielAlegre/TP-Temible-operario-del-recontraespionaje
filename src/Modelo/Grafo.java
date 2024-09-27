@@ -37,7 +37,7 @@ public class Grafo {
         return grafo.isEmpty();
     }
 
-    public void agregarArista(String nombre1, String nombre2) {
+    public void agregarArista(String nombre1, String nombre2, int probabilidad) {
         if (!nombresAIndices.containsKey(nombre1) || !nombresAIndices.containsKey(nombre2)) {
             throw new IllegalArgumentException("Alguno de los vértices ingresados no existen.");
         }
@@ -47,10 +47,10 @@ public class Grafo {
         }
 
         if (!existeArista(nombre1, nombre2)) {
-            Random randomProbabilidad = new Random();
-            int probabilidadDeEncuentro = randomProbabilidad.nextInt(2);
-            grafo.get(nombre1).put(nombre2, probabilidadDeEncuentro);
-            grafo.get(nombre2).put(nombre1, probabilidadDeEncuentro);
+            //Random randomProbabilidad = new Random();
+            //int probabilidadDeEncuentro = randomProbabilidad.nextInt(2);
+            grafo.get(nombre1).put(nombre2, probabilidad);
+            grafo.get(nombre2).put(nombre1, probabilidad);
         }
     }
 //    !formaCircuito(nombre1,nombre2,)

@@ -44,9 +44,9 @@ public class VecinosTest
 		grafo.agregarVertice("1");
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("3");
-		grafo.agregarArista("1", "0");
-		grafo.agregarArista("1", "2");
-		grafo.agregarArista("1", "3");
+		grafo.agregarArista("1", "0",0);
+		grafo.agregarArista("1", "2",0);
+		grafo.agregarArista("1", "3",0);
 		
 		String[] esperado = {"0", "2", "3"};
 		Assert.iguales(esperado, grafo.vecinosDeVertice("1"));
@@ -60,9 +60,9 @@ public class VecinosTest
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("3");
 		grafo.agregarVertice("4");
-		grafo.agregarArista("1", "3");
-		grafo.agregarArista("2", "3");
-		grafo.agregarArista("2", "4");
+		grafo.agregarArista("1", "3",1);
+		grafo.agregarArista("2", "3",1);
+		grafo.agregarArista("2", "4",1);
 		
 		String[] esperados = {"1", "2"};
 		Assert.iguales(esperados, grafo.vecinosDeVertice("3"));

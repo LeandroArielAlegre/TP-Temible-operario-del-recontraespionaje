@@ -38,13 +38,13 @@ public class Arbol extends Grafo implements Serializable {
         cantidadDeNodos++;
 //        agregarArista(padre, hijo);
     }
-    public void agregarHijo(String padre, String hijo) {
+    public void agregarHijo(String padre, String hijo, int probabilidad) {
         if (!verificarVertice(padre)) {
             throw new IllegalArgumentException("El vértice padre no existe en el árbol.");
         }
         agregarVertice(hijo);
         cantidadDeNodos++;
-        agregarArista(padre, hijo);
+        agregarArista(padre, hijo, probabilidad);
         cantidadDeAristas++;
     }
 
@@ -76,7 +76,7 @@ public class Arbol extends Grafo implements Serializable {
 	}
     
 	@Override
-    public void agregarArista(String i, String j) {
+    public void agregarArista(String i, String j, int probabilidad) {
         if (i == j) {
             throw new IllegalArgumentException("No se permiten bucles en un árbol.");
         }
@@ -84,7 +84,7 @@ public class Arbol extends Grafo implements Serializable {
             throw new IllegalArgumentException("La arista ya existe en el árbol.");
         }
         
-        super.agregarArista(i, j);
+        super.agregarArista(i, j, probabilidad);
     }
 
     // No permitimos eliminar aristas directamente en un árbol

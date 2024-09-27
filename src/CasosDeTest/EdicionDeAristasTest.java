@@ -42,7 +42,7 @@ public class EdicionDeAristasTest
 	{
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("2");
-		grafo.agregarArista("2","2");
+		grafo.agregarArista("2","2",0);
 	}
 
 	@Test
@@ -51,7 +51,7 @@ public class EdicionDeAristasTest
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("3");
-		grafo.agregarArista("2", "3");
+		grafo.agregarArista("2", "3",1);
 		assertTrue( grafo.existeArista("2", "3") );
 	}
 
@@ -61,7 +61,7 @@ public class EdicionDeAristasTest
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("3");
-		grafo.agregarArista("2", "3");
+		grafo.agregarArista("2", "3",0);
 		assertTrue( grafo.existeArista("3","2") );
 	}
 
@@ -73,7 +73,7 @@ public class EdicionDeAristasTest
 		grafo.agregarVertice("3");
 		grafo.agregarVertice("1");
 		grafo.agregarVertice("4");
-		grafo.agregarArista("2", "3");
+		grafo.agregarArista("2", "3",1);
 		assertFalse( grafo.existeArista("1", "4") );
 	}
 
@@ -83,8 +83,8 @@ public class EdicionDeAristasTest
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("3");
-		grafo.agregarArista("2", "3");
-		grafo.agregarArista("2", "3");
+		grafo.agregarArista("2", "3",1);
+		grafo.agregarArista("2", "3",0);
 
 		assertTrue( grafo.existeArista("2", "3") );
 	}
@@ -95,7 +95,7 @@ public class EdicionDeAristasTest
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("4");
-		grafo.agregarArista("2", "4");
+		grafo.agregarArista("2", "4",0);
 		
 		grafo.eliminarArista("2", "4");
 		assertFalse( grafo.existeArista("2", "4") );
@@ -117,7 +117,7 @@ public class EdicionDeAristasTest
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("4");
-		grafo.agregarArista("2", "4");
+		grafo.agregarArista("2", "4",1);
 		
 		grafo.eliminarArista("2", "4");
 		grafo.eliminarArista("2", "4");

@@ -201,10 +201,17 @@ public class PantallaMapa {
 						if(hashMapVertices.containsKey(nombreVertice1) && hashMapVertices.containsKey(nombreVertice2) 
 								&& probabilidad == 0 || probabilidad ==1 ) {
 							
-							crearAristaEnMapa(hashMapVertices.get(nombreVertice1), hashMapVertices.get(nombreVertice2), probabilidad);
-							textFieldVertice1.setText("");
-							textFieldVertice2.setText("");
-							textFieldProbabilidad.setText("");
+							
+							// SI no existe arista no lo agrego
+							if(!presentadorMapa.existeArista(nombreVertice1, nombreVertice2)) {
+								crearAristaEnMapa(nombreVertice1, hashMapVertices.get(nombreVertice1),nombreVertice2, hashMapVertices.get(nombreVertice2), probabilidad);
+								textFieldVertice1.setText("");
+								textFieldVertice2.setText("");
+								textFieldProbabilidad.setText("");
+							}else {
+								JOptionPane.showMessageDialog(null, "No es posible crear Arista entre " + nombreVertice1 + " y " + nombreVertice2);
+							}
+								
 						}else {
 							JOptionPane.showMessageDialog(null, "Error, ingrese una probabilidad valida  y vertices validos");
 						}
@@ -344,7 +351,7 @@ public class PantallaMapa {
 		Coordinate vertice = new Coordinate(CoordenadasX, CoordenadasY);
 		//Si el presentador me da el OKAY (es decir el presentador consulto con la logica de negocio
 		// si, es posible agregar un nuevo vertice en el grafo. devuelve un boolean.
-		if (presentadorMapa.crearVertice(vertice) && !hashMapVertices.containsKey(nombreVertice)) {
+		if (presentadorMapa.crearVertice(nombreVertice) && !hashMapVertices.containsKey(nombreVertice)) {
 			
 			MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, vertice);
 			verticeEnMapa.getStyle().setBackColor(Color.yellow);
@@ -365,11 +372,11 @@ public class PantallaMapa {
 		
 	}
 	
-	private void crearAristaEnMapa(Coordinate vertice1, Coordinate vertice2, int probabilidad) {
+	private void crearAristaEnMapa(String nombreVertice1, Coordinate vertice1, String nombreVertice2, Coordinate vertice2, int probabilidad) {
 		
 		
 		
-		if(presentadorMapa.crearArista(vertice1, vertice2, probabilidad)) {
+		if(presentadorMapa.crearArista(nombreVertice1, nombreVertice2, probabilidad)) {
 			
 			List<Coordinate> aristaEnMapa = new ArrayList<>();
 			aristaEnMapa.add(vertice1); 

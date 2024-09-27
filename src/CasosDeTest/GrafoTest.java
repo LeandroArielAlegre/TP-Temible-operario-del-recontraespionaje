@@ -32,7 +32,7 @@ public class GrafoTest
 	public void sinLoopsTest()
 	{
 		Grafo grafo = new Grafo();
-		grafo.agregarArista("h", "h");
+		grafo.agregarArista("h", "h",0);
 	}
 
 	@Test
@@ -41,7 +41,7 @@ public class GrafoTest
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("i");
 		grafo.agregarVertice("j");
-		grafo.agregarArista("i", "j");
+		grafo.agregarArista("i", "j",1);
 		assertTrue(grafo.existeArista("i", "j"));
 	}
 
@@ -51,7 +51,7 @@ public class GrafoTest
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("i");
 		grafo.agregarVertice("j");
-		grafo.agregarArista("i", "j");
+		grafo.agregarArista("i", "j",1);
 		assertTrue(grafo.existeArista("j", "i"));
 	}
 
@@ -59,7 +59,7 @@ public class GrafoTest
 	public void aristaInexistenteTest()
 	{
 		Grafo grafo = new Grafo();
-		grafo.agregarArista("i", "j");
+		grafo.agregarArista("i", "j",1);
 		assertFalse(grafo.existeArista("k", "j"));
 	}
 
@@ -67,8 +67,8 @@ public class GrafoTest
 	public void agregarAristaExistenteTest()
 	{
 		Grafo grafo = new Grafo();
-		grafo.agregarArista("i", "j");
-		grafo.agregarArista("i", "j");
+		grafo.agregarArista("i", "j",1);
+		grafo.agregarArista("i", "j",1);
 //		assertTrue(grafo.existeArista("i", "j"));
 	}
 
@@ -92,7 +92,7 @@ public class GrafoTest
 		Grafo grafo = new Grafo();
 		grafo.agregarVertice("i");
 		grafo.agregarVertice("j");
-		grafo.agregarArista("i", "j");
+		grafo.agregarArista("i", "j",1);
 		grafo.eliminarArista("i", "j");
 		assertFalse(grafo.existeArista("i", "j"));
 	}
@@ -168,11 +168,11 @@ public class GrafoTest
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("3");
 		grafo.agregarVertice("4");
-		grafo.agregarArista("0", "2");
-		grafo.agregarArista("0", "3");
-		grafo.agregarArista("2", "3");
-		grafo.agregarArista("2", "4");
-		grafo.agregarArista("3", "4");
+		grafo.agregarArista("0", "2",1);
+		grafo.agregarArista("0", "3",1);
+		grafo.agregarArista("2", "3",1);
+		grafo.agregarArista("2", "4",1);
+		grafo.agregarArista("3", "4",1);
 		return grafo;
 	}
 }
