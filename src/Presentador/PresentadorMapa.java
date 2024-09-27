@@ -33,7 +33,7 @@ public class PresentadorMapa {
 		
 	}
 	
-	public boolean crearArista(Coordinate vertice, Coordinate vertice2) {
+	public boolean crearArista(Coordinate vertice, Coordinate vertice2, int probabilidad) {
 		
 		
 		//logicaDeMapa.crearArista(Coordinate vertice1 ,Coordinate vertice2);
