@@ -4,38 +4,42 @@ package Presentador;
 
 import org.openstreetmap.gui.jmapviewer.Coordinate;
 
-import Modelo.LogicaDeMapa;
+import Modelo.LogicaDeGrafoEspias;
 
 public class PresentadorMapa {
-	private LogicaDeMapa logicaDeMapa;
+	private LogicaDeGrafoEspias logicaDeGrafoEspias;
 	
 	
 	
 	public PresentadorMapa() {
-		logicaDeMapa = new LogicaDeMapa();
+		logicaDeGrafoEspias = new LogicaDeGrafoEspias();
 	}
 
-	public boolean crearVertice(Coordinate vertice) {
+	public boolean crearVertice(String vertice) {
 		
-		//logicaDeMapa.crearVertice(Coordinate Vertice);
+		
+		if(logicaDeGrafoEspias.crearVertice(vertice)) {
+			return true;
+		}
 		//Devuelve True si pudo incluir el vertice en el grafo 
 		//Me da el Okay, entonces le digo a la pantalla que Cree el vertice
-		//Nota: Tenemos un problema con los tipo de datos, Coordinate es un tipo
-		//Double, no optimo para trabajar con algoritmos de grafos.
-		//Propuesta: Utilizar BigDecimal para redondear los numeros y castearlos a enteros
-		//Guardar coordenadas en un Map.
-		
-		System.out.println("Creando vertice");
-		return true;
+		return false;
 		
 	}
 	
-	public boolean crearArista(Coordinate vertice, Coordinate vertice2) {
-		//logicaDeMapa.crearArista(Coordinate vertice1 ,Coordinate vertice2);
+	public boolean crearArista(String vertice, String vertice2, int probabilidad) {
 		
-		System.out.println("Creando arista");
-		return true;
+		if(!logicaDeGrafoEspias.existeArista(vertice, vertice2)) {
+			return logicaDeGrafoEspias.crearArista(vertice, vertice2, probabilidad);
+		}
+		
+		return false;
 	}
+
+	
+	public boolean existeArista(String vertice, String vertice2) {
+		return logicaDeGrafoEspias.existeArista(vertice, vertice2);
+	    }
 	
 
 }
