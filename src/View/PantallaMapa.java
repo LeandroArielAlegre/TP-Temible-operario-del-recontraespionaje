@@ -78,7 +78,7 @@ public class PantallaMapa {
 	}
 
 	/**
-	 * Create the application.a
+	 * Create the application.
 	 */
 	public PantallaMapa() {
 		initialize();
