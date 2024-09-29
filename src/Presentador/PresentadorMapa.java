@@ -1,9 +1,5 @@
 package Presentador;
 
-
-
-import org.openstreetmap.gui.jmapviewer.Coordinate;
-
 import Modelo.LogicaDeGrafoEspias;
 
 public class PresentadorMapa {

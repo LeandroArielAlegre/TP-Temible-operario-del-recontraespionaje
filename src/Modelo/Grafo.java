@@ -2,10 +2,7 @@ package Modelo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
 public class Grafo {
     // Mapa de nombres de vértices a sus índices
@@ -13,8 +10,8 @@ public class Grafo {
     // Mapa de índices a nombres de vértices
     private HashMap<Integer, String> indicesANombres;
     // Representamos el grafo por su lista de vecinos
-    private HashMap<String, HashMap<String, Integer>> grafo;
-    private int contadorVertices;
+    protected HashMap<String, HashMap<String, Integer>> grafo;
+    protected int contadorVertices;
 
     public Grafo() {
         grafo = new HashMap<>();
@@ -22,34 +19,26 @@ public class Grafo {
         indicesANombres = new HashMap<>();
         contadorVertices = 0;
     } 
-
-    public String toString() {
-    	StringBuilder sb = new StringBuilder();
-    	
-    	
-    	for (String vertice : grafo.keySet()) {
-    		sb.append("Vertice ").append(vertice).append("\n");
-        	HashMap<String, Integer> vecinos = grafo.get(vertice);
-        	sb.append("vecinos: ");
-        	int i = 0;
-        	int size = vecinos.size();
-        	sb.append("{");
-        	for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
-                String vecino = entry.getKey();
-                sb.append(vecino);
-                
-                if(i < size -1) {
-                	sb.append(",");
-                }
-                i++;
-            }
-        	sb.append("}").append("\n");
-        	
-		}
     
-    	
-    	
-    	return sb.toString();
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        for (String vertice : grafo.keySet()) {
+            sb.append("Vértice ").append(vertice).append(": ");
+            HashMap<String, Integer> vecinos = grafo.get(vertice);
+            
+            if (vecinos.isEmpty()) {
+                sb.append("sin vecinos");
+            } else {
+                for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
+                    sb.append(entry.getKey()).append(" (peso: ").append(entry.getValue()).append("), ");
+                }
+                sb.setLength(sb.length() - 2); // Eliminar la última coma
+            }
+            sb.append("\n");
+        }
+        
+        return sb.toString();
     }
     
     public void agregarVertice(String nombre) {
@@ -92,7 +81,7 @@ public class Grafo {
     }
 
     public boolean existeArista(String nombre1, String nombre2) {
-        return grafo.containsKey(nombre1) && grafo.get(nombre1).containsKey(nombre2);
+        return grafo.containsKey(nombre1) && grafo.containsKey(nombre2) && grafo.get(nombre1).containsKey(nombre2);
     }
     
     
@@ -152,7 +141,13 @@ public class Grafo {
         }
         return nombre;
     }
-
+    public int obtenerIndice(String nombre) {
+        int indiceDeNombre = nombresAIndices.get(nombre);
+        if (nombre == null) {
+            throw new IllegalArgumentException("No existe el vértice con nombre: " + nombre);
+        }
+        return indiceDeNombre;
+    }
     public int cantidadDeVertices() {
         return contadorVertices;
     }

@@ -13,11 +13,9 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 import Modelo.Sonido;
-import Modelo.LogicaDeGrafoEspias;
 import Presentador.PresentadorMapa;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 
 import java.awt.event.ActionListener;
@@ -32,11 +30,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
-import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
-import java.awt.Font;
-
 public class PantallaMapa {
 
 	private JFrame frame;
@@ -45,8 +40,7 @@ public class PantallaMapa {
 	private Coordinate mapaActual = new Coordinate(-34.521, -58.719);
 	private int zoomActual = 12;
 	private PresentadorMapa presentadorMapa;
-	private JTextField textFieldParaCoordenadaY;
-	private JTextField textFieldParaCoordenadaX;
+
 	private Double coordenadaXGlobal;
 	private Double coordenadaYGlobal;
 	

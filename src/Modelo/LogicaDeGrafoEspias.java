@@ -3,13 +3,13 @@ package Modelo;
 public class LogicaDeGrafoEspias {
 	private Grafo grafoEspias;
 	//private Arbol arbolDeEspias;
-	private ArbolGeneradorMinimo arbolGeneradorMinimo;
+	private ArbolGenerador arbolGeneradorMinimo;
 	
 
 	public LogicaDeGrafoEspias() {
 		//arbolDeEspias = new Arbol();
 		grafoEspias = new Grafo();
-		arbolGeneradorMinimo = new ArbolGeneradorMinimo(grafoEspias);
+		arbolGeneradorMinimo = new ArbolGenerador(grafoEspias);
 	}
 
 
