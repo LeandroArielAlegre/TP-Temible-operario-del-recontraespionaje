@@ -108,9 +108,7 @@ public class PantallaMapa {
 		
 		
 		
-		MapMarkerDot marcador1 = new MapMarkerDot("Soy una prueba", this.mapaActual);
-		marcador1.getStyle().setBackColor(Color.blue);
-		marcador1.getStyle().setColor(Color.blue);
+	
 		
 		
 		
@@ -271,6 +269,35 @@ public class PantallaMapa {
 			    }
 			};
 		
+		//Combobox
+		JComboBox<String> comboBoxSeleccionAlgoritmo = new JComboBox<>(new String[] {"Algoritmo De Prim", "Algoritmo de Kruskal"});
+		comboBoxSeleccionAlgoritmo.setFocusable(false);
+		comboBoxSeleccionAlgoritmo.setBounds(573, 505, 137, 26);
+		panelControles.add(comboBoxSeleccionAlgoritmo);
+			
+		//BOTON DE ARBOL GENERADOR MINIMO + COMBOBOX
+		JButton btnAplicarAlgoritmo = new JButton("Generar Arbol generador minimo");
+		btnAplicarAlgoritmo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 0) {
+					presentadorMapa.crearArbolGeneradorMinimoPrim();
+					mapa.removeAllMapMarkers();
+					mapa.removeAllMapPolygons();
+				}else {
+					presentadorMapa.crearArbolGeneradorMinimoKruskal();
+					mapa.removeAllMapMarkers();
+					mapa.removeAllMapPolygons();
+				}
+				
+				
+			}
+		});
+		btnAplicarAlgoritmo.setBounds(544, 552, 202, 34);
+		panelControles.add(btnAplicarAlgoritmo);
+		
+		
+		
 		
 		
 		mapa.addMouseWheelListener(new MouseWheelListener() {
@@ -281,29 +308,13 @@ public class PantallaMapa {
 			}
 			
 		});
-		mapa.addMapMarker(marcador1);
+		
 	
 		
 		
 	}
 
-	/*
-	private void ImprimirCoordenadasActuales() {
-		//LABELS
-		JLabel labelCoordX = new JLabel("" + mapaActual.getLat());
-		labelCoordX.setForeground(new Color(255, 0, 0));
-		labelCoordX.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		labelCoordX.setBounds(23, 462, 109, 33);
-		//mapa.add(labelCoordX);
-		panelControles.add(labelCoordX);
-		
-		JLabel labelCoordY = new JLabel(" " + mapaActual.getLon());
-		labelCoordY.setForeground(new Color(255, 0, 0));
-		labelCoordY.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		labelCoordY.setBounds(23, 495, 109, 33);
-		//mapa.add(labelCoordY);
-		panelControles.add(labelCoordY);
-	}*/
+	
 
 	//COLOCA TEXTFIELDS!!!!!!!!!!!!!!!!!
 	private void colocarTexfields() {

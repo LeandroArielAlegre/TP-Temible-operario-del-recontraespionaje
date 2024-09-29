@@ -23,6 +23,35 @@ public class Grafo {
         contadorVertices = 0;
     } 
 
+    public String toString() {
+    	StringBuilder sb = new StringBuilder();
+    	
+    	
+    	for (String vertice : grafo.keySet()) {
+    		sb.append("Vertice ").append(vertice).append("\n");
+        	HashMap<String, Integer> vecinos = grafo.get(vertice);
+        	sb.append("vecinos: ");
+        	int i = 0;
+        	int size = vecinos.size();
+        	sb.append("{");
+        	for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
+                String vecino = entry.getKey();
+                sb.append(vecino);
+                
+                if(i < size -1) {
+                	sb.append(",");
+                }
+                i++;
+            }
+        	sb.append("}").append("\n");
+        	
+		}
+    
+    	
+    	
+    	return sb.toString();
+    }
+    
     public void agregarVertice(String nombre) {
         if (nombresAIndices.containsKey(nombre)) {
             throw new IllegalArgumentException("El vértice ya existe: " + nombre);
@@ -66,6 +95,11 @@ public class Grafo {
         return grafo.containsKey(nombre1) && grafo.get(nombre1).containsKey(nombre2);
     }
     
+    
+    public boolean existeVertice(String vertice) {
+    	return grafo.containsKey(vertice);
+    }
+    
     public int obtenerPesoArista(String nombre1,String nombre2) {
     	if(existeArista(nombre1,nombre2)) {
     		return grafo.get(nombre1).get(nombre2).intValue();
@@ -88,6 +122,21 @@ public class Grafo {
     	}
         return ret;
     }
+    
+    public HashMap<String,Integer> vecinosDeVerticeConPeso(String nombre) {
+    	HashMap<String,Integer> ret= new HashMap<String,Integer>();
+
+    	
+        if (!grafo.containsKey(nombre)) {
+            throw new IllegalArgumentException("El vértice no existe: " + nombre);
+        }
+        for (Map.Entry<String, Integer> entry : grafo.get(nombre).entrySet()) {
+            // Agregamos al HashMap de retorno el vecino y su peso asociado
+            ret.put(entry.getKey(), entry.getValue());
+        }
+        return ret;
+    }
+    
 
     public int gradoDeVertice(String nombre) {
         if (!grafo.containsKey(nombre)) {
@@ -120,6 +169,9 @@ public class Grafo {
 	}
 
 }
+
+
+
 
 //package Modelo;
 //import java.util.HashMap;

@@ -40,6 +40,18 @@ public class PresentadorMapa {
 	public boolean existeArista(String vertice, String vertice2) {
 		return logicaDeGrafoEspias.existeArista(vertice, vertice2);
 	    }
+
+	public boolean crearArbolGeneradorMinimoPrim() {
+		logicaDeGrafoEspias.crearArbolGeneradorMinimoPrim();
+		return true;
+		
+	}
+
+	public boolean crearArbolGeneradorMinimoKruskal() {
+		logicaDeGrafoEspias.crearArbolGeneradorMinimoKruskal();
+		return true;
+		
+	}
 	
 
 }
