@@ -280,7 +280,9 @@ public class PantallaMapa {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 0) {
-					actualizarPantallaNuevoGrafoPrim();
+					HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo = presentadorMapa.crearArbolGeneradorMinimoPrim();
+					Color color = Color.RED;
+					actualizarGrafoEnMapa(HashMapnuevoGrafo, color);
 				}else {
 					presentadorMapa.crearArbolGeneradorMinimoKruskal();
 					mapa.removeAllMapMarkers();
@@ -296,7 +298,9 @@ public class PantallaMapa {
 		JButton btnRestablecerGrafo = new JButton("Restablecer Valores");
 		btnRestablecerGrafo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				restablecerPantallaGrafo();
+				
+				Color color = Color.GREEN;
+				actualizarGrafoEnMapa(hashMapVerticesYVecinos,color);
 			}
 		});
 		btnRestablecerGrafo.setBounds(557, 553, 177, 26);
@@ -363,6 +367,24 @@ public class PantallaMapa {
 	}
 	
 	
+	public void actualizarGrafoEnMapa(HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo, Color color ) {
+		//HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo = presentadorMapa.crearArbolGeneradorMinimoPrim();
+		 if(HashMapnuevoGrafo == null) {
+			 JOptionPane.showMessageDialog(null, "Error, Grafo Inconexo");
+		 }else {
+			 for (String vertice : HashMapnuevoGrafo.keySet()) {
+		            HashMap<String, Integer> vecinos = HashMapnuevoGrafo.get(vertice);
+		              for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
+		            	  cambiarColorArista(vertice, entry.getKey(), color);
+		                }
+		                
+			 }
+			 
+		 }
+		
+	}
+	
+	/*
 	public void actualizarPantallaNuevoGrafoPrim() {
 		HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo = presentadorMapa.crearArbolGeneradorMinimoPrim();
 		 if(HashMapnuevoGrafo == null) {
@@ -397,7 +419,7 @@ public class PantallaMapa {
 			 
 		 }
 		
-	}
+	}*/
 		
 	
 	
