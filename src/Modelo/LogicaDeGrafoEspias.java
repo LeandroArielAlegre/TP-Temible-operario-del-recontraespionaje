@@ -9,71 +9,85 @@ public class LogicaDeGrafoEspias {
 	private ArbolGenerador arbolGeneradorMinimo;
 	
 
-	public LogicaDeGrafoEspias() {
+	public LogicaDeGrafoEspias() 
+	{
 		//arbolDeEspias = new Arbol();
 		grafoEspias = new Grafo();
 		arbolGeneradorMinimo = new ArbolGenerador(grafoEspias);
-	}
-
-
+	}	
 	
-	
-	public boolean crearVertice(String vertice) {
+	public boolean crearVertice(String vertice) 
+	{
 		try {
 			grafoEspias.agregarVertice(vertice);
 			return true;
 			
 		} catch (IllegalArgumentException e) {
-	        System.out.println("Error: El vértice ya existe. " + e.getMessage());
+//	        System.out.println("Error: El vértice ya existe. " + e.getMessage());
 	        return false;
 	    } catch (Exception e) {
-	        System.out.println("Error inesperado: " + e.getMessage());
+//	        System.out.println("Error inesperado: " + e.getMessage());
 	        return false;
 	    }
 	}
 	
-	public boolean crearArista(String vertice, String vertice2, int probabilidad) {
+	public boolean crearArista(String vertice, String vertice2, int probabilidad) 
+	{
 		try {
 			grafoEspias.agregarArista(vertice, vertice2, probabilidad);
 			return true;
 			
 		} catch (IllegalArgumentException e) {
-	        System.out.println("Error: El vértice ya existe. " + e.getMessage());
+//	        System.out.println("Error: El vértice ya existe. " + e.getMessage());
 	        return false;
 	    } catch (Exception e) {
-	        System.out.println("Error inesperado: " + e.getMessage());
+//	        System.out.println("Error inesperado: " + e.getMessage());
 	        return false;
 	    }
 		
 	}
 	
-	public boolean existeArista(String nombre1, String nombre2) {
+	public boolean existeArista(String nombre1, String nombre2) 
+	{
         return grafoEspias.existeArista(nombre1, nombre2); 	
         
     }
 	
-	
-	public HashMap<String, HashMap<String,Integer>> crearArbolGeneradorMinimoPrim() {
+	public HashMap<String, HashMap<String,Integer>> crearArbolGeneradorMinimoPrim() 
+	{
 		try {
 			Grafo grafoEspiasPrim = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoPrim();
-			HashMap<String, HashMap<String,Integer>> hashMapVerticesYVecinos = grafoEspiasPrim.devolverGrafo();
+			HashMap<String, HashMap<String,Integer>> arbolGeneradorMinimoPrim = grafoEspiasPrim.devolverGrafo();
 			
-			return hashMapVerticesYVecinos;
+			return arbolGeneradorMinimoPrim;
 			
 		} catch (IllegalArgumentException e) {
-	        System.out.println("Error: El vértice ya existe. " + e.getMessage());
+//	        System.out.println("Error: El vértice ya existe. " + e.getMessage());
 	        return null;
 	    } catch (Exception e) {
-	        System.out.println("Error inesperado: " + e.getMessage());
+//	        System.out.println("Error inesperado: " + e.getMessage());
 	        return null;
 	    }
 		
 	}
 
-	public void crearArbolGeneradorMinimoKruskal() {
-		// TODO Auto-generated method stub
-		
-	}
-	
+	public HashMap<String, HashMap<String,Integer>> crearArbolGeneradorMinimoKruskal() 
+	{
+
+			try {
+				Grafo grafoEspiasPrim = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoKruskal();
+				HashMap<String, HashMap<String,Integer>> arbolGeneradorMinimoPrim = grafoEspiasPrim.devolverGrafo();
+				
+				return arbolGeneradorMinimoPrim;
+				
+			} catch (IllegalArgumentException e) {
+//		        System.out.println("Error: El vértice ya existe. " + e.getMessage());
+		        return null;
+		    } catch (Exception e) {
+//		        System.out.println("Error inesperado: " + e.getMessage());
+		        return null;
+		    }
+			
+		}
 
 }

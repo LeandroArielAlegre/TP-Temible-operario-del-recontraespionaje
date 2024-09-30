@@ -12,71 +12,83 @@ public class ArbolGenerador extends Grafo {
 	private int cantidadDeAristas;
 	private int longitud;
 	private String raiz;
-	public ArbolGenerador(Grafo grafo) {
+	public ArbolGenerador(Grafo grafo) 
+	{
 		this.grafo = grafo;
 		cantidadDeNodos=0;
 		cantidadDeAristas=0;
 		longitud=0;
 	}
 
-	    public static void main(String[] args) {
-	        Grafo grafo = new Grafo();
-	        grafo.agregarVertice("0");
-	        grafo.agregarVertice("2");
-	        grafo.agregarVertice("3");
-	        grafo.agregarVertice("4");
-	        grafo.agregarArista("0", "2", 1);
-	        grafo.agregarArista("0", "3", 0);
-	        grafo.agregarArista("2", "3", 0);
-	        grafo.agregarArista("2", "4", 0);
-	        grafo.agregarArista("3", "4", 1);
-	        
-	        ArbolGenerador arbolGenerador = new ArbolGenerador(grafo);
-	        Grafo grafoPrim = arbolGenerador.crearArbolGeneradoMinimoPrim();
-	        System.out.println(grafoPrim.toString());
-	    }
+//	public static void main(String[] args) {
+//		Grafo grafo = new Grafo();
+//		grafo.agregarVertice("0");
+//		grafo.agregarVertice("2");
+//		grafo.agregarVertice("3");
+//		grafo.agregarVertice("4");
+//		grafo.agregarArista("0", "2", 1);
+//		grafo.agregarArista("0", "3", 0);
+//		grafo.agregarArista("2", "3", 0);
+//		grafo.agregarArista("2", "4", 0);
+//		grafo.agregarArista("3", "4", 1);
+//
+//		ArbolGenerador arbolGenerador = new ArbolGenerador(grafo);
+//		Grafo grafoPrim = arbolGenerador.crearArbolGeneradoMinimoPrim();
+//		System.out.println(grafoPrim.toString());
+//	}
 
+	public Grafo crearArbolGeneradoMinimoKruskal() 
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public Grafo crearArbolGeneradoMinimoPrim() 
 	{
-		
-		
+
 		if (!BFS.esConexo(grafo)) 
 		{
 			throw new IllegalArgumentException("El algoritmo de prim funciona sobre grafos conexos");
 		}
-		
+
 		Grafo agmPrim = new Grafo();
-		Set<String> visitados = new HashSet<>();//nodos marcados
+		Set<String> nodosMarcados = new HashSet<>();//nodos marcados
 		String origen= grafo.dameOrigen(); 
-		visitados.add(origen);
+		nodosMarcados.add(origen);
 		agmPrim.agregarVertice(origen);
 
-		while (visitados.size() < grafo.cantidadDeVertices()) {
+		while (nodosMarcados.size() < grafo.cantidadDeVertices()) 
+		{
 			String mejorOrigen = null;
 			String mejorDestino = null;
 			int mejorPeso = 2;//valor que no pertece al intervalo 0-1
 
 			// Buscar la mejor arista(de menor peso)
-			for (String vertice : visitados) {
-				for (Map.Entry<String, Integer> vecino : grafo.vecinosDeVerticeConPeso(vertice).entrySet()) {
-					String vecinoNombre = vecino.getKey();
+			for (String vertice : nodosMarcados) 
+			{
+				for (Map.Entry<String, Integer> vecino : grafo.vecinosDeVerticeConPeso(vertice).entrySet()) 
+				{
 					
-					int peso = vecino.getValue();
+					String nombreDeVecino = vecino.getKey();
 
-					if (!visitados.contains(vecinoNombre) && peso < mejorPeso) {
-						mejorPeso = peso;
+					int pesoDeVecino = vecino.getValue();
+
+					if (!nodosMarcados.contains(nombreDeVecino) && pesoDeVecino < mejorPeso) 
+					{
+						mejorPeso = pesoDeVecino;
 						mejorOrigen = vertice;
-						mejorDestino = vecinoNombre;
+						mejorDestino = nombreDeVecino;
 					}
 				}
 			}
 
 			// Agregar la mejor arista al AGM
-			if (mejorOrigen != null && mejorDestino != null) {
+			if (mejorOrigen != null && mejorDestino != null) 
+			{
 				agmPrim.agregarVertice(mejorDestino);
 				agmPrim.agregarArista(mejorOrigen, mejorDestino, mejorPeso);
-				visitados.add(mejorDestino);
-				// Imprimir el estado actual del AGM
+				nodosMarcados.add(mejorDestino);
+				// Imprimir el estado actual del AGM (se usara para mostrar los encuentros parciales y armar el recorrido
 				System.out.println("Árbol intermedio (agregando arista " + mejorOrigen + " - " + mejorDestino + "):");
 				System.out.println(agmPrim.toString());
 			} else {
@@ -87,11 +99,14 @@ public class ArbolGenerador extends Grafo {
 		return agmPrim;
 	}
 
-	public void agregarVertice(String vertice) {
-		if (!verificarVertice(vertice)) {
+	public void agregarVertice(String vertice) 
+	{
+		if (!verificarVertice(vertice)) 
+		{
 			throw new IllegalArgumentException("El vértice padre no existe en el árbol.");
 		}
-		if (estaVacioElGrafo()) {
+		if (estaVacioElGrafo()) 
+		{
 			agregarVertice(vertice);
 			this.raiz= vertice;
 			cantidadDeNodos++;
@@ -101,8 +116,10 @@ public class ArbolGenerador extends Grafo {
 		//        agregarArista(padre, hijo);
 	}
 
-	public void agregarHijo(String padre, String hijo, int probabilidad) {
-		if (!verificarVertice(padre)) {
+	public void agregarHijo(String padre, String hijo, int probabilidad) 
+	{
+		if (!verificarVertice(padre)) 
+		{
 			throw new IllegalArgumentException("El vértice padre no existe en el árbol.");
 		}
 		agregarVertice(hijo);
@@ -111,19 +128,24 @@ public class ArbolGenerador extends Grafo {
 		cantidadDeAristas++;
 	}
 
-	public ArrayList<String> obtenerHijos(String padre) {
-		if (!verificarVertice(padre)) {
+	public ArrayList<String> obtenerHijos(String padre) 
+	{
+		if (!verificarVertice(padre)) 
+		{
 			throw new IllegalArgumentException("El vértice padre no existe en el árbol.");
 		}
 		return new ArrayList<String>(vecinosDeVertice(padre));
 	}
 
-	public String obtenerRaiz() {
+	public String obtenerRaiz() 
+	{
 		return raiz;
 	}
 
-	public boolean esHoja(String vertice) {
-		if (noEsArbolTrivial()) {
+	public boolean esHoja(String vertice) 
+	{
+		if (noEsArbolTrivial()) 
+		{
 			return (gradoDeVertice(vertice) == 1 && vertice != raiz);
 		}
 		throw new IllegalArgumentException("El conjunto de vertices definido es trivial y no tiene al menos 2 hojas");
@@ -131,28 +153,33 @@ public class ArbolGenerador extends Grafo {
 	//    public String[] obtenerHojas() {
 	//    	
 	//    }
-	private boolean noEsArbolTrivial() {
-		if (cantidadDeNodos>=2) {
+	private boolean noEsArbolTrivial() 
+	{
+		if (cantidadDeNodos>=2) 
+		{
 			return true;
 		}
 		return false;
 	}
 
 	@Override
-	public void agregarArista(String i, String j, int probabilidad) {
-		if (i == j) {
+	public void agregarArista(String i, String j, int probabilidad) 
+	{
+		if (i == j) 
+		{
 			throw new IllegalArgumentException("No se permiten bucles en un árbol.");
 		}
-		if (existeArista(i, j)) {
+		if (existeArista(i, j)) 
+		{
 			throw new IllegalArgumentException("La arista ya existe en el árbol.");
 		}
-
 		super.agregarArista(i, j, probabilidad);
 	}
 
-	// No permitimos eliminar aristas directamente en un árbol
+	// No permitimos eliminar aristas directamente en un árbol (deja de ser conexo)
 	@Override
-	public void eliminarArista(String vertice1, String vertice2) {
+	public void eliminarArista(String vertice1, String vertice2) 
+	{
 		throw new UnsupportedOperationException("No se permite eliminar aristas directamente en un árbol. Ya no seria un arbol");
 	}
 }
