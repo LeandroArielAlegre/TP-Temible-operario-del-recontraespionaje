@@ -28,6 +28,7 @@ import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -47,6 +48,7 @@ public class PantallaMapa {
 	private JTextField textfieldNombreVertice;
 	private JPanel panelControles;
 	private HashMap <String ,Coordinate> hashMapVertices;
+	private HashMap<String, HashMap<String,Integer>> hashMapVerticesYVecinos;
 	private JButton btnCrearArista;
 	private JTextField textFieldVertice2;
 	private JTextField textFieldVertice1;
@@ -85,6 +87,7 @@ public class PantallaMapa {
 		frame = new JFrame();
 		sonido = new Sonido();
 		hashMapVertices = new HashMap<>();
+		hashMapVerticesYVecinos = new HashMap<>();
     	presentadorMapa = new PresentadorMapa();
 		frame.setBounds(400, 200, 833, 676);
 		frame.getContentPane().setLayout(null);
@@ -266,18 +269,18 @@ public class PantallaMapa {
 		//Combobox
 		JComboBox<String> comboBoxSeleccionAlgoritmo = new JComboBox<>(new String[] {"Algoritmo De Prim", "Algoritmo de Kruskal"});
 		comboBoxSeleccionAlgoritmo.setFocusable(false);
-		comboBoxSeleccionAlgoritmo.setBounds(573, 505, 137, 26);
+		comboBoxSeleccionAlgoritmo.setBounds(571, 466, 137, 26);
 		panelControles.add(comboBoxSeleccionAlgoritmo);
-			
+		
+		
+		
 		//BOTON DE ARBOL GENERADOR MINIMO + COMBOBOX
 		JButton btnAplicarAlgoritmo = new JButton("Generar Arbol generador minimo");
 		btnAplicarAlgoritmo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 0) {
-					presentadorMapa.crearArbolGeneradorMinimoPrim();
-					mapa.removeAllMapMarkers();
-					mapa.removeAllMapPolygons();
+					actualizarPantallaNuevoGrafoPrim();
 				}else {
 					presentadorMapa.crearArbolGeneradorMinimoKruskal();
 					mapa.removeAllMapMarkers();
@@ -287,8 +290,17 @@ public class PantallaMapa {
 				
 			}
 		});
-		btnAplicarAlgoritmo.setBounds(544, 552, 202, 34);
+		btnAplicarAlgoritmo.setBounds(547, 504, 202, 34);
 		panelControles.add(btnAplicarAlgoritmo);
+		
+		JButton btnRestablecerGrafo = new JButton("Restablecer Valores");
+		btnRestablecerGrafo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				restablecerPantallaGrafo();
+			}
+		});
+		btnRestablecerGrafo.setBounds(557, 553, 177, 26);
+		panelControles.add(btnRestablecerGrafo);
 		
 		
 		
@@ -351,6 +363,62 @@ public class PantallaMapa {
 	}
 	
 	
+	public void actualizarPantallaNuevoGrafoPrim() {
+		HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo = presentadorMapa.crearArbolGeneradorMinimoPrim();
+		 if(HashMapnuevoGrafo == null) {
+			 JOptionPane.showMessageDialog(null, "Error, Grafo Inconexo");
+		 }else {
+			 Color color = Color.RED;
+			 for (String vertice : HashMapnuevoGrafo.keySet()) {
+		            HashMap<String, Integer> vecinos = HashMapnuevoGrafo.get(vertice);
+		              for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
+		            	  cambiarColorArista(vertice, entry.getKey(), color);
+		                }
+		                
+			 }
+			 
+		 }
+		
+	     
+	}
+	
+	public void restablecerPantallaGrafo() {
+		if(hashMapVerticesYVecinos == null) {
+			 JOptionPane.showMessageDialog(null, "Error, Grafo Inconexo");
+		 }else {
+			 Color color = Color.GREEN;
+			 for (String vertice : hashMapVerticesYVecinos.keySet()) {
+		            HashMap<String, Integer> vecinos = hashMapVerticesYVecinos.get(vertice);
+		              for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
+		            	  cambiarColorArista(vertice, entry.getKey(), color);
+		                }
+		                
+			 }
+			 
+		 }
+		
+	}
+		
+	
+	
+	
+	public void cambiarColorArista(String vertice1, String vertice2, Color color) {
+		
+		Coordinate coordenada1 = hashMapVertices.get(vertice1);
+		Coordinate coordenada2 = hashMapVertices.get(vertice2);
+		
+		List<Coordinate> aristaEnMapa = new ArrayList<>();
+		aristaEnMapa.add(coordenada1); 
+		aristaEnMapa.add(coordenada2); 
+		aristaEnMapa.add(coordenada1); 
+        // Crear el polígono (en este caso una línea)
+        MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
+        
+        arista.setColor(color);
+        mapa.addMapPolygon(arista);
+		
+	}
+	
 	//La View Tiene sus propios metodos para representar marcadores en la pantalla
 	private void crearVerticeEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
 		Coordinate vertice = new Coordinate(CoordenadasX, CoordenadasY);
@@ -367,6 +435,9 @@ public class PantallaMapa {
 			
 			//Guardamos el vertices localmente en un HashMap
 			hashMapVertices.put(nombreVertice, vertice);
+			//Me hago un machete de grafo
+			hashMapVerticesYVecinos.put(nombreVertice, new HashMap<String, Integer>());
+			
 			JOptionPane.showMessageDialog(null, "Se creo el vertice Satisfactoriamente");
 			
 		}else {
@@ -382,6 +453,10 @@ public class PantallaMapa {
 		
 		
 		if(presentadorMapa.crearArista(nombreVertice1, nombreVertice2, probabilidad)) {
+			
+			//Me guardo la arista
+			hashMapVerticesYVecinos.get(nombreVertice1).put(nombreVertice2, probabilidad);
+			hashMapVerticesYVecinos.get(nombreVertice2).put(nombreVertice1, probabilidad);
 			
 			List<Coordinate> aristaEnMapa = new ArrayList<>();
 			aristaEnMapa.add(vertice1); 

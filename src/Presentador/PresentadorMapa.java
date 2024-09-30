@@ -1,5 +1,7 @@
 package Presentador;
 
+import java.util.HashMap;
+
 import Modelo.LogicaDeGrafoEspias;
 
 public class PresentadorMapa {
@@ -37,9 +39,10 @@ public class PresentadorMapa {
 		return logicaDeGrafoEspias.existeArista(vertice, vertice2);
 	    }
 
-	public boolean crearArbolGeneradorMinimoPrim() {
-		logicaDeGrafoEspias.crearArbolGeneradorMinimoPrim();
-		return true;
+	public HashMap<String, HashMap<String,Integer>> crearArbolGeneradorMinimoPrim() {
+		
+		HashMap<String, HashMap<String,Integer>> hashMapVerticesYVecinos = logicaDeGrafoEspias.crearArbolGeneradorMinimoPrim();
+		return hashMapVerticesYVecinos;
 		
 	}
 

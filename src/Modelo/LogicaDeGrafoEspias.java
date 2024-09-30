@@ -1,5 +1,8 @@
 package Modelo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LogicaDeGrafoEspias {
 	private Grafo grafoEspias;
 	//private Arbol arbolDeEspias;
@@ -50,10 +53,12 @@ public class LogicaDeGrafoEspias {
     }
 	
 	
-	public Grafo crearArbolGeneradorMinimoPrim() {
+	public HashMap<String, HashMap<String,Integer>> crearArbolGeneradorMinimoPrim() {
 		try {
 			Grafo grafoEspiasPrim = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoPrim();
-			return grafoEspiasPrim;
+			HashMap<String, HashMap<String,Integer>> hashMapVerticesYVecinos = grafoEspiasPrim.devolverGrafo();
+			
+			return hashMapVerticesYVecinos;
 			
 		} catch (IllegalArgumentException e) {
 	        System.out.println("Error: El vértice ya existe. " + e.getMessage());

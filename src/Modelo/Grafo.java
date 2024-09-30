@@ -41,6 +41,9 @@ public class Grafo {
         return sb.toString();
     }
     
+    public HashMap<String, HashMap<String,Integer>> devolverGrafo() {
+    	return this.grafo;
+    }
     public void agregarVertice(String nombre) {
         if (nombresAIndices.containsKey(nombre)) {
             throw new IllegalArgumentException("El vértice ya existe: " + nombre);
