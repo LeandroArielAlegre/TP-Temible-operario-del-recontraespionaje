@@ -1,11 +1,16 @@
 package Modelo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Grafo {
-    // Mapa de nombres de vértices a sus índices
+public class Grafo implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	// Mapa de nombres de vértices a sus índices
     private HashMap<String, Integer> nombresAIndices;
     // Mapa de índices a nombres de vértices
     private HashMap<Integer, String> indicesANombres;

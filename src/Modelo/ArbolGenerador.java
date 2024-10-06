@@ -19,22 +19,7 @@ public class ArbolGenerador extends Grafo {
 		longitud=0;
 	}
 
-	    public static void main(String[] args) {
-	        Grafo grafo = new Grafo();
-	        grafo.agregarVertice("0");
-	        grafo.agregarVertice("2");
-	        grafo.agregarVertice("3");
-	        grafo.agregarVertice("4");
-	        grafo.agregarArista("0", "2", 1);
-	        grafo.agregarArista("0", "3", 0);
-	        grafo.agregarArista("2", "3", 0);
-	        grafo.agregarArista("2", "4", 0);
-	        grafo.agregarArista("3", "4", 1);
-	        
-	        ArbolGenerador arbolGenerador = new ArbolGenerador(grafo);
-	        Grafo grafoPrim = arbolGenerador.crearArbolGeneradoMinimoPrim();
-	        System.out.println(grafoPrim.toString());
-	    }
+	    
 
 	public Grafo crearArbolGeneradoMinimoPrim() 
 	{
@@ -42,6 +27,7 @@ public class ArbolGenerador extends Grafo {
 		
 		if (!BFS.esConexo(grafo)) 
 		{
+			
 			throw new IllegalArgumentException("El algoritmo de prim funciona sobre grafos conexos");
 		}
 		

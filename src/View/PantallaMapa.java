@@ -2,6 +2,7 @@ package View;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -12,6 +13,7 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
+import Modelo.ArchivoJSON;
 import Modelo.Sonido;
 import Presentador.PresentadorMapa;
 
@@ -27,8 +29,10 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -53,6 +57,7 @@ public class PantallaMapa {
 	private JTextField textFieldVertice2;
 	private JTextField textFieldVertice1;
 	private JTextField textFieldProbabilidad;
+	private JButton btnCargarEspias;
 	
 	
 	
@@ -100,7 +105,7 @@ public class PantallaMapa {
 		frame.getContentPane().add(panelControles);
 	
 		// LA PREGUNTA
-		preguntarFormaDeCargarEspias();
+		//preguntarFormaDeCargarEspias();
 		
 		
 		
@@ -269,7 +274,7 @@ public class PantallaMapa {
 		//Combobox
 		JComboBox<String> comboBoxSeleccionAlgoritmo = new JComboBox<>(new String[] {"Algoritmo De Prim", "Algoritmo de Kruskal"});
 		comboBoxSeleccionAlgoritmo.setFocusable(false);
-		comboBoxSeleccionAlgoritmo.setBounds(571, 466, 137, 26);
+		comboBoxSeleccionAlgoritmo.setBounds(569, 466, 137, 26);
 		panelControles.add(comboBoxSeleccionAlgoritmo);
 		
 		
@@ -292,7 +297,7 @@ public class PantallaMapa {
 				
 			}
 		});
-		btnAplicarAlgoritmo.setBounds(547, 504, 202, 34);
+		btnAplicarAlgoritmo.setBounds(538, 493, 202, 34);
 		panelControles.add(btnAplicarAlgoritmo);
 		
 		JButton btnRestablecerGrafo = new JButton("Restablecer Valores");
@@ -303,8 +308,101 @@ public class PantallaMapa {
 				actualizarGrafoEnMapa(hashMapVerticesYVecinos,color);
 			}
 		});
-		btnRestablecerGrafo.setBounds(557, 553, 177, 26);
+		btnRestablecerGrafo.setBounds(548, 529, 177, 26);
 		panelControles.add(btnRestablecerGrafo);
+		
+		JButton btnGuardar = new JButton("Guardar Grafo");
+		btnGuardar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nombreArchivo =guardarEspias();
+				HashMap<String,ArrayList<Double>> nuevoHashMapNombreVerticesYCoordenadas = new HashMap<String,ArrayList<Double>>();
+				nuevoHashMapNombreVerticesYCoordenadas = convertirCoordinateEnDosElementosEnUnArrayList();
+				if(nombreArchivo != null) {
+					
+					if(presentadorMapa.guardarGrafo(hashMapVerticesYVecinos, nuevoHashMapNombreVerticesYCoordenadas, nombreArchivo)) {
+						JOptionPane.showMessageDialog(null, "Archivo guardado con exito");	
+				}
+					
+				}else {
+						JOptionPane.showMessageDialog(null, "Error: No se pudo guardar el archivo");
+				}	
+				
+			}
+		});
+		btnGuardar.setBounds(547, 552, 178, 25);
+		panelControles.add(btnGuardar);
+		
+		btnCargarEspias = new JButton("Cargar Grafo");
+		btnCargarEspias.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nombreArchivo =cargarEspias();
+				if(nombreArchivo != null) {
+					ArchivoJSON grafoJSON = presentadorMapa.cargarGrafo(nombreArchivo);
+					if(grafoJSON != null) {
+						
+						//Limpio todos los poligonos si existen
+						mapa.removeAllMapMarkers();
+						mapa.removeAllMapPolygons();
+						
+						HashMap<String,ArrayList<Double>> auxHashMapCoordenadas= new HashMap<String,ArrayList<Double>>();
+						auxHashMapCoordenadas = grafoJSON.getGrafoPosiciones();
+						HashMap<String, HashMap<String,Integer>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Integer>>();
+						auxiliarHashMapVecinos = grafoJSON.getGrafo();
+					
+						//dibujo
+						Color color = Color.GREEN;
+						
+						dibujarMarcadoresYActualizarVerticesDeModelo(auxHashMapCoordenadas);
+						actualizarGrafoEnMapa(grafoJSON.getGrafo(), color);
+						actualizarListaDeVecinosEnModelo(auxiliarHashMapVecinos);
+						
+						//Actualizo el mapa de la view
+						hashMapVerticesYVecinos = grafoJSON.getGrafo();
+						
+					}
+						
+				
+				}else {
+					JOptionPane.showMessageDialog(null, "Error: No se pudo cargar el archivo");
+				}
+				
+				
+			}
+
+			private void actualizarListaDeVecinosEnModelo(
+					HashMap<String, HashMap<String, Integer>> auxiliarHashMapVecinos) {
+				for (Entry<String, HashMap<String, Integer>> entry : auxiliarHashMapVecinos.entrySet()) {
+						
+					HashMap<String,Integer> auxVecinos = new HashMap<String,Integer>();
+					String nombreVertice1 = entry.getKey();
+					auxVecinos = entry.getValue();
+					
+					for (Entry<String, Integer> entrada : auxVecinos.entrySet()) {
+						String nombreVertice2 = entrada.getKey();
+						int probabilidad = entrada.getValue();
+						presentadorMapa.crearArista(nombreVertice1, nombreVertice2, probabilidad);
+						
+				    	}
+				    }
+			}
+
+			private void dibujarMarcadoresYActualizarVerticesDeModelo(
+					HashMap<String, ArrayList<Double>> auxHashMapCoordenadas) {
+				for (Entry<String, ArrayList<Double>> entry : auxHashMapCoordenadas.entrySet()) {
+						String nombreVertice = entry.getKey();
+						
+						ArrayList<Double> valor = entry.getValue();
+				        Double coordenadaDoubleX = valor.get(0);
+				        Double coordenadaDoubleY = valor.get(1);
+						
+					
+						crearVerticeEnMapa(coordenadaDoubleX , coordenadaDoubleY, nombreVertice);
+					
+				    }
+			}
+		});
+		btnCargarEspias.setBounds(538, 581, 188, 23);
+		panelControles.add(btnCargarEspias);
 		
 		
 		
@@ -334,11 +432,9 @@ public class PantallaMapa {
 		textFieldProbabilidad.setBounds(422, 493, 86, 20);
 		panelControles.add(textFieldProbabilidad);
 		textFieldProbabilidad.setColumns(10);
-		
-		
+	
 		textfieldNombreVertice = new JTextField();
-		String placeHolderTextFieldNombreVertice ="Ingrese nombre de vertice a ingresar";
-		agregarPlaceHolderTexfield(textfieldNombreVertice, placeHolderTextFieldNombreVertice);
+		
 		textfieldNombreVertice.setToolTipText("");
 		
 		textfieldNombreVertice.setBounds(26, 511, 173, 20);
@@ -347,19 +443,16 @@ public class PantallaMapa {
 		panelControles.add(textfieldNombreVertice);
 		textfieldNombreVertice.setColumns(10);
 		
-		
-		
 		textFieldVertice2 = new JTextField();
-		String placeHolderTextFieldVertice2 ="Ingrese nombre de vertice para agregar arista";
-		agregarPlaceHolderTexfield(textFieldVertice2, placeHolderTextFieldVertice2);
+		
 		textFieldVertice2.setBounds(243, 511, 178, 22);
 		//mapa.add(textFieldVertice2);
 		panelControles.add(textFieldVertice2);
 		textFieldVertice2.setColumns(10);
 		
 		textFieldVertice1 = new JTextField();
-		String placeHolderTextFieldVertice ="Ingrese el segundo nombre de vertice para agregar una arista";
-		agregarPlaceHolderTexfield(textFieldVertice1, placeHolderTextFieldVertice);
+		
+		
 		textFieldVertice1.setBounds(243, 468, 178, 23);
 		//mapa.add(textFieldVertice1);
 		panelControles.add(textFieldVertice1);
@@ -384,43 +477,6 @@ public class PantallaMapa {
 		
 	}
 	
-	/*
-	public void actualizarPantallaNuevoGrafoPrim() {
-		HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo = presentadorMapa.crearArbolGeneradorMinimoPrim();
-		 if(HashMapnuevoGrafo == null) {
-			 JOptionPane.showMessageDialog(null, "Error, Grafo Inconexo");
-		 }else {
-			 Color color = Color.RED;
-			 for (String vertice : HashMapnuevoGrafo.keySet()) {
-		            HashMap<String, Integer> vecinos = HashMapnuevoGrafo.get(vertice);
-		              for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
-		            	  cambiarColorArista(vertice, entry.getKey(), color);
-		                }
-		                
-			 }
-			 
-		 }
-		
-	     
-	}
-	
-	public void restablecerPantallaGrafo() {
-		if(hashMapVerticesYVecinos == null) {
-			 JOptionPane.showMessageDialog(null, "Error, Grafo Inconexo");
-		 }else {
-			 Color color = Color.GREEN;
-			 for (String vertice : hashMapVerticesYVecinos.keySet()) {
-		            HashMap<String, Integer> vecinos = hashMapVerticesYVecinos.get(vertice);
-		              for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
-		            	  cambiarColorArista(vertice, entry.getKey(), color);
-		                }
-		                
-			 }
-			 
-		 }
-		
-	}*/
-		
 	
 	
 	
@@ -498,54 +554,83 @@ public class PantallaMapa {
 		
 	}
 	
-	private void agregarPlaceHolderTexfield(JTextField textField, String placeholder) {
-		textField.addFocusListener(new FocusListener() {
-		    @Override
-		    public void focusGained(FocusEvent e) {
-		        if (textField.getText().equals(placeholder)) {
-		            textField.setText("");
-		            textField.setForeground(Color.BLACK);
-		        }
-		    }
-
-		    @Override
-		    public void focusLost(FocusEvent e) {
-		        if (textField.getText().isEmpty()) {
-		            textField.setText(placeholder);
-		            textField.setForeground(Color.GRAY);
-		        }
-		    }
-		});
-		
+private HashMap<String,ArrayList<Double>> convertirCoordinateEnDosElementosEnUnArrayList(){
+	
+	HashMap<String,ArrayList<Double>> nuevoHashMap = new HashMap<String,ArrayList<Double>>();
+	
+	if(hashMapVertices == null) {
+		return null;
 	}
-	private void preguntarFormaDeCargarEspias() {
 		
-		// Creamos un JComboBox con las opciones
-        String[] eleccionCargaEspias = { "Manual", "Archivo" };
-        JComboBox<String> comboBoxEleccion = new JComboBox<>(eleccionCargaEspias);
-        comboBoxEleccion.setSelectedIndex(1);
+	
+	//Crear un nuevo hashmap, parsear coordinate a 2 doubles arraylist
+	for (Entry<String, Coordinate> posicion : this.hashMapVertices.entrySet()) {
+		String Clave = posicion.getKey();
+		Coordinate valor = posicion.getValue();
+		Double coordenadaDoubleX = valor.getLat();
+		Double coordenadaDoubleY = valor.getLon();
+		
+		ArrayList<Double> arrayListCoordenadas = new ArrayList<Double>();
+		arrayListCoordenadas.add(coordenadaDoubleX);
+		arrayListCoordenadas.add(coordenadaDoubleY);
+		
+		nuevoHashMap.put(Clave, arrayListCoordenadas);
+		}
+	
+	return nuevoHashMap;
+}
 
-        // Creamos un JLabel para mostrar el texto
-        JLabel label = new JLabel("Seleccione el método de carga:");
+	
+	
+private String  guardarEspias() {
+			
+    JPanel panel = new JPanel();
+    panel.setLayout(new GridLayout(2, 1));
+    JLabel label = new JLabel("Coloque el nombre del archivo:");
+    panel.add(label);
 
-        // Creamos un JPanel para contener el JLabel y el JComboBox
-        JPanel panelInfo = new JPanel();
-        panelInfo.add(label);
-        panelInfo.add(comboBoxEleccion);
+    JTextField textField = new JTextField(10);
+    panel.add(textField);
 
-        // Mostramos el JOptionPane con el panel
-        int resultado = JOptionPane.showConfirmDialog(null, panelInfo, 
-                "¿De qué manera quiere cargar a los espías?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if(resultado == JOptionPane.OK_OPTION) {
-        	String seleccion = (String) comboBoxEleccion.getSelectedItem();
-        	JOptionPane.showMessageDialog(null, "Usted selecciona la opcion: " + seleccion);
-            //System.out.println("Método seleccionado: " + seleccion);
-        
-        }else if(resultado == JOptionPane.CANCEL_OPTION || resultado == JOptionPane.CLOSED_OPTION) {
-        	System.exit(0);
-        	//System.out.println("me cierro");
+    int resultado = JOptionPane.showConfirmDialog(null, panel, 
+        "Guardar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+    if (resultado == JOptionPane.OK_OPTION) {
+        String nombreArchivo = textField.getText().trim();
+        if(nombreArchivo.isEmpty()) {
+        	return null;
         }
-        	
-        
-	}
+        return nombreArchivo;
+       
+    } else {
+    	return null;
+       
+    }
+}
+
+private String  cargarEspias() {
+	
+    JPanel panel = new JPanel();
+    panel.setLayout(new GridLayout(2, 1));
+    JLabel label = new JLabel("Coloque el nombre del archivo:");
+    panel.add(label);
+
+    JTextField textField = new JTextField(10);
+    panel.add(textField);
+
+    int resultado = JOptionPane.showConfirmDialog(null, panel, 
+        "Guardar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+    if (resultado == JOptionPane.OK_OPTION) {
+        String nombreArchivo = textField.getText().trim();
+        if(nombreArchivo.isEmpty()) {
+        	return null;
+        }
+        return nombreArchivo;
+       
+    } else {
+    	return null;
+       
+    }
+}
 }

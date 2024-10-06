@@ -1,7 +1,9 @@
 package Presentador;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import Modelo.ArchivoJSON;
 import Modelo.LogicaDeGrafoEspias;
 
 public class PresentadorMapa {
@@ -49,6 +51,20 @@ public class PresentadorMapa {
 	public boolean crearArbolGeneradorMinimoKruskal() {
 		logicaDeGrafoEspias.crearArbolGeneradorMinimoKruskal();
 		return true;
+		
+	}
+	
+	public boolean guardarGrafo(HashMap<String, HashMap<String,Integer>> grafo, HashMap<String, ArrayList<Double>> grafoPosiciones, String NombreArchivo) {
+		if(logicaDeGrafoEspias.guardarGrafo(grafo, grafoPosiciones, NombreArchivo)) {
+			return true;
+		}
+		return false;
+		
+	}
+	
+	public ArchivoJSON cargarGrafo(String NombreArchivo) {
+		return logicaDeGrafoEspias.CargarGrafo(NombreArchivo);
+		
 		
 	}
 	

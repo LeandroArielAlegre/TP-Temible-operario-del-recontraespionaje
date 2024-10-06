@@ -1,5 +1,6 @@
 package Modelo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,12 +8,14 @@ public class LogicaDeGrafoEspias {
 	private Grafo grafoEspias;
 	//private Arbol arbolDeEspias;
 	private ArbolGenerador arbolGeneradorMinimo;
+	private ArchivoJSON  archivoJSON;
 	
 
 	public LogicaDeGrafoEspias() {
 		//arbolDeEspias = new Arbol();
 		grafoEspias = new Grafo();
 		arbolGeneradorMinimo = new ArbolGenerador(grafoEspias);
+		archivoJSON = new ArchivoJSON();
 	}
 
 
@@ -72,6 +75,46 @@ public class LogicaDeGrafoEspias {
 
 	public void crearArbolGeneradorMinimoKruskal() {
 		// TODO Auto-generated method stub
+		
+	}
+	
+	public boolean guardarGrafo(HashMap<String, HashMap<String,Integer>> grafo, HashMap<String, ArrayList<Double>> grafoPosiciones, String NombreArchivo) {
+		try {
+			
+	        archivoJSON.setGrafo(grafo);
+	        archivoJSON.setGrafoPosiciones(grafoPosiciones);
+	        archivoJSON.generarJSON(NombreArchivo);
+	       
+	      
+			
+	        
+	        
+		} catch (IllegalArgumentException e) {
+	        System.out.println("Error: " + e.getMessage());
+	        return false;
+	    } catch (Exception e) {
+	        System.out.println("Error inesperado: " + e.getMessage());
+	        return false;
+	    }
+		return false;
+		
+	}
+	
+	public ArchivoJSON CargarGrafo(String NombreArchivo) {
+		try {
+		
+	        ArchivoJSON archivoNuevo = archivoJSON.leerJSON(NombreArchivo);
+	        return archivoNuevo;
+			
+	        
+		} catch (IllegalArgumentException e) {
+	        System.out.println("Error: " + e.getMessage());
+	        return null;
+	    } catch (Exception e) {
+	        System.out.println("Error inesperado: " + e.getMessage());
+	        return null;
+	    }
+		
 		
 	}
 	
