@@ -95,7 +95,7 @@ public class LogicaDeGrafoEspias {
 
 	}
 
-	public ArchivoJSON CargarGrafo(String NombreArchivo) 
+	public boolean CargarGrafo(String NombreArchivo) 
 	{
 		try {
 			this.archivoJSON = archivoJSON.leerJSON(NombreArchivo);
@@ -108,13 +108,13 @@ public class LogicaDeGrafoEspias {
 			crearVerticesDesdeArchivo(auxiliarHashMapVecinos);
 			//ARISTAS
 			crearAristasDesdeArchivo(auxiliarHashMapVecinos);
-			return archivoJSON;
+			return true;
 		} catch (IllegalArgumentException e) {
 			System.out.println("Error: " + e.getMessage());
-			return null;
+			return false;
 		} catch (Exception e) {
 			System.out.println("Error inesperado: " + e.getMessage());
-			return null;
+			return false;
 		}
 	}
 	

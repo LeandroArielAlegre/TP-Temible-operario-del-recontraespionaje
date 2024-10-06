@@ -3,7 +3,7 @@ package Presentador;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import Modelo.ArchivoJSON;
+
 import Modelo.LogicaDeGrafoEspias;
 
 public class PresentadorMapa {
@@ -65,13 +65,33 @@ public class PresentadorMapa {
 		
 	}
 	
-	public ArchivoJSON cargarGrafo(String NombreArchivo) {
+	public boolean cargarGrafo(String NombreArchivo) {
 		return logicaDeGrafoEspias.CargarGrafo(NombreArchivo);
 		
 		
 	}
 	public String encuentrosIntermedios() {
 		return logicaDeGrafoEspias.encuentrosIntermedios();
+	}
+
+	public HashMap<String, ArrayList<Double>> devolverGrafoPosicionesArchivo() {
+		try {
+			return logicaDeGrafoEspias.devolverGrafoPosicionesArchivo();
+			
+		} catch (IllegalArgumentException e) {
+			System.out.println("Error: " + e.getMessage());
+			return null;
+		}
+	}
+
+	public HashMap<String, HashMap<String, Double>> devolverGrafoArchivo() {
+		try {
+			return logicaDeGrafoEspias.devolverGrafoArchivo();
+			
+		} catch (IllegalArgumentException e) {
+			System.out.println("Error: " + e.getMessage());
+			return null;
+		}
 	}
 
 }

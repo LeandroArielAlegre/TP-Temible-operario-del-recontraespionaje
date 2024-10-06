@@ -1,6 +1,0 @@
-Las unicas clases que se comunicaran entre si son: 
-la pantalla del mapa con el presentador y viceversa,
-la logica del mapa con el presentador y viceversa, 
-bfs con grafo, 
-logica de mapa con grafo y bfs
-presentadorMapa con sonido y con la pantalla de mapa

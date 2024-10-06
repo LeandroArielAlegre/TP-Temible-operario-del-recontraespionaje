@@ -22,34 +22,35 @@ public ArchivoJSON() {
 public void generarJSON(String archivo) {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     String json = gson.toJson(this);
+    // Ruta relativa al directorio "resource" dentro del proyecto
+    String ruta = System.getProperty("user.dir") + "/src/resources/";
 
     try {
-    	FileWriter writer = new FileWriter(archivo);
+        FileWriter writer = new FileWriter(ruta + archivo);
         writer.write(json);
         writer.close();
     } catch (Exception e) {
-      
         e.printStackTrace();
         throw new IllegalArgumentException("ERROR INESPERADO: " + e.getMessage());
     }
-    
 }
 
-public ArchivoJSON leerJSON(String archivo)
-	 {
-	Gson gson = new Gson();
-	 ArchivoJSON ret = null;
-	
-	 try
-	 {
-	 BufferedReader br = new BufferedReader(new FileReader(archivo));
-	 ret = gson.fromJson(br, ArchivoJSON.class);
-	 }
-catch (Exception e) {
-		 throw new IllegalArgumentException("ERROR INESPERADO");
-	 }
-	 return ret;
-	 }
+public ArchivoJSON leerJSON(String archivo) {
+    Gson gson = new Gson();
+    ArchivoJSON ret = null;
+
+    // Ruta relativa al directorio "resource" dentro del proyecto
+    String ruta = System.getProperty("user.dir") + "/src/resources/";
+
+    try {
+        BufferedReader br = new BufferedReader(new FileReader(ruta + archivo));
+        ret = gson.fromJson(br, ArchivoJSON.class);
+    } catch (Exception e) {
+        throw new IllegalArgumentException("ERROR INESPERADO");
+    }
+
+    return ret;
+}
 
 
 

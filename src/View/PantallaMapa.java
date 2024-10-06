@@ -13,7 +13,7 @@ import org.openstreetmap.gui.jmapviewer.JMapViewer;
 import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
-import Modelo.ArchivoJSON;
+
 //import Modelo.Sonido;
 import Presentador.PresentadorMapa;
 
@@ -316,19 +316,18 @@ public class PantallaMapa {
 			public void actionPerformed(ActionEvent e) {
 				String nombreArchivo =cargarEspias();
 				if(nombreArchivo != null) {
-					ArchivoJSON grafoJSON = presentadorMapa.cargarGrafo(nombreArchivo);
-					if(grafoJSON != null) {
+					if(presentadorMapa.cargarGrafo(nombreArchivo)) {
 
 						//Limpio todos los poligonos si existen
 						mapa.removeAllMapMarkers();
 						mapa.removeAllMapPolygons();
 						Color color = Color.GREEN;
-
+						
 						HashMap<String,ArrayList<Double>> auxHashMapCoordenadas= new HashMap<String,ArrayList<Double>>();
-						auxHashMapCoordenadas = grafoJSON.getGrafoPosiciones();
+						auxHashMapCoordenadas = presentadorMapa.devolverGrafoPosicionesArchivo();
 
 						HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Double>>();
-						auxiliarHashMapVecinos = grafoJSON.getGrafo();
+						auxiliarHashMapVecinos =presentadorMapa.devolverGrafoArchivo();
 
 						//Limpio las hashmap locales
 						hashMapVerticesYVecinos.clear();
@@ -336,13 +335,11 @@ public class PantallaMapa {
 
 						//Dibujo los vertices
 						actualizarMarcadores(auxHashMapCoordenadas);
-						
-						
 						//Dibujo las aristas
 						actualizarGrafoEnMapa(auxiliarHashMapVecinos, color);		
 						
+						//Actualizo el hashmap de la view
 						hashMapVerticesYVecinos = auxiliarHashMapVecinos;
-						
 					
 					}
 				}else {
