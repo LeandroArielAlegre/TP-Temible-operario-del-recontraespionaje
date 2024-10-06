@@ -1,0 +1,7 @@
+{
+  "grafo": {
+    "a": {},
+    "b": {}
+  },
+  "grafoPosiciones": {}
+}

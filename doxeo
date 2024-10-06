@@ -1,0 +1,48 @@
+{
+  "grafo": {
+    "juancruz": {
+      "paz": 1,
+      "leandro": 0
+    },
+    "paz": {
+      "juancruz": 1,
+      "universidad": 0,
+      "leandro": 0
+    },
+    "universidad": {
+      "paz": 0,
+      "miCasa": 0,
+      "leandro": 1
+    },
+    "miCasa": {
+      "universidad": 0
+    },
+    "leandro": {
+      "juancruz": 0,
+      "paz": 0,
+      "universidad": 1
+    }
+  },
+  "grafoPosiciones": {
+    "juancruz": [
+      -34.55690098908522,
+      -58.718833923339844
+    ],
+    "paz": [
+      -34.511931909631606,
+      -58.765869140625
+    ],
+    "universidad": [
+      -34.51702396789497,
+      -58.709564208984375
+    ],
+    "miCasa": [
+      -34.510517393776254,
+      -58.690338134765625
+    ],
+    "leandro": [
+      -34.55916294243537,
+      -58.72913360595703
+    ]
+  }
+}
