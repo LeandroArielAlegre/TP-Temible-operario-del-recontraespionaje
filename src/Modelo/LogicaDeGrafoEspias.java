@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 
 public class LogicaDeGrafoEspias {
 	private Grafo grafoEspias;
-	private Grafo grafoEspiasAux;
 	//private Arbol arbolDeEspias;
 	private ArbolGenerador arbolGeneradorMinimo;
 	private ArchivoJSON  archivoJSON;
@@ -28,7 +27,6 @@ public class LogicaDeGrafoEspias {
 	public boolean crearVertice(String vertice) {
 		try {
 			grafoEspias.agregarVertice(vertice);
-//			grafoEspiasAux.agregarVertice(vertice);
 			return true;
 
 		} catch (Exception e) {
@@ -40,7 +38,6 @@ public class LogicaDeGrafoEspias {
 	public boolean crearArista(String vertice, String vertice2, Double probabilidad) {
 		try {
 			grafoEspias.agregarArista(vertice, vertice2, probabilidad);
-			grafoEspiasAux.agregarArista(vertice, vertice2, probabilidad);
 			return true;
 
 		} catch (IllegalArgumentException e) {
@@ -101,17 +98,17 @@ public class LogicaDeGrafoEspias {
 	public ArchivoJSON CargarGrafo(String NombreArchivo) 
 	{
 		try {
-			ArchivoJSON archivoNuevo = archivoJSON.leerJSON(NombreArchivo);
+			this.archivoJSON = archivoJSON.leerJSON(NombreArchivo);
 			//Limpio el grafo anterior (SUJETO A CAMBIOS)
 			grafoEspias.reiniciarGrafo();
 
 			//Sintesis, actualizo el modelo antes de dibujar el nuevo grafo.
 			HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Double>>();
-			auxiliarHashMapVecinos = archivoNuevo.getGrafo();
+			auxiliarHashMapVecinos = archivoJSON.getGrafo();
 			crearVerticesDesdeArchivo(auxiliarHashMapVecinos);
 			//ARISTAS
 			crearAristasDesdeArchivo(auxiliarHashMapVecinos);
-			return archivoNuevo;
+			return archivoJSON;
 		} catch (IllegalArgumentException e) {
 			System.out.println("Error: " + e.getMessage());
 			return null;
@@ -120,6 +117,17 @@ public class LogicaDeGrafoEspias {
 			return null;
 		}
 	}
+	
+	public HashMap<String, HashMap<String,Double>> devolverGrafoArchivo(){
+		
+		return this.archivoJSON.getGrafo();
+	}
+	
+	public HashMap<String,ArrayList<Double>> devolverGrafoPosicionesArchivo(){
+		
+		return this.archivoJSON.getGrafoPosiciones();
+	}
+	
 	
 	private void crearVerticesDesdeArchivo( HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos) {
 
@@ -142,6 +150,9 @@ public class LogicaDeGrafoEspias {
 		}
 
 	}
+	
+	
+	
 
 //	public HashMap<String, HashMap<String, Double>> deshacerAlgoritmo() {
 //		// TODO Auto-generated method stub

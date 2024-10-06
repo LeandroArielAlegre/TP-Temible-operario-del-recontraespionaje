@@ -54,7 +54,6 @@ public class PantallaMapa {
 	private JPanel panelControles;
 	private HashMap <String ,Coordinate> hashMapVertices;
 	private HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos;
-//	private HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinosAux;
 	private JButton btnCrearArista;
 	private JTextField textFieldVertice2;
 	private JTextField textFieldVertice1;
@@ -337,9 +336,14 @@ public class PantallaMapa {
 
 						//Dibujo los vertices
 						actualizarMarcadores(auxHashMapCoordenadas);
-
+						
+						
 						//Dibujo las aristas
-						actualizarGrafoEnMapa(auxiliarHashMapVecinos, color);				
+						actualizarGrafoEnMapa(auxiliarHashMapVecinos, color);		
+						
+						hashMapVerticesYVecinos = auxiliarHashMapVecinos;
+						
+					
 					}
 				}else {
 					JOptionPane.showMessageDialog(null, "Error: No se pudo cargar el archivo");
@@ -376,7 +380,12 @@ public class PantallaMapa {
 		//Guardamos el vertices localmente en un HashMap
 		hashMapVertices.put(nombreVertice, coordenadaVertice);
 		//Me hago un machete de grafo
-		hashMapVerticesYVecinos.put(nombreVertice, new HashMap<String, Double>());
+		
+		if(!hashMapVerticesYVecinos.containsKey(nombreVertice)) {
+			hashMapVerticesYVecinos.put(nombreVertice, new HashMap<String, Double>());
+		}
+		
+		
 
 	}
 	public void actualizarGrafoEnMapa(HashMap<String, HashMap<String,Double>> HashMapnuevoGrafo, Color color ) {
@@ -388,6 +397,7 @@ public class PantallaMapa {
 			for (String vertice : HashMapnuevoGrafo.keySet()) {
 				HashMap<String, Double> vecinos = HashMapnuevoGrafo.get(vertice);
 				for (Map.Entry<String, Double> entry : vecinos.entrySet()) {
+					
 					cambiarColorArista(vertice, entry.getKey(), color);
 				}      
 			}
@@ -408,6 +418,7 @@ public class PantallaMapa {
 
 		arista.setColor(color);
 		mapa.addMapPolygon(arista);
+		System.out.println(hashMapVerticesYVecinos);
 	}
 	//COLOCA TEXTFIELDS!!!!!!!!!!!!!!!!!
 	private void colocarTexfields() {
