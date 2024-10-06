@@ -52,13 +52,6 @@ catch (Exception e) {
 	 }
 
 
-public ArrayList<String> retornarNombresGrafos(){
-	Gson gson = new Gson();
-	
-	
-	return null;
-	
-}
 
 public HashMap<String, HashMap<String, Integer>> getGrafo() {
     return grafo;

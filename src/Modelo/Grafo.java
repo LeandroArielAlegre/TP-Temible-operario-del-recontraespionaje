@@ -25,6 +25,9 @@ public class Grafo implements Serializable {
         contadorVertices = 0;
     } 
     
+    
+ 
+    
     public String toString() {
         StringBuilder sb = new StringBuilder();
         
@@ -171,8 +174,11 @@ public class Grafo implements Serializable {
 		return grafo.containsKey(vertice);
 	}
 
+	
+	public void eliminarVerticesYVecinos() {
+		grafo = new HashMap<String, HashMap<String, Integer>>();
+	}
 }
-
 
 
 

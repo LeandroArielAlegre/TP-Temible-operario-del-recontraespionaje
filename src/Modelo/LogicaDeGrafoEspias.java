@@ -24,6 +24,7 @@ public class LogicaDeGrafoEspias {
 	public boolean crearVertice(String vertice) {
 		try {
 			grafoEspias.agregarVertice(vertice);
+			
 			return true;
 			
 		} catch (IllegalArgumentException e) {
@@ -41,7 +42,7 @@ public class LogicaDeGrafoEspias {
 			return true;
 			
 		} catch (IllegalArgumentException e) {
-	        System.out.println("Error: El vértice ya existe. " + e.getMessage());
+	        System.out.println("Error: la Arista ya existe. " + e.getMessage());
 	        return false;
 	    } catch (Exception e) {
 	        System.out.println("Error inesperado: " + e.getMessage());
@@ -64,7 +65,7 @@ public class LogicaDeGrafoEspias {
 			return hashMapVerticesYVecinos;
 			
 		} catch (IllegalArgumentException e) {
-	        System.out.println("Error: El vértice ya existe. " + e.getMessage());
+	        System.out.println("Error:  " + e.getMessage());
 	        return null;
 	    } catch (Exception e) {
 	        System.out.println("Error inesperado: " + e.getMessage());
@@ -80,14 +81,9 @@ public class LogicaDeGrafoEspias {
 	
 	public boolean guardarGrafo(HashMap<String, HashMap<String,Integer>> grafo, HashMap<String, ArrayList<Double>> grafoPosiciones, String NombreArchivo) {
 		try {
-			
 	        archivoJSON.setGrafo(grafo);
 	        archivoJSON.setGrafoPosiciones(grafoPosiciones);
 	        archivoJSON.generarJSON(NombreArchivo);
-	       
-	      
-			
-	        
 	        
 		} catch (IllegalArgumentException e) {
 	        System.out.println("Error: " + e.getMessage());
@@ -104,6 +100,8 @@ public class LogicaDeGrafoEspias {
 		try {
 		
 	        ArchivoJSON archivoNuevo = archivoJSON.leerJSON(NombreArchivo);
+
+	        
 	        return archivoNuevo;
 			
 	        

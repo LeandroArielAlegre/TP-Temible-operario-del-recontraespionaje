@@ -1,6 +1,0 @@
-{
-  "grafo": {
-    "a": {}
-  },
-  "grafoPosiciones": {}
-}
