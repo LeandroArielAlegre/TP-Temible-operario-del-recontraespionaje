@@ -15,7 +15,7 @@ public class Grafo implements Serializable {
     // Mapa de índices a nombres de vértices
     private HashMap<Integer, String> indicesANombres;
     // Representamos el grafo por su lista de vecinos
-    protected HashMap<String, HashMap<String, Integer>> grafo;
+    protected HashMap<String, HashMap<String, Double>> grafo;
     protected int contadorVertices;
 
     public Grafo() {
@@ -33,12 +33,12 @@ public class Grafo implements Serializable {
         
         for (String vertice : grafo.keySet()) {
             sb.append("Vértice ").append(vertice).append(": ");
-            HashMap<String, Integer> vecinos = grafo.get(vertice);
+            HashMap<String, Double> vecinos = grafo.get(vertice);
             
             if (vecinos.isEmpty()) {
                 sb.append("sin vecinos");
             } else {
-                for (Map.Entry<String, Integer> entry : vecinos.entrySet()) {
+                for (Map.Entry<String, Double> entry : vecinos.entrySet()) {
                     sb.append(entry.getKey()).append(" (peso: ").append(entry.getValue()).append("), ");
                 }
                 sb.setLength(sb.length() - 2); // Eliminar la última coma
@@ -49,7 +49,7 @@ public class Grafo implements Serializable {
         return sb.toString();
     }
     
-    public HashMap<String, HashMap<String,Integer>> devolverGrafo() {
+    public HashMap<String, HashMap<String,Double>> devolverGrafo() {
     	return this.grafo;
     }
     public void agregarVertice(String nombre) {
@@ -66,7 +66,7 @@ public class Grafo implements Serializable {
         return grafo.isEmpty();
     }
 
-    public void agregarArista(String nombre1, String nombre2, int probabilidad) {
+    public void agregarArista(String nombre1, String nombre2, Double probabilidad) {
         if (!nombresAIndices.containsKey(nombre1) || !nombresAIndices.containsKey(nombre2)) {
             throw new IllegalArgumentException("Alguno de los vértices ingresados no existen.");
         }
@@ -123,14 +123,14 @@ public class Grafo implements Serializable {
         return ret;
     }
     
-    public HashMap<String,Integer> vecinosDeVerticeConPeso(String nombre) {
-    	HashMap<String,Integer> ret= new HashMap<String,Integer>();
+    public HashMap<String,Double> vecinosDeVerticeConPeso(String nombre) {
+    	HashMap<String,Double> ret= new HashMap<String,Double>();
 
     	
         if (!grafo.containsKey(nombre)) {
             throw new IllegalArgumentException("El vértice no existe: " + nombre);
         }
-        for (Map.Entry<String, Integer> entry : grafo.get(nombre).entrySet()) {
+        for (Map.Entry<String, Double> entry : grafo.get(nombre).entrySet()) {
             // Agregamos al HashMap de retorno el vecino y su peso asociado
             ret.put(entry.getKey(), entry.getValue());
         }
@@ -175,7 +175,7 @@ public class Grafo implements Serializable {
 	}
 
 	
-	public void eliminarVerticesYVecinos() {
+	public void reiniciarGrafo() {
 		nombresAIndices.clear();
 		indicesANombres.clear();
 		this.contadorVertices = 0;

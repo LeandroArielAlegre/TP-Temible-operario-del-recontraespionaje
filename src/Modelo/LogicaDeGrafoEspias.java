@@ -2,11 +2,11 @@ package Modelo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Map.Entry;
 
 public class LogicaDeGrafoEspias {
 	private Grafo grafoEspias;
+	private Grafo grafoEspiasAux;
 	//private Arbol arbolDeEspias;
 	private ArbolGenerador arbolGeneradorMinimo;
 	private ArchivoJSON  archivoJSON;
@@ -15,17 +15,20 @@ public class LogicaDeGrafoEspias {
 	public LogicaDeGrafoEspias() {
 		//arbolDeEspias = new Arbol();
 		grafoEspias = new Grafo();
+//		grafoEspiasAux=new Grafo();
 		arbolGeneradorMinimo = new ArbolGenerador(grafoEspias);
 		archivoJSON = new ArchivoJSON();
 	}
 
-
+	public String encuentrosIntermedios() {
+		return arbolGeneradorMinimo.getEncuentrosIntermedios();
+	}
 
 
 	public boolean crearVertice(String vertice) {
 		try {
 			grafoEspias.agregarVertice(vertice);
-
+//			grafoEspiasAux.agregarVertice(vertice);
 			return true;
 
 		} catch (Exception e) {
@@ -34,9 +37,10 @@ public class LogicaDeGrafoEspias {
 		}
 	}
 
-	public boolean crearArista(String vertice, String vertice2, int probabilidad) {
+	public boolean crearArista(String vertice, String vertice2, Double probabilidad) {
 		try {
 			grafoEspias.agregarArista(vertice, vertice2, probabilidad);
+			grafoEspiasAux.agregarArista(vertice, vertice2, probabilidad);
 			return true;
 
 		} catch (IllegalArgumentException e) {
@@ -55,10 +59,10 @@ public class LogicaDeGrafoEspias {
 	}
 
 
-	public HashMap<String, HashMap<String,Integer>> crearArbolGeneradorMinimoPrim() {
+	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoPrim() {
 		try {
 			Grafo grafoEspiasPrim = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoPrim();
-			HashMap<String, HashMap<String,Integer>> hashMapVerticesYVecinos = grafoEspiasPrim.devolverGrafo();
+			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasPrim.devolverGrafo();
 
 			return hashMapVerticesYVecinos;
 
@@ -77,7 +81,7 @@ public class LogicaDeGrafoEspias {
 
 	}
 
-	public boolean guardarGrafo(HashMap<String, HashMap<String,Integer>> grafo, HashMap<String, ArrayList<Double>> grafoPosiciones, String NombreArchivo) {
+	public boolean guardarGrafo(HashMap<String, HashMap<String,Double>> grafo, HashMap<String, ArrayList<Double>> grafoPosiciones, String NombreArchivo) {
 		try {
 			archivoJSON.setGrafo(grafo);
 			archivoJSON.setGrafoPosiciones(grafoPosiciones);
@@ -94,14 +98,15 @@ public class LogicaDeGrafoEspias {
 
 	}
 
-	public ArchivoJSON CargarGrafo(String NombreArchivo) {
+	public ArchivoJSON CargarGrafo(String NombreArchivo) 
+	{
 		try {
 			ArchivoJSON archivoNuevo = archivoJSON.leerJSON(NombreArchivo);
 			//Limpio el grafo anterior (SUJETO A CAMBIOS)
-			grafoEspias.eliminarVerticesYVecinos();
+			grafoEspias.reiniciarGrafo();
 
 			//Sintesis, actualizo el modelo antes de dibujar el nuevo grafo.
-			HashMap<String, HashMap<String,Integer>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Integer>>();
+			HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Double>>();
 			auxiliarHashMapVecinos = archivoNuevo.getGrafo();
 			crearVerticesDesdeArchivo(auxiliarHashMapVecinos);
 			//ARISTAS
@@ -115,27 +120,33 @@ public class LogicaDeGrafoEspias {
 			return null;
 		}
 	}
-	private void crearVerticesDesdeArchivo( HashMap<String, HashMap<String,Integer>> auxiliarHashMapVecinos) {
+	
+	private void crearVerticesDesdeArchivo( HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos) {
 
-		for (Entry<String, HashMap<String, Integer>> entry : auxiliarHashMapVecinos.entrySet()) {
+		for (Entry<String, HashMap<String, Double>> entry : auxiliarHashMapVecinos.entrySet()) {
 			String nombreVertice = entry.getKey();
 			crearVertice(nombreVertice);
 		}
 
 	}
-	private void crearAristasDesdeArchivo( HashMap<String, HashMap<String,Integer>> auxiliarHashMapVecinos) {
-		for (Entry<String, HashMap<String, Integer>> entry : auxiliarHashMapVecinos.entrySet()) {
-			HashMap<String,Integer> auxVecinos = new HashMap<String,Integer>();
+	private void crearAristasDesdeArchivo( HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos) {
+		for (Entry<String, HashMap<String, Double>> entry : auxiliarHashMapVecinos.entrySet()) {
+			HashMap<String,Double> auxVecinos = new HashMap<String,Double>();
 			String nombreVertice1 = entry.getKey();
 			auxVecinos = entry.getValue();
-			for (Entry<String, Integer> entrada : auxVecinos.entrySet()) {
+			for (Entry<String, Double> entrada : auxVecinos.entrySet()) {
 				String nombreVertice2 = entrada.getKey();
-				int probabilidad = entrada.getValue();
+				Double probabilidad = entrada.getValue();
 				crearArista(nombreVertice1, nombreVertice2, probabilidad);
 			}
 		}
 
 	}
+
+//	public HashMap<String, HashMap<String, Double>> deshacerAlgoritmo() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 
 }

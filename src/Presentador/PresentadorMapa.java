@@ -9,8 +9,6 @@ import Modelo.LogicaDeGrafoEspias;
 public class PresentadorMapa {
 	private LogicaDeGrafoEspias logicaDeGrafoEspias;
 	
-	
-	
 	public PresentadorMapa() {
 		logicaDeGrafoEspias = new LogicaDeGrafoEspias();
 	}
@@ -27,7 +25,7 @@ public class PresentadorMapa {
 		
 	}
 	
-	public boolean crearArista(String vertice, String vertice2, int probabilidad) {
+	public boolean crearArista(String vertice, String vertice2, Double probabilidad) {
 		
 		if(!logicaDeGrafoEspias.existeArista(vertice, vertice2)) {
 			return logicaDeGrafoEspias.crearArista(vertice, vertice2, probabilidad);
@@ -41,20 +39,25 @@ public class PresentadorMapa {
 		return logicaDeGrafoEspias.existeArista(vertice, vertice2);
 	    }
 
-	public HashMap<String, HashMap<String,Integer>> crearArbolGeneradorMinimoPrim() {
+	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoPrim() {
 		
-		HashMap<String, HashMap<String,Integer>> hashMapVerticesYVecinos = logicaDeGrafoEspias.crearArbolGeneradorMinimoPrim();
+		HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = logicaDeGrafoEspias.crearArbolGeneradorMinimoPrim();
 		return hashMapVerticesYVecinos;
 		
 	}
-
+	
+//	public HashMap<String, HashMap<String,Double>> deshacerAlgoritmo() {
+//		HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = logicaDeGrafoEspias.deshacerAlgoritmo();
+//		return hashMapVerticesYVecinos;
+//	}
+	
 	public boolean crearArbolGeneradorMinimoKruskal() {
 		logicaDeGrafoEspias.crearArbolGeneradorMinimoKruskal();
 		return true;
 		
 	}
 	
-	public boolean guardarGrafo(HashMap<String, HashMap<String,Integer>> grafo, HashMap<String, ArrayList<Double>> grafoPosiciones, String NombreArchivo) {
+	public boolean guardarGrafo(HashMap<String, HashMap<String,Double>> grafo, HashMap<String, ArrayList<Double>> grafoPosiciones, String NombreArchivo) {
 		if(logicaDeGrafoEspias.guardarGrafo(grafo, grafoPosiciones, NombreArchivo)) {
 			return true;
 		}
@@ -67,6 +70,8 @@ public class PresentadorMapa {
 		
 		
 	}
-	
+	public String encuentrosIntermedios() {
+		return logicaDeGrafoEspias.encuentrosIntermedios();
+	}
 
 }

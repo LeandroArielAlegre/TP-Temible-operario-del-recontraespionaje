@@ -11,7 +11,7 @@ import com.google.gson.GsonBuilder;
 
 public class ArchivoJSON {
 
-private HashMap<String, HashMap<String,Integer>> grafo;
+private HashMap<String, HashMap<String,Double>> grafo;
 private HashMap<String, ArrayList<Double>> grafoPosiciones;
 	
 public ArchivoJSON() {
@@ -53,12 +53,12 @@ catch (Exception e) {
 
 
 
-public HashMap<String, HashMap<String, Integer>> getGrafo() {
+public HashMap<String, HashMap<String, Double>> getGrafo() {
     return grafo;
 }
 
 
-public void setGrafo(HashMap<String, HashMap<String, Integer>> grafo) {
+public void setGrafo(HashMap<String, HashMap<String, Double>> grafo) {
     this.grafo = grafo;
 }
 
