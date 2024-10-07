@@ -29,6 +29,7 @@ import java.awt.event.MouseEvent;
 
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +65,9 @@ public class PantallaMapa {
 	private JTextField textFieldProbabilidad;
 	private JButton btnCargarEspias;
 	ImageIcon iconEspia = new ImageIcon(getClass().getClassLoader().getResource("resources/espia.png"));
+	//URL url = getClass().getClassLoader().getResource("resources/mensaje.png");
+	URL url = getClass().getClassLoader().getResource("resources/carta.gif");
+	ImageIcon iconMensaje = new ImageIcon(url);
 
 
 
@@ -235,7 +239,7 @@ public class PantallaMapa {
 		lblEncuentrosIntermedios.setOpaque(true);
 		lblEncuentrosIntermedios.setVisible(false);
 		lblEncuentrosIntermedios.setBounds(10, 11, 233, 435);
-		mapa.add(lblEncuentrosIntermedios);
+		panelControles.add(lblEncuentrosIntermedios);
 		
 		
 
@@ -407,6 +411,19 @@ public class PantallaMapa {
 		jlabelImagen.setIcon(imagenEscaladaALabel);
 		mapa.add(jlabelImagen);
 	}
+	
+	
+	private void colocarImagenEnPosicionDeArista(Coordinate coordenadaVertice1, Coordinate coordenadaVertice2) {
+		Point posicionEnPantalla1 = mapa.getMapPosition(coordenadaVertice1);
+		Point posicionEnPantalla2 = mapa.getMapPosition(coordenadaVertice2);
+		int posicionImagenX = (posicionEnPantalla1.x + posicionEnPantalla2.x) / 2;
+		int posicionImagenY = ( posicionEnPantalla1.y + posicionEnPantalla2.y) / 2;
+		Point posicionImagenEnPantalla = new Point(posicionImagenX, posicionImagenY);
+		ImageIcon imagenEscaladaALabel = new ImageIcon(iconMensaje.getImage());
+		JLabel jlabelImagen = new JLabel(imagenEscaladaALabel);
+		jlabelImagen.setBounds(posicionImagenEnPantalla.x, posicionImagenEnPantalla.y, 30, 30);
+		mapa.add(jlabelImagen);
+	}
 	public void actualizarGrafoEnMapa(HashMap<String, HashMap<String,Double>> HashMapnuevoGrafo, Color color ) {
 		//HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo = presentadorMapa.crearArbolGeneradorMinimoPrim();
 		//VER!"!"!"!"!"!
@@ -435,6 +452,7 @@ public class PantallaMapa {
 		// Crear el polígono (en este caso una línea)
 		MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
 
+		colocarImagenEnPosicionDeArista(coordenada1, coordenada2);
 		arista.setColor(color);
 		mapa.addMapPolygon(arista);
 		System.out.println(hashMapVerticesYVecinos);
@@ -536,6 +554,8 @@ public class PantallaMapa {
 			MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
 
 			arista.setColor(Color.green);
+
+			colocarImagenEnPosicionDeArista(vertice1, vertice2);
 			mapa.addMapPolygon(arista);
 			JOptionPane.showMessageDialog(null, "Se creo la Arista Satisfactoriamente");
 		}else {
