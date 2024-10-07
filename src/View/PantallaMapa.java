@@ -20,6 +20,7 @@ import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 //import Modelo.Sonido;
 import Presentador.PresentadorMapa;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -64,10 +65,13 @@ public class PantallaMapa {
 	private JTextField textFieldVertice1;
 	private JTextField textFieldProbabilidad;
 	private JButton btnCargarEspias;
-	ImageIcon iconEspia = new ImageIcon(getClass().getClassLoader().getResource("resources/espia.png"));
+	URL urlEspia = getClass().getClassLoader().getResource("resources/espia.png");
+	ImageIcon iconEspia = new ImageIcon(urlEspia);
 	//URL url = getClass().getClassLoader().getResource("resources/mensaje.png");
-	URL url = getClass().getClassLoader().getResource("resources/carta.gif");
-	ImageIcon iconMensaje = new ImageIcon(url);
+	URL urlCarta = getClass().getClassLoader().getResource("resources/carta.gif");
+	ImageIcon iconMensaje = new ImageIcon(urlCarta);
+	
+	
 
 
 
@@ -107,7 +111,7 @@ public class PantallaMapa {
 		frame.setBounds(400, 200, 833, 676);
 		frame.getContentPane().setLayout(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		
 		//panelcontrol
 		panelControles = new JPanel();
 		panelControles.setBounds(10, 11, 786, 615);
@@ -263,6 +267,7 @@ public class PantallaMapa {
 					HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoConPrim = presentadorMapa.crearArbolGeneradorMinimoPrim();
 					Color color = Color.RED;
 					actualizarGrafoEnMapa(HashMapNuevoGrafoConPrim, color);
+					colocarImagenCartaEnAGM(HashMapNuevoGrafoConPrim);
 					if(presentadorMapa.encuentrosIntermedios() != null ) {
 						lblEncuentrosIntermedios.setText("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
 						lblEncuentrosIntermedios.setVisible(true);
@@ -291,6 +296,7 @@ public class PantallaMapa {
 
 				Color color = Color.GREEN;
 				actualizarGrafoEnMapa(hashMapVerticesYVecinos,color);
+				limpiarJLabels(mapa,urlCarta);
 				lblEncuentrosIntermedios.setText(null);
 				lblEncuentrosIntermedios.setVisible(false);
 
@@ -343,7 +349,8 @@ public class PantallaMapa {
 						hashMapVertices.clear();
 						
 						//Borro las imagenes residuales, si existieran
-						limpiarJLabels(mapa);
+						limpiarJLabels(mapa,urlEspia);
+						limpiarJLabels(mapa,urlCarta);
 
 						//Dibujo los vertices
 						actualizarMarcadores(auxHashMapCoordenadas);
@@ -384,9 +391,7 @@ public class PantallaMapa {
 		Coordinate coordenadaVertice = new Coordinate(CoordenadasX, CoordenadasY);
 		MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, coordenadaVertice);
 		
-		//Obtengo posicion en la pantalla!!!!!!!
-		colocarImagenEnPosicionDeMarcador(coordenadaVertice);
-		//!!!!!!!!!!!
+		colocarImagenEnPosicionDeMarcador(coordenadaVertice,urlEspia);
 		
 		verticeEnMapa.getStyle().setBackColor(Color.yellow);
 		verticeEnMapa.getStyle().setColor(Color.yellow);
@@ -403,17 +408,22 @@ public class PantallaMapa {
 
 	}
 
-	private void colocarImagenEnPosicionDeMarcador(Coordinate coordenadaVertice) {
-		Point posicionEnPantalla = mapa.getMapPosition(coordenadaVertice);
-		JLabel jlabelImagen = new JLabel();
-		jlabelImagen.setBounds(posicionEnPantalla.x, posicionEnPantalla.y, 30, 30);
-		ImageIcon imagenEscaladaALabel = new ImageIcon(iconEspia.getImage().getScaledInstance(jlabelImagen.getWidth(), jlabelImagen.getHeight(), Image.SCALE_SMOOTH));
-		jlabelImagen.setIcon(imagenEscaladaALabel);
-		mapa.add(jlabelImagen);
+	public void colocarImagenCartaEnAGM(HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoAGM) {
+		for (Entry<String, HashMap<String, Double>> entry : HashMapNuevoGrafoAGM.entrySet()) {
+			String claveVertice1 = entry.getKey();
+			HashMap<String, Double> valor = entry.getValue();
+			for (Entry<String, Double> entrada : valor.entrySet()) {
+				String claveVertice2 = entrada.getKey();
+				Coordinate coordenadaVertice1 = hashMapVertices.get(claveVertice1);
+				Coordinate coordenadaVertice2 =hashMapVertices.get(claveVertice2);
+				colocarImagenEnPosicionDeArista(coordenadaVertice1,coordenadaVertice2, urlCarta);
+			}
+		}     
+		
+		
 	}
 	
-	
-	private void colocarImagenEnPosicionDeArista(Coordinate coordenadaVertice1, Coordinate coordenadaVertice2) {
+	private void colocarImagenEnPosicionDeArista(Coordinate coordenadaVertice1, Coordinate coordenadaVertice2, URL urlImagen) {
 		Point posicionEnPantalla1 = mapa.getMapPosition(coordenadaVertice1);
 		Point posicionEnPantalla2 = mapa.getMapPosition(coordenadaVertice2);
 		int posicionImagenX = (posicionEnPantalla1.x + posicionEnPantalla2.x) / 2;
@@ -422,6 +432,16 @@ public class PantallaMapa {
 		ImageIcon imagenEscaladaALabel = new ImageIcon(iconMensaje.getImage());
 		JLabel jlabelImagen = new JLabel(imagenEscaladaALabel);
 		jlabelImagen.setBounds(posicionImagenEnPantalla.x, posicionImagenEnPantalla.y, 30, 30);
+		jlabelImagen.putClientProperty("imageURL", urlImagen);
+		mapa.add(jlabelImagen);
+	}
+	private void colocarImagenEnPosicionDeMarcador(Coordinate coordenadaVertice, URL urlEspia) {
+		Point posicionEnPantalla = mapa.getMapPosition(coordenadaVertice);
+		JLabel jlabelImagen = new JLabel();
+		jlabelImagen.setBounds(posicionEnPantalla.x, posicionEnPantalla.y, 30, 30);
+		ImageIcon imagenEscaladaALabel = new ImageIcon(iconEspia.getImage().getScaledInstance(jlabelImagen.getWidth(), jlabelImagen.getHeight(), Image.SCALE_SMOOTH));
+		jlabelImagen.setIcon(imagenEscaladaALabel);
+		jlabelImagen.putClientProperty("imageURL", urlEspia);
 		mapa.add(jlabelImagen);
 	}
 	public void actualizarGrafoEnMapa(HashMap<String, HashMap<String,Double>> HashMapnuevoGrafo, Color color ) {
@@ -452,26 +472,27 @@ public class PantallaMapa {
 		// Crear el polígono (en este caso una línea)
 		MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
 
-		colocarImagenEnPosicionDeArista(coordenada1, coordenada2);
+		//colocarImagenEnPosicionDeArista(coordenada1, coordenada2);
 		arista.setColor(color);
 		mapa.addMapPolygon(arista);
 		System.out.println(hashMapVerticesYVecinos);
 	}
-	
-	  private static void limpiarJLabels(JMapViewer mapa) {
-	        Component[] componentes = mapa.getComponents();
-	        
-	        for (Component componente : componentes) {
-	     
-	            if (componente instanceof JLabel) {
-	                mapa.remove(componente); 
+	private static void limpiarJLabels(JMapViewer mapa, URL urlAImagenAEliminar) {
+	    Component[] componentes = mapa.getComponents();
+	    
+	    for (Component componente : componentes) {
+	        if (componente instanceof JLabel) {
+	            JLabel label = (JLabel) componente;
+	            URL urlAlmacenada = (URL) label.getClientProperty("imageURL");
+	            if (urlAlmacenada != null && urlAlmacenada.equals(urlAImagenAEliminar)) {
+	                mapa.remove(componente);
 	            }
 	        }
-
-	 
-	        mapa.revalidate();
-	        mapa.repaint();
 	    }
+
+	    mapa.revalidate();
+	    mapa.repaint();
+	}
 	//COLOCA TEXTFIELDS!!!!!!!!!!!!!!!!!
 	private void colocarTexfields() {
 		
@@ -517,7 +538,7 @@ public class PantallaMapa {
 			verticeEnMapa.getStyle().setBackColor(Color.yellow);
 			verticeEnMapa.getStyle().setColor(Color.yellow);
 			
-			colocarImagenEnPosicionDeMarcador(vertice);
+			colocarImagenEnPosicionDeMarcador(vertice,urlEspia);
 			mapa.addMapMarker(verticeEnMapa);
 
 
@@ -555,7 +576,7 @@ public class PantallaMapa {
 
 			arista.setColor(Color.green);
 
-			colocarImagenEnPosicionDeArista(vertice1, vertice2);
+			//colocarImagenEnPosicionDeArista(vertice1, vertice2);
 			mapa.addMapPolygon(arista);
 			JOptionPane.showMessageDialog(null, "Se creo la Arista Satisfactoriamente");
 		}else {
