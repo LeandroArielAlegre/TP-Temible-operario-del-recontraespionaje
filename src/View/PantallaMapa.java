@@ -381,12 +381,7 @@ public class PantallaMapa {
 		MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, coordenadaVertice);
 		
 		//Obtengo posicion en la pantalla!!!!!!!
-		Point posicionEnPantalla = mapa.getMapPosition(coordenadaVertice);
-		JLabel jlabelImagen = new JLabel();
-		jlabelImagen.setBounds(posicionEnPantalla.x, posicionEnPantalla.y, 30, 30);
-		ImageIcon imagenEscaladaALabel = new ImageIcon(iconEspia.getImage().getScaledInstance(jlabelImagen.getWidth(), jlabelImagen.getHeight(), Image.SCALE_SMOOTH));
-		jlabelImagen.setIcon(imagenEscaladaALabel);
-		mapa.add(jlabelImagen);
+		colocarImagenEnPosicionDeMarcador(coordenadaVertice);
 		//!!!!!!!!!!!
 		
 		verticeEnMapa.getStyle().setBackColor(Color.yellow);
@@ -402,6 +397,15 @@ public class PantallaMapa {
 		
 		
 
+	}
+
+	private void colocarImagenEnPosicionDeMarcador(Coordinate coordenadaVertice) {
+		Point posicionEnPantalla = mapa.getMapPosition(coordenadaVertice);
+		JLabel jlabelImagen = new JLabel();
+		jlabelImagen.setBounds(posicionEnPantalla.x, posicionEnPantalla.y, 30, 30);
+		ImageIcon imagenEscaladaALabel = new ImageIcon(iconEspia.getImage().getScaledInstance(jlabelImagen.getWidth(), jlabelImagen.getHeight(), Image.SCALE_SMOOTH));
+		jlabelImagen.setIcon(imagenEscaladaALabel);
+		mapa.add(jlabelImagen);
 	}
 	public void actualizarGrafoEnMapa(HashMap<String, HashMap<String,Double>> HashMapnuevoGrafo, Color color ) {
 		//HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo = presentadorMapa.crearArbolGeneradorMinimoPrim();
@@ -494,7 +498,8 @@ public class PantallaMapa {
 			MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, vertice);
 			verticeEnMapa.getStyle().setBackColor(Color.yellow);
 			verticeEnMapa.getStyle().setColor(Color.yellow);
-
+			
+			colocarImagenEnPosicionDeMarcador(vertice);
 			mapa.addMapMarker(verticeEnMapa);
 
 
