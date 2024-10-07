@@ -1,8 +1,11 @@
 package View;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Point;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,6 +20,7 @@ import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 //import Modelo.Sonido;
 import Presentador.PresentadorMapa;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
@@ -37,7 +41,7 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import javax.swing.JScrollBar;
+
 public class PantallaMapa {
 
 	private JFrame frame;
@@ -59,6 +63,7 @@ public class PantallaMapa {
 	private JTextField textFieldVertice1;
 	private JTextField textFieldProbabilidad;
 	private JButton btnCargarEspias;
+	ImageIcon iconEspia = new ImageIcon(getClass().getClassLoader().getResource("resources/espia.png"));
 
 
 
@@ -185,10 +190,6 @@ public class PantallaMapa {
 		btnCrearArista.setBounds(243, 542, 148, 44);
 		//mapa.add(btnCrearArista);
 		panelControles.add(btnCrearArista);
-
-
-
-
 		mapa = new JMapViewer();
 		mapa.setBounds(0, 0, 786, 457);
 		panelControles.add(mapa);
@@ -258,10 +259,15 @@ public class PantallaMapa {
 					HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoConPrim = presentadorMapa.crearArbolGeneradorMinimoPrim();
 					Color color = Color.RED;
 					actualizarGrafoEnMapa(HashMapNuevoGrafoConPrim, color);
-					lblEncuentrosIntermedios.setVisible(true);
-					lblEncuentrosIntermedios.setText("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
-
-//					textFieldParaEncuentrosIntermedios.setText(presentadorMapa.encuentrosIntermedios());
+					if(presentadorMapa.encuentrosIntermedios() != null ) {
+						lblEncuentrosIntermedios.setText("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
+						lblEncuentrosIntermedios.setVisible(true);
+					}else {
+						JOptionPane.showMessageDialog(null, "Error: No se puede cargar los encuentros intermedios");
+						lblEncuentrosIntermedios.setVisible(false);
+					}
+					
+//					
 					
 				}else {
 					presentadorMapa.crearArbolGeneradorMinimoKruskal();
@@ -283,8 +289,7 @@ public class PantallaMapa {
 				actualizarGrafoEnMapa(hashMapVerticesYVecinos,color);
 				lblEncuentrosIntermedios.setText(null);
 				lblEncuentrosIntermedios.setVisible(false);
-//				System.out.print("anda");
-//				System.out.print(hashMapVerticesYVecinos.toString());
+
 			}
 		});
 		btnRestablecerGrafo.setBounds(548, 529, 177, 26);
@@ -328,10 +333,13 @@ public class PantallaMapa {
 
 						HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Double>>();
 						auxiliarHashMapVecinos =presentadorMapa.devolverGrafoArchivo();
-
+						
 						//Limpio las hashmap locales
 						hashMapVerticesYVecinos.clear();
 						hashMapVertices.clear();
+						
+						//Borro las imagenes residuales, si existieran
+						limpiarJLabels(mapa);
 
 						//Dibujo los vertices
 						actualizarMarcadores(auxHashMapCoordenadas);
@@ -365,12 +373,22 @@ public class PantallaMapa {
 			ArrayList<Double> valor = entry.getValue();
 			Double coordenadaDoubleX = valor.get(0);
 			Double coordenadaDoubleY = valor.get(1);
-			ActualizarMarcadoresEnMapa(coordenadaDoubleX , coordenadaDoubleY, nombreVertice);
+			colocarMarcadoresEnMapa(coordenadaDoubleX , coordenadaDoubleY, nombreVertice);
 		}
 	}
-	private void ActualizarMarcadoresEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
+	private void colocarMarcadoresEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
 		Coordinate coordenadaVertice = new Coordinate(CoordenadasX, CoordenadasY);
 		MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, coordenadaVertice);
+		
+		//Obtengo posicion en la pantalla!!!!!!!
+		Point posicionEnPantalla = mapa.getMapPosition(coordenadaVertice);
+		JLabel jlabelImagen = new JLabel();
+		jlabelImagen.setBounds(posicionEnPantalla.x, posicionEnPantalla.y, 30, 30);
+		ImageIcon imagenEscaladaALabel = new ImageIcon(iconEspia.getImage().getScaledInstance(jlabelImagen.getWidth(), jlabelImagen.getHeight(), Image.SCALE_SMOOTH));
+		jlabelImagen.setIcon(imagenEscaladaALabel);
+		mapa.add(jlabelImagen);
+		//!!!!!!!!!!!
+		
 		verticeEnMapa.getStyle().setBackColor(Color.yellow);
 		verticeEnMapa.getStyle().setColor(Color.yellow);
 		mapa.addMapMarker(verticeEnMapa);
@@ -417,6 +435,21 @@ public class PantallaMapa {
 		mapa.addMapPolygon(arista);
 		System.out.println(hashMapVerticesYVecinos);
 	}
+	
+	  private static void limpiarJLabels(JMapViewer mapa) {
+	        Component[] componentes = mapa.getComponents();
+	        
+	        for (Component componente : componentes) {
+	     
+	            if (componente instanceof JLabel) {
+	                mapa.remove(componente); 
+	            }
+	        }
+
+	 
+	        mapa.revalidate();
+	        mapa.repaint();
+	    }
 	//COLOCA TEXTFIELDS!!!!!!!!!!!!!!!!!
 	private void colocarTexfields() {
 		

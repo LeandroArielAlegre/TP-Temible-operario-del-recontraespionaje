@@ -39,7 +39,7 @@ public ArchivoJSON leerJSON(String archivo) {
     Gson gson = new Gson();
     ArchivoJSON ret = null;
 
-    // Ruta relativa al directorio "resource" dentro del proyecto
+    // Ruta relativa al directorio "resources" dentro del proyecto
     String ruta = System.getProperty("user.dir") + "/src/resources/";
 
     try {
