@@ -17,7 +17,7 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 
-//import Modelo.Sonido;
+import Modelo.Sonido;
 import Presentador.PresentadorMapa;
 
 import javax.swing.Icon;
@@ -50,7 +50,7 @@ public class PantallaMapa {
 
 	private JFrame frame;
 	private JMapViewer mapa;
-//	private Sonido sonido;
+	private Sonido sonido;
 	private Coordinate mapaActual = new Coordinate(-34.521, -58.719);
 	private int zoomActual = 12;
 	private PresentadorMapa presentadorMapa;
@@ -106,8 +106,8 @@ public class PantallaMapa {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.getContentPane().setBackground(new Color(128, 0, 0));
-//		sonido = new Sonido();
+		frame.getContentPane().setBackground(new Color(0, 0, 0));
+		sonido = new Sonido();
 		hashMapVertices = new HashMap<>();
 		hashMapVerticesYVecinos = new HashMap<>();
 		presentadorMapa = new PresentadorMapa();
@@ -118,14 +118,14 @@ public class PantallaMapa {
 		//panelcontrol
 		panelControles = new JPanel();
 		panelControles.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panelControles.setBackground(new Color(164, 0, 4));
+		panelControles.setBackground(new Color(74, 102, 232));
 		panelControles.setBounds(10, 11, 786, 615);
 		panelControles.setLayout(null);
 		frame.getContentPane().add(panelControles);
 	
 		
 
-		//sonido.reproducirSonido("/resources/espiasTheme.wav", "menu");
+		sonido.reproducirSonido("/resources/espiasTheme.wav", "menu");
 
 		JButton btnCrearVertice = new JButton("Crear vértice ");
 		btnCrearVertice.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -212,6 +212,7 @@ public class PantallaMapa {
 		//mapa.add(btnCrearArista);
 		panelControles.add(btnCrearArista);
 		mapa = new JMapViewer();
+		mapa.setBorder(new LineBorder(new Color(120, 143, 235), 8));
 		mapa.setBounds(0, 0, 786, 457);
 		panelControles.add(mapa);
 		mapa.setFocusable(false);
@@ -251,7 +252,7 @@ public class PantallaMapa {
 		JLabel lblEncuentrosIntermedios = new JLabel("");
 		lblEncuentrosIntermedios.setVerticalAlignment(SwingConstants.TOP);
 		lblEncuentrosIntermedios.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		lblEncuentrosIntermedios.setBorder(new LineBorder(new Color(0, 0, 0)));
+		lblEncuentrosIntermedios.setBorder(new LineBorder(new Color(0, 0, 0), 4));
 		lblEncuentrosIntermedios.setFocusable(false);
 		lblEncuentrosIntermedios.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEncuentrosIntermedios.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -402,34 +403,38 @@ public class PantallaMapa {
 		panelControles.add(btnCargarEspias);
 		
 		JLabel lblindicativoNombreDeVértice = new JLabel("Nombre de Vértice ");
+		lblindicativoNombreDeVértice.setForeground(new Color(255, 255, 255));
 		lblindicativoNombreDeVértice.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblindicativoNombreDeVértice.setBounds(10, 472, 115, 14);
 		panelControles.add(lblindicativoNombreDeVértice);
 		
 		JLabel lblindicativoVérticeOrigen = new JLabel("Vértice origen");
+		lblindicativoVérticeOrigen.setForeground(new Color(255, 255, 255));
 		lblindicativoVérticeOrigen.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblindicativoVérticeOrigen.setBounds(230, 472, 79, 14);
 		panelControles.add(lblindicativoVérticeOrigen);
 		
 		JLabel lblindicativoVerticeDestino = new JLabel("Vértice destino");
+		lblindicativoVerticeDestino.setForeground(new Color(255, 255, 255));
 		lblindicativoVerticeDestino.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblindicativoVerticeDestino.setBounds(230, 514, 86, 14);
 		panelControles.add(lblindicativoVerticeDestino);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBackground(new Color(128, 128, 128));
+		separator.setBackground(new Color(17, 37, 132));
 		separator.setOpaque(true);
 		separator.setBounds(135, 457, 85, 157);
 		panelControles.add(separator);
 		
 		JLabel lblPeso = new JLabel("Peso");
+		lblPeso.setForeground(new Color(255, 255, 255));
 		lblPeso.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblPeso.setBounds(354, 472, 27, 14);
 		panelControles.add(lblPeso);
 		
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setOpaque(true);
-		separator_1.setBackground(Color.GRAY);
+		separator_1.setBackground(new Color(17, 37, 132));
 		separator_1.setBounds(422, 457, 85, 157);
 		panelControles.add(separator_1);
 
