@@ -40,7 +40,9 @@ public class ArbolGenerador extends Grafo {
 		
 		visitados.add(origen);
 		agmPrim.agregarVertice(origen);
-
+		sb.append("Arboles intermedios");
+		sb.append("\n");
+		
 		while (visitados.size() < grafo.cantidadDeVertices()) {
 			String mejorOrigen = null;
 			String mejorDestino = null;
@@ -72,13 +74,18 @@ public class ArbolGenerador extends Grafo {
 				sb.append("Árbol intermedio (agregando arista " + mejorOrigen + " - " + mejorDestino + "):");
 				sb.append("\n");
 //				sb.append("\n");
-				sb.append(agmPrim.toString());
+				
 				sb.append("\n");
 //				sb.append("\n");
 			} else {
 				break; // No hay más aristas disponibles
 			}
 		}
+		sb.append("Vertices y sus vecinos");
+		sb.append("\n");
+		
+		sb.append(agmPrim.toString());
+		
 		this.encuentrosIntermedios=sb.toString();
 		
 		return agmPrim;

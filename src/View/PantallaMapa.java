@@ -43,6 +43,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+import javax.swing.JSeparator;
+import java.awt.ComponentOrientation;
 
 public class PantallaMapa {
 
@@ -61,8 +63,8 @@ public class PantallaMapa {
 	private HashMap <String ,Coordinate> hashMapVertices;
 	private HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos;
 	private JButton btnCrearArista;
-	private JTextField textFieldVertice2;
-	private JTextField textFieldVertice1;
+	private JTextField textFieldVerticeB;
+	private JTextField textFieldVerticeA;
 	private JTextField textFieldProbabilidad;
 	private JButton btnCargarEspias;
 	URL urlEspia = getClass().getClassLoader().getResource("resources/espia.png");
@@ -104,6 +106,7 @@ public class PantallaMapa {
 	 */
 	private void initialize() {
 		frame = new JFrame();
+		frame.getContentPane().setBackground(new Color(128, 0, 0));
 //		sonido = new Sonido();
 		hashMapVertices = new HashMap<>();
 		hashMapVerticesYVecinos = new HashMap<>();
@@ -114,6 +117,8 @@ public class PantallaMapa {
 		
 		//panelcontrol
 		panelControles = new JPanel();
+		panelControles.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panelControles.setBackground(new Color(164, 0, 4));
 		panelControles.setBounds(10, 11, 786, 615);
 		panelControles.setLayout(null);
 		frame.getContentPane().add(panelControles);
@@ -122,8 +127,12 @@ public class PantallaMapa {
 
 		//sonido.reproducirSonido("/resources/espiasTheme.wav", "menu");
 
-		JButton btnCrearVertice = new JButton("Crea un vertice");
-		btnCrearVertice.setBounds(26, 542, 178, 44);
+		JButton btnCrearVertice = new JButton("Crear vértice ");
+		btnCrearVertice.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnCrearVertice.setHorizontalTextPosition(SwingConstants.LEFT);
+		btnCrearVertice.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnCrearVertice.setFocusable(false);
+		btnCrearVertice.setBounds(20, 560, 86, 44);
 		//mapa.add(btnCrearVertice);
 		panelControles.add(btnCrearVertice);
 		btnCrearVertice.addActionListener(new ActionListener() {
@@ -153,17 +162,21 @@ public class PantallaMapa {
 
 		//BOTON crear arista
 
-		btnCrearArista = new JButton("Crea una arista");
+		btnCrearArista = new JButton("Crear arista");
+		btnCrearArista.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnCrearArista.setHorizontalTextPosition(SwingConstants.LEFT);
+		btnCrearArista.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnCrearArista.setFocusable(false);
 		btnCrearArista.addActionListener(new ActionListener() 
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				if(textFieldVertice1.getText() != null  
-						&& textFieldVertice2.getText() !=null 
+				if(textFieldVerticeA.getText() != null  
+						&& textFieldVerticeB.getText() !=null 
 						&& textFieldProbabilidad.getText() != null) 
 				{
-					String nombreVertice1 = textFieldVertice1.getText().toString();
-					String nombreVertice2 = textFieldVertice2.getText().toString();
+					String nombreVertice1 = textFieldVerticeA.getText().toString();
+					String nombreVertice2 = textFieldVerticeB.getText().toString();
 					try {
 						Double probabilidad = Double.parseDouble(textFieldProbabilidad.getText());
 						if(hashMapVertices.containsKey(nombreVertice1) && hashMapVertices.containsKey(nombreVertice2) 
@@ -173,8 +186,8 @@ public class PantallaMapa {
 							if(!presentadorMapa.existeArista(nombreVertice1, nombreVertice2)) 
 							{
 								crearAristaEnMapa(nombreVertice1, hashMapVertices.get(nombreVertice1),nombreVertice2, hashMapVertices.get(nombreVertice2), probabilidad);
-								textFieldVertice1.setText("");
-								textFieldVertice2.setText("");
+								textFieldVerticeA.setText("");
+								textFieldVerticeB.setText("");
 								textFieldProbabilidad.setText("");
 							}else {
 								JOptionPane.showMessageDialog(null, "No es posible crear Arista entre " + nombreVertice1 + " y " + nombreVertice2);
@@ -195,7 +208,7 @@ public class PantallaMapa {
 
 			}
 		});
-		btnCrearArista.setBounds(243, 542, 148, 44);
+		btnCrearArista.setBounds(230, 560, 86, 44);
 		//mapa.add(btnCrearArista);
 		panelControles.add(btnCrearArista);
 		mapa = new JMapViewer();
@@ -236,10 +249,12 @@ public class PantallaMapa {
 		};
 		
 		JLabel lblEncuentrosIntermedios = new JLabel("");
+		lblEncuentrosIntermedios.setVerticalAlignment(SwingConstants.TOP);
+		lblEncuentrosIntermedios.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		lblEncuentrosIntermedios.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblEncuentrosIntermedios.setFocusable(false);
 		lblEncuentrosIntermedios.setHorizontalAlignment(SwingConstants.CENTER);
-		lblEncuentrosIntermedios.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		lblEncuentrosIntermedios.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblEncuentrosIntermedios.setOpaque(true);
 		lblEncuentrosIntermedios.setVisible(false);
 		lblEncuentrosIntermedios.setBounds(10, 11, 233, 435);
@@ -249,14 +264,20 @@ public class PantallaMapa {
 
 		//Combobox
 		JComboBox<String> comboBoxSeleccionAlgoritmo = new JComboBox<>(new String[] {"Algoritmo De Prim", "Algoritmo de Kruskal"});
+		comboBoxSeleccionAlgoritmo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		comboBoxSeleccionAlgoritmo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		comboBoxSeleccionAlgoritmo.setFocusable(false);
-		comboBoxSeleccionAlgoritmo.setBounds(569, 466, 137, 26);
+		comboBoxSeleccionAlgoritmo.setBounds(588, 469, 137, 20);
 		panelControles.add(comboBoxSeleccionAlgoritmo);
 
 
 
 		//BOTON DE ARBOL GENERADOR MINIMO + COMBOBOX
-		JButton btnAplicarAlgoritmo = new JButton("Generar Arbol generador minimo");
+		JButton btnAplicarAlgoritmo = new JButton("Generar Arbol generador mínimo");
+		btnAplicarAlgoritmo.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnAplicarAlgoritmo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnAplicarAlgoritmo.setHorizontalAlignment(SwingConstants.LEFT);
+		btnAplicarAlgoritmo.setFocusable(false);
 		btnAplicarAlgoritmo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//GUARDO MI INSTANCIA DE GRAFO ACTUAL PARA NO PERDERLA
@@ -287,10 +308,13 @@ public class PantallaMapa {
 
 			}
 		});
-		btnAplicarAlgoritmo.setBounds(538, 493, 202, 34);
+		btnAplicarAlgoritmo.setBounds(561, 493, 189, 20);
 		panelControles.add(btnAplicarAlgoritmo);
 
 		JButton btnRestablecerGrafo = new JButton("Restablecer Valores");
+		btnRestablecerGrafo.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnRestablecerGrafo.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnRestablecerGrafo.setFocusable(false);
 		btnRestablecerGrafo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -302,10 +326,14 @@ public class PantallaMapa {
 
 			}
 		});
-		btnRestablecerGrafo.setBounds(548, 529, 177, 26);
+		btnRestablecerGrafo.setBounds(561, 529, 189, 20);
 		panelControles.add(btnRestablecerGrafo);
 
 		JButton btnGuardar = new JButton("Guardar Grafo");
+		btnGuardar.setHorizontalAlignment(SwingConstants.LEFT);
+		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnGuardar.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnGuardar.setFocusable(false);
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombreArchivo =guardarEspias();
@@ -323,10 +351,14 @@ public class PantallaMapa {
 
 			}
 		});
-		btnGuardar.setBounds(547, 552, 178, 25);
+		btnGuardar.setBounds(517, 584, 86, 20);
 		panelControles.add(btnGuardar);
 
 		btnCargarEspias = new JButton("Cargar Grafo");
+		btnCargarEspias.setHorizontalAlignment(SwingConstants.LEFT);
+		btnCargarEspias.setFont(new Font("Tahoma", Font.BOLD, 11));
+		btnCargarEspias.setBorder(new LineBorder(new Color(0, 0, 0)));
+		btnCargarEspias.setFocusable(false);
 		btnCargarEspias.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombreArchivo =cargarEspias();
@@ -366,8 +398,40 @@ public class PantallaMapa {
 				}
 			}
 		});
-		btnCargarEspias.setBounds(538, 581, 188, 23);
+		btnCargarEspias.setBounds(690, 584, 86, 20);
 		panelControles.add(btnCargarEspias);
+		
+		JLabel lblindicativoNombreDeVértice = new JLabel("Nombre de Vértice ");
+		lblindicativoNombreDeVértice.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblindicativoNombreDeVértice.setBounds(10, 472, 115, 14);
+		panelControles.add(lblindicativoNombreDeVértice);
+		
+		JLabel lblindicativoVérticeOrigen = new JLabel("Vértice origen");
+		lblindicativoVérticeOrigen.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblindicativoVérticeOrigen.setBounds(230, 472, 79, 14);
+		panelControles.add(lblindicativoVérticeOrigen);
+		
+		JLabel lblindicativoVerticeDestino = new JLabel("Vértice destino");
+		lblindicativoVerticeDestino.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblindicativoVerticeDestino.setBounds(230, 514, 86, 14);
+		panelControles.add(lblindicativoVerticeDestino);
+		
+		JSeparator separator = new JSeparator();
+		separator.setBackground(new Color(128, 128, 128));
+		separator.setOpaque(true);
+		separator.setBounds(135, 457, 85, 157);
+		panelControles.add(separator);
+		
+		JLabel lblPeso = new JLabel("Peso");
+		lblPeso.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblPeso.setBounds(354, 472, 27, 14);
+		panelControles.add(lblPeso);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOpaque(true);
+		separator_1.setBackground(Color.GRAY);
+		separator_1.setBounds(422, 457, 85, 157);
+		panelControles.add(separator_1);
 
 		mapa.addMouseWheelListener(new MouseWheelListener() {
 			@Override
@@ -497,34 +561,38 @@ public class PantallaMapa {
 	private void colocarTexfields() {
 		
 		textFieldProbabilidad = new JTextField();
-		textFieldProbabilidad.setBounds(422, 493, 86, 20);
+		textFieldProbabilidad.setBorder(new LineBorder(new Color(0, 0, 0)));
+		textFieldProbabilidad.setBounds(326, 493, 86, 20);
 		panelControles.add(textFieldProbabilidad);
 		textFieldProbabilidad.setColumns(10);
 
 		textfieldNombreVertice = new JTextField();
+		textfieldNombreVertice.setBorder(new LineBorder(new Color(0, 0, 0)));
 
 		textfieldNombreVertice.setToolTipText("");
 
-		textfieldNombreVertice.setBounds(26, 511, 173, 20);
+		textfieldNombreVertice.setBounds(20, 493, 86, 20);
 
 		//mapa.add(textfieldNombreVertice);
 		panelControles.add(textfieldNombreVertice);
 		textfieldNombreVertice.setColumns(10);
 
-		textFieldVertice2 = new JTextField();
+		textFieldVerticeB = new JTextField();
+		textFieldVerticeB.setBorder(new LineBorder(new Color(0, 0, 0)));
 
-		textFieldVertice2.setBounds(243, 511, 178, 22);
+		textFieldVerticeB.setBounds(230, 529, 86, 20);
 		//mapa.add(textFieldVertice2);
-		panelControles.add(textFieldVertice2);
-		textFieldVertice2.setColumns(10);
+		panelControles.add(textFieldVerticeB);
+		textFieldVerticeB.setColumns(10);
 
-		textFieldVertice1 = new JTextField();
+		textFieldVerticeA = new JTextField();
+		textFieldVerticeA.setBorder(new LineBorder(new Color(0, 0, 0)));
 
 
-		textFieldVertice1.setBounds(243, 468, 178, 23);
+		textFieldVerticeA.setBounds(230, 493, 86, 20);
 		//mapa.add(textFieldVertice1);
-		panelControles.add(textFieldVertice1);
-		textFieldVertice1.setColumns(10);
+		panelControles.add(textFieldVerticeA);
+		textFieldVerticeA.setColumns(10);
 	}
 
 	//La View Tiene sus propios metodos para representar marcadores en la pantalla
