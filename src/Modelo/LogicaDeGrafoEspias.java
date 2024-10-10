@@ -73,8 +73,23 @@ public class LogicaDeGrafoEspias {
 
 	}
 
-	public void crearArbolGeneradorMinimoKruskal() {
-		// TODO Auto-generated method stub
+	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoKruskal() {
+		
+		try {
+			Grafo grafoEspiasKruskal = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoKruskal();
+			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasKruskal.devolverGrafo();
+
+			return hashMapVerticesYVecinos;
+
+		} catch (IllegalArgumentException e) {
+			System.out.println("Error:  " + e.getMessage());
+			return null;
+		} catch (Exception e) {
+			System.out.println("Error inesperado: " + e.getMessage());
+			return null;
+		}
+	
+		
 
 	}
 

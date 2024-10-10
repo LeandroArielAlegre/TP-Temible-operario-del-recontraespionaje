@@ -1,15 +1,17 @@
 package Modelo;
 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
-public class Grafo implements Serializable {
+
+public class Grafo  {
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	
 	// Mapa de nombres de vértices a sus índices
     private HashMap<String, Integer> nombresAIndices;
     // Mapa de índices a nombres de vértices
@@ -100,11 +102,11 @@ public class Grafo implements Serializable {
     	return grafo.containsKey(vertice);
     }
     
-    public int obtenerPesoArista(String nombre1,String nombre2) {
+    public Double obtenerPesoArista(String nombre1,String nombre2) {
     	if(existeArista(nombre1,nombre2)) {
-    		return grafo.get(nombre1).get(nombre2).intValue();
+    		return grafo.get(nombre1).get(nombre2).doubleValue();
     	}
-    	return 0;
+    	return 0.0;
     }
     public int tamano() {
         return grafo.size();
@@ -135,6 +137,46 @@ public class Grafo implements Serializable {
             ret.put(entry.getKey(), entry.getValue());
         }
         return ret;
+    }
+    
+    
+    
+   
+    public HashMap<ArrayList<String>, Double> conjuntoDeAristasYSuPeso() {
+        HashMap<ArrayList<String>, Double> ret = new HashMap<ArrayList<String>, Double>();
+
+        for (String vertice1 : grafo.keySet()) {
+            HashMap<String, Double> vecinosConPeso = grafo.get(vertice1);
+
+            for (Map.Entry<String, Double> entry : vecinosConPeso.entrySet()) {
+                String vertice2 = entry.getKey();
+                Double peso = entry.getValue();
+
+                // Aseguramos que vertice1 sea lexicográficamente menor que vertice2
+                if (vertice1.compareTo(vertice2) < 0) {
+                    ArrayList<String> listaDeVertices = new ArrayList<String>();
+                    listaDeVertices.add(vertice1);
+                    listaDeVertices.add(vertice2);
+
+                    // Solo agregamos el par si no existe ya en el mapa
+                    if (!ret.containsKey(listaDeVertices)) {
+                        ret.put(listaDeVertices, peso);
+                    }
+                }
+            }
+        }
+
+        return ret;
+    }
+    
+    public Grafo devolverGrafoInconexo() {
+    	Grafo nuevoGrafo = new Grafo();
+    	for (Entry<String, HashMap<String, Double>> vertices : grafo.entrySet()) {
+			String vertice = vertices.getKey();
+			nuevoGrafo.agregarVertice(vertice);
+		}
+    	
+    	return nuevoGrafo;
     }
     
 

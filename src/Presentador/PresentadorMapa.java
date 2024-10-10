@@ -46,14 +46,10 @@ public class PresentadorMapa {
 		
 	}
 	
-//	public HashMap<String, HashMap<String,Double>> deshacerAlgoritmo() {
-//		HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = logicaDeGrafoEspias.deshacerAlgoritmo();
-//		return hashMapVerticesYVecinos;
-//	}
 	
-	public boolean crearArbolGeneradorMinimoKruskal() {
-		logicaDeGrafoEspias.crearArbolGeneradorMinimoKruskal();
-		return true;
+	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoKruskal() {
+		HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = logicaDeGrafoEspias.crearArbolGeneradorMinimoKruskal();
+		return hashMapVerticesYVecinos;
 		
 	}
 	

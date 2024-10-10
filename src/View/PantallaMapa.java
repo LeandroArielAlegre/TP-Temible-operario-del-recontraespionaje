@@ -17,7 +17,7 @@ import org.openstreetmap.gui.jmapviewer.MapMarkerDot;
 import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 
 
-import Modelo.Sonido;
+//import Modelo.Sonido;
 import Presentador.PresentadorMapa;
 
 import javax.swing.Icon;
@@ -50,7 +50,7 @@ public class PantallaMapa {
 
 	private JFrame frame;
 	private JMapViewer mapa;
-	private Sonido sonido;
+	//private Sonido sonido;
 	private Coordinate mapaActual = new Coordinate(-34.521, -58.719);
 	private int zoomActual = 12;
 	private PresentadorMapa presentadorMapa;
@@ -107,7 +107,7 @@ public class PantallaMapa {
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(0, 0, 0));
-		sonido = new Sonido();
+		//sonido = new Sonido();
 		hashMapVertices = new HashMap<>();
 		hashMapVerticesYVecinos = new HashMap<>();
 		presentadorMapa = new PresentadorMapa();
@@ -125,7 +125,7 @@ public class PantallaMapa {
 	
 		
 
-		sonido.reproducirSonido("/resources/espiasTheme.wav", "menu");
+		//sonido.reproducirSonido("/resources/espiasTheme.wav", "menu");
 
 		JButton btnCrearVertice = new JButton("Crear vértice ");
 		btnCrearVertice.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -286,6 +286,9 @@ public class PantallaMapa {
 //				hashMapVerticesYVecinosAux=hashMapVerticesYVecinos;
 				
 				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 0) {
+					//Limpio la pantalla primero
+					refrescarVista(lblEncuentrosIntermedios);
+					
 					HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoConPrim = presentadorMapa.crearArbolGeneradorMinimoPrim();
 					Color color = Color.RED;
 					actualizarGrafoEnMapa(HashMapNuevoGrafoConPrim, color);
@@ -298,12 +301,27 @@ public class PantallaMapa {
 						lblEncuentrosIntermedios.setVisible(false);
 					}
 					
-//					
+				
 					
-				}else {
-					presentadorMapa.crearArbolGeneradorMinimoKruskal();
-					mapa.removeAllMapMarkers();
-					mapa.removeAllMapPolygons();
+				}
+				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 1) {
+					//Limpio la pantalla primero
+					refrescarVista(lblEncuentrosIntermedios);
+					
+					HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoConKruskal = presentadorMapa.crearArbolGeneradorMinimoKruskal();
+					Color color = Color.BLUE;
+					actualizarGrafoEnMapa(HashMapNuevoGrafoConKruskal, color);
+					colocarImagenCartaEnAGM(HashMapNuevoGrafoConKruskal);
+					if(presentadorMapa.encuentrosIntermedios() != null ) {
+						lblEncuentrosIntermedios.setText("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
+						lblEncuentrosIntermedios.setVisible(true);
+					}else {
+						JOptionPane.showMessageDialog(null, "Error: No se puede cargar los encuentros intermedios");
+						lblEncuentrosIntermedios.setVisible(false);
+					}
+					
+					
+					
 				}
 
 
@@ -319,13 +337,10 @@ public class PantallaMapa {
 		btnRestablecerGrafo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				Color color = Color.GREEN;
-				actualizarGrafoEnMapa(hashMapVerticesYVecinos,color);
-				limpiarJLabels(mapa,urlCarta);
-				lblEncuentrosIntermedios.setText(null);
-				lblEncuentrosIntermedios.setVisible(false);
+				refrescarVista(lblEncuentrosIntermedios);
 
 			}
+
 		});
 		btnRestablecerGrafo.setBounds(561, 529, 189, 20);
 		panelControles.add(btnRestablecerGrafo);
@@ -477,6 +492,14 @@ public class PantallaMapa {
 
 	}
 
+	private void refrescarVista(JLabel lblEncuentrosIntermedios) {
+		Color color = Color.GREEN;
+		actualizarGrafoEnMapa(hashMapVerticesYVecinos,color);
+		limpiarJLabels(mapa,urlCarta);
+		lblEncuentrosIntermedios.setText(null);
+		lblEncuentrosIntermedios.setVisible(false);
+	}
+	
 	public void colocarImagenCartaEnAGM(HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoAGM) {
 		for (Entry<String, HashMap<String, Double>> entry : HashMapNuevoGrafoAGM.entrySet()) {
 			String claveVertice1 = entry.getKey();
@@ -544,7 +567,7 @@ public class PantallaMapa {
 		//colocarImagenEnPosicionDeArista(coordenada1, coordenada2);
 		arista.setColor(color);
 		mapa.addMapPolygon(arista);
-		System.out.println(hashMapVerticesYVecinos);
+		
 	}
 	private static void limpiarJLabels(JMapViewer mapa, URL urlAImagenAEliminar) {
 	    Component[] componentes = mapa.getComponents();
@@ -723,7 +746,7 @@ public class PantallaMapa {
 		panel.add(textField);
 
 		int resultado = JOptionPane.showConfirmDialog(null, panel, 
-				"Guardar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+				"Cargar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 		if (resultado == JOptionPane.OK_OPTION) {
 			String nombreArchivo = textField.getText().trim();

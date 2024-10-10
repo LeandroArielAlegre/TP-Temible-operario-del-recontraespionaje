@@ -2,8 +2,10 @@ package Modelo;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 public class ArbolGenerador extends Grafo {
@@ -90,7 +92,85 @@ public class ArbolGenerador extends Grafo {
 		
 		return agmPrim;
 	}
+	
+	
+	public Grafo crearArbolGeneradoMinimoKruskal() {
+		if (!BFS.esConexo(grafo)) 
+		{		
+			throw new IllegalArgumentException("El algoritmo de Kruskal funciona sobre grafos conexos");
+		}
+		
+		Grafo agmKruskal = grafo.devolverGrafoInconexo();
+		StringBuilder sb=new StringBuilder();
+		ArrayList<ArrayList<String>> aristasVisitadas = new ArrayList<>();
+		//Conjunto de aristas:
+		 HashMap<ArrayList<String>, Double> conjuntoDeAristasDeGrafo = new HashMap<ArrayList<String>, Double>();
+		 conjuntoDeAristasDeGrafo = grafo.conjuntoDeAristasYSuPeso();
+		 System.out.println(conjuntoDeAristasDeGrafo);
+		
+		//Machete: Iterar sobre todas las aristas y encontrar el de menor peso, lo encuentro 
+		// y lo agrego a aristVisitidas. En cada iteración consulto cual es el elemento con menor o igual peso
+		//dentro de la lista.
+		//Utilizo BFS para consultar los alcanzables de  algunos de los 2 extremos de la arista
+		//de manera que no se generen circuitos.
+		int i = 0;
+		while(i <= grafo.cantidadDeVertices() -1) {
+			
+			ArrayList<String> aristaDeMenorPeso = devolverAristaConMinimoPeso(conjuntoDeAristasDeGrafo);
+			
+			Set<String> alcanzablesDeGrafoKruskal = BFS.alcanzables(agmKruskal, aristaDeMenorPeso.get(0));
+			if(!alcanzablesDeGrafoKruskal.contains(aristaDeMenorPeso.get(1))) {
+				//Agregar a aristasVisitadas
+				aristasVisitadas.add(aristaDeMenorPeso);
+				//Consulto probabilidad de grafo Original
+				Double peso = grafo.obtenerPesoArista(aristaDeMenorPeso.get(0), aristaDeMenorPeso.get(1));
+				//Lo agrego al grafo
+				
+				agmKruskal.agregarArista(aristaDeMenorPeso.get(0), aristaDeMenorPeso.get(1), peso);
+				//Quito del ConjuntoDeAristasDeGrafo
+				conjuntoDeAristasDeGrafo.remove(aristaDeMenorPeso);
+				//Actualizo encuentro intermedio
+				sb.append("Árbol intermedio (agregando arista " + aristaDeMenorPeso.get(0) + " - " + aristaDeMenorPeso.get(1) + "peso "
+						+ peso +"):");
+				sb.append("\n");
+//				sb.append("\n");
+				
+				sb.append("\n");
+				
+				
+			}else {
+				//Quito del ConjuntoDeAristasDeGrafo
+				//conjuntoDeAristasDeGrafo.remove(aristaDeMenorPeso);
+			}
+			
+			
+			i+=1;
+		}
+		this.encuentrosIntermedios=sb.toString();
+		return agmKruskal;
+	}
 
+	public ArrayList<String> devolverAristaConMinimoPeso(HashMap<ArrayList<String>, Double> conjuntoDeAristasDeGrafo) {
+	    Double minPeso = Double.MAX_VALUE;
+	    ArrayList<String> aristaMinima = null;
+
+	    for (Entry<ArrayList<String>, Double> arista : conjuntoDeAristasDeGrafo.entrySet()) {
+	        ArrayList<String> aristaActual = arista.getKey();
+	        Double pesoActual = arista.getValue();
+
+	        if (pesoActual < minPeso) {
+	            minPeso = pesoActual;
+	            aristaMinima = aristaActual;
+	        }
+	    }
+
+	    return aristaMinima;
+	}
+
+	
+	
+	
+	
 	public void agregarVertice(String vertice) {
 		if (!verificarVertice(vertice)) {
 			throw new IllegalArgumentException("El vértice padre no existe en el árbol.");
