@@ -103,10 +103,12 @@ public class ArbolGenerador extends Grafo {
 		Grafo agmKruskal = grafo.devolverGrafoInconexo();
 		StringBuilder sb=new StringBuilder();
 		ArrayList<ArrayList<String>> aristasVisitadas = new ArrayList<>();
+		sb.append("Arboles intermedios");
+		sb.append("\n");
 		//Conjunto de aristas:
 		 HashMap<ArrayList<String>, Double> conjuntoDeAristasDeGrafo = new HashMap<ArrayList<String>, Double>();
 		 conjuntoDeAristasDeGrafo = grafo.conjuntoDeAristasYSuPeso();
-		 System.out.println(conjuntoDeAristasDeGrafo);
+	
 		
 		//Machete: Iterar sobre todas las aristas y encontrar el de menor peso, lo encuentro 
 		// y lo agrego a aristVisitidas. En cada iteración consulto cual es el elemento con menor o igual peso

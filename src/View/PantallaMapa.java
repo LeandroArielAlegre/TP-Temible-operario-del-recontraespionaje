@@ -20,7 +20,7 @@ import org.openstreetmap.gui.jmapviewer.MapPolygonImpl;
 //import Modelo.Sonido;
 import Presentador.PresentadorMapa;
 
-import javax.swing.Icon;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -38,6 +38,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -119,7 +120,7 @@ public class PantallaMapa {
 		panelControles = new JPanel();
 		panelControles.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panelControles.setBackground(new Color(74, 102, 232));
-		panelControles.setBounds(10, 11, 786, 615);
+		panelControles.setBounds(10, 11, 796, 615);
 		panelControles.setLayout(null);
 		frame.getContentPane().add(panelControles);
 	
@@ -133,7 +134,6 @@ public class PantallaMapa {
 		btnCrearVertice.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCrearVertice.setFocusable(false);
 		btnCrearVertice.setBounds(20, 560, 86, 44);
-		//mapa.add(btnCrearVertice);
 		panelControles.add(btnCrearVertice);
 		btnCrearVertice.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -149,7 +149,7 @@ public class PantallaMapa {
 
 					}
 
-					//Nota!!!! Se deberia agregar mas verificaciones, para que el usuario no meta cualquier valor
+					
 				}else {
 					JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
 				}
@@ -258,8 +258,11 @@ public class PantallaMapa {
 		lblEncuentrosIntermedios.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblEncuentrosIntermedios.setOpaque(true);
 		lblEncuentrosIntermedios.setVisible(false);
-		lblEncuentrosIntermedios.setBounds(10, 11, 233, 435);
-		panelControles.add(lblEncuentrosIntermedios);
+		lblEncuentrosIntermedios.setBounds(790, 11, 210, 435);
+		
+        panelControles.add(lblEncuentrosIntermedios);
+        
+
 		
 		
 
@@ -281,9 +284,7 @@ public class PantallaMapa {
 		btnAplicarAlgoritmo.setFocusable(false);
 		btnAplicarAlgoritmo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//GUARDO MI INSTANCIA DE GRAFO ACTUAL PARA NO PERDERLA
-//				hashMapVerticesYVecinosAux=new HashMap<>();
-//				hashMapVerticesYVecinosAux=hashMapVerticesYVecinos;
+
 				
 				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 0) {
 					//Limpio la pantalla primero
@@ -295,10 +296,12 @@ public class PantallaMapa {
 					colocarImagenCartaEnAGM(HashMapNuevoGrafoConPrim);
 					if(presentadorMapa.encuentrosIntermedios() != null ) {
 						lblEncuentrosIntermedios.setText("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
-						lblEncuentrosIntermedios.setVisible(true);
+						lblEncuentrosIntermedios.setVisible(false);
+						cargarEncuentroIntermedios("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error: No se puede cargar los encuentros intermedios");
 						lblEncuentrosIntermedios.setVisible(false);
+						
 					}
 					
 				
@@ -314,7 +317,8 @@ public class PantallaMapa {
 					colocarImagenCartaEnAGM(HashMapNuevoGrafoConKruskal);
 					if(presentadorMapa.encuentrosIntermedios() != null ) {
 						lblEncuentrosIntermedios.setText("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
-						lblEncuentrosIntermedios.setVisible(true);
+						lblEncuentrosIntermedios.setVisible(false);
+						cargarEncuentroIntermedios("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
 					}else {
 						JOptionPane.showMessageDialog(null, "Error: No se puede cargar los encuentros intermedios");
 						lblEncuentrosIntermedios.setVisible(false);
@@ -338,7 +342,7 @@ public class PantallaMapa {
 			public void actionPerformed(ActionEvent e) {
 
 				refrescarVista(lblEncuentrosIntermedios);
-
+				
 			}
 
 		});
@@ -501,16 +505,24 @@ public class PantallaMapa {
 	}
 	
 	public void colocarImagenCartaEnAGM(HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoAGM) {
-		for (Entry<String, HashMap<String, Double>> entry : HashMapNuevoGrafoAGM.entrySet()) {
-			String claveVertice1 = entry.getKey();
-			HashMap<String, Double> valor = entry.getValue();
-			for (Entry<String, Double> entrada : valor.entrySet()) {
-				String claveVertice2 = entrada.getKey();
-				Coordinate coordenadaVertice1 = hashMapVertices.get(claveVertice1);
-				Coordinate coordenadaVertice2 =hashMapVertices.get(claveVertice2);
-				colocarImagenEnPosicionDeArista(coordenadaVertice1,coordenadaVertice2, urlCarta);
+		
+		if(HashMapNuevoGrafoAGM != null) {
+			for (Entry<String, HashMap<String, Double>> entry : HashMapNuevoGrafoAGM.entrySet()) {
+				String claveVertice1 = entry.getKey();
+				HashMap<String, Double> valor = entry.getValue();
+				for (Entry<String, Double> entrada : valor.entrySet()) {
+					String claveVertice2 = entrada.getKey();
+					Coordinate coordenadaVertice1 = hashMapVertices.get(claveVertice1);
+					Coordinate coordenadaVertice2 =hashMapVertices.get(claveVertice2);
+					colocarImagenEnPosicionDeArista(coordenadaVertice1,coordenadaVertice2, urlCarta);
+				}
 			}
-		}     
+			
+		}else {
+			JOptionPane.showMessageDialog(null, "ERROR: El grafo se encuentra Vacio");
+		}
+		
+		     
 		
 		
 	}
@@ -759,5 +771,20 @@ public class PantallaMapa {
 			return null;
 
 		}
+	}
+	
+	
+	private void  cargarEncuentroIntermedios(String encuentrosIntermedios) {
+
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2, 1));
+		JLabel label = new JLabel("");
+		label.setText(encuentrosIntermedios);
+		panel.add(label);
+
+		
+		 JOptionPane.showMessageDialog(null, panel);
+
+		
 	}
 }
