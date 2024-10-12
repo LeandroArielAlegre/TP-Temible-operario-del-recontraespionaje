@@ -77,7 +77,7 @@ public class EdicionDeAristasTest
 		assertFalse( grafo.existeArista("1", "4") );
 	}
 
-	@Test
+	@Test (expected= IllegalArgumentException.class)
 	public void agregarAristaDosVecesTest()
 	{
 		Grafo grafo = new Grafo();
@@ -85,19 +85,18 @@ public class EdicionDeAristasTest
 		grafo.agregarVertice("3");
 		grafo.agregarArista("2", "3",1.0);
 		grafo.agregarArista("2", "3",0.0);
-
-		assertTrue( grafo.existeArista("2", "3") );
 	}
 	
 	@Test
 	public void eliminarAristaExistenteTest()
 	{
 		Grafo grafo = new Grafo();
+		
 		grafo.agregarVertice("2");
 		grafo.agregarVertice("4");
-		grafo.agregarArista("2", "4",0.0);
-		
+		grafo.agregarArista("2", "4",0.0);		
 		grafo.eliminarArista("2", "4");
+		
 		assertFalse( grafo.existeArista("2", "4") );
 	}
 

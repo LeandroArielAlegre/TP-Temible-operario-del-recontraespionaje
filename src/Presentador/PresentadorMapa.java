@@ -3,7 +3,6 @@ package Presentador;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 import Modelo.LogicaDeGrafoEspias;
 
 public class PresentadorMapa {
@@ -92,6 +91,26 @@ public class PresentadorMapa {
 			System.out.println("Error: " + e.getMessage());
 			return null;
 		}
+	}
+
+	public boolean verificarEntrada(String string, Double coordenadaXGlobal, Double coordenadaYGlobal) {
+		return logicaDeGrafoEspias.verificarEntrada(string,coordenadaXGlobal,coordenadaYGlobal);
+	}
+
+	public boolean verificarEntrada(String verticeA, String verticeB, String probabilidad) {
+
+		return logicaDeGrafoEspias.verificarEntrada(verticeA,verticeB,probabilidad);
+	}
+
+	public Double parsearADouble(String text) {
+		// TODO Auto-generated method stub
+		
+		return logicaDeGrafoEspias.parsearADouble(text);
+	}
+
+	public boolean verificarProbabilidad(Double probabilidad) {
+
+		return logicaDeGrafoEspias.verificarProbabilidad(probabilidad);
 	}
 
 }

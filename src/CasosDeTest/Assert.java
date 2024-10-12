@@ -16,7 +16,15 @@ public class Assert {
         // Verificar que todos los elementos de esperado estén en actual
         return esperado.containsAll(actual);
     }
+    public static boolean iguales(Set<String> esperado, Set<String> actual) {
+        // Verificar que los tamaños sean iguales
+        if (esperado.size() != actual.size()) {
+            return false;
+        }
 
+        // Verificar que todos los elementos de esperado estén en actual
+        return esperado.containsAll(actual);
+    }
 
     public static void assertSetEquals(String mensaje, ArrayList<String> esperado, ArrayList<String> actual) {
         if (!iguales(esperado, actual)) {

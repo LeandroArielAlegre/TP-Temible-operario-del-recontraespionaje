@@ -19,11 +19,11 @@ public class VecinosTest {
         grafo.agregarVertice("4");
         grafo.agregarVertice("5");
         
-        ArrayList<String> empty = new ArrayList<>();
-        assertSetEquals("El vértice 2 debería estar aislado", empty, grafo.vecinosDeVertice("2"));
-        assertSetEquals("El vértice 3 debería estar aislado", empty, grafo.vecinosDeVertice("3"));
-        assertSetEquals("El vértice 4 debería estar aislado", empty, grafo.vecinosDeVertice("4"));
-        assertSetEquals("El vértice 5 debería estar aislado", empty, grafo.vecinosDeVertice("5"));
+        ArrayList<String> vacio = new ArrayList<>();
+        assertSetEquals("El vértice 2 debería estar aislado", vacio, grafo.vecinosDeVertice("2"));
+        assertSetEquals("El vértice 3 debería estar aislado", vacio, grafo.vecinosDeVertice("3"));
+        assertSetEquals("El vértice 4 debería estar aislado", vacio, grafo.vecinosDeVertice("4"));
+        assertSetEquals("El vértice 5 debería estar aislado", vacio, grafo.vecinosDeVertice("5"));
     }
     
     @Test

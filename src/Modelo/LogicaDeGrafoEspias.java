@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+
 public class LogicaDeGrafoEspias {
 	private Grafo grafoEspias;
 	private ArbolGenerador arbolGeneradorMinimo;
@@ -80,7 +81,7 @@ public class LogicaDeGrafoEspias {
 	}
 
 	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoKruskal() {
-		
+
 		try {
 			long comenzarTemporizador = System.nanoTime();
 			Grafo grafoEspiasKruskal = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoKruskal();
@@ -88,19 +89,18 @@ public class LogicaDeGrafoEspias {
 			long finTemporizador = System.nanoTime();
 			long duracion = finTemporizador - comenzarTemporizador;
 			double milisegundos = duracion / 1_000_000.0;
-			//System.out.println("Tiempo de ejecución Arbol Generador Kruskal " + milisegundos + " milisegundos");
+		
 			this.tiempoEjecucionKruskal =String.valueOf(milisegundos);
 			return hashMapVerticesYVecinos;
 
 		} catch (IllegalArgumentException e) {
-			//System.out.println("Error:  " + e.getMessage());
+
 			return null;
 		} catch (Exception e) {
-			//System.out.println("Error inesperado: " + e.getMessage());
 			return null;
 		}
-	
-		
+
+
 
 	}
 
@@ -111,13 +111,12 @@ public class LogicaDeGrafoEspias {
 			archivoJSON.generarJSON(NombreArchivo);
 
 		} catch (IllegalArgumentException e) {
-			//System.out.println("Error: " + e.getMessage());
 			return false;
 		} catch (Exception e) {
-			//System.out.println("Error inesperado: " + e.getMessage());
+
 			return false;
 		}
-		return false;
+		return true;
 
 	}
 
@@ -144,18 +143,18 @@ public class LogicaDeGrafoEspias {
 			return false;
 		}
 	}
-	
+
 	public HashMap<String, HashMap<String,Double>> devolverGrafoArchivo(){
-		
+
 		return this.archivoJSON.getGrafo();
 	}
-	
+
 	public HashMap<String,ArrayList<Double>> devolverGrafoPosicionesArchivo(){
-		
+
 		return this.archivoJSON.getGrafoPosiciones();
 	}
-	
-	
+
+
 	private void crearVerticesDesdeArchivo( HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos) {
 
 		for (Entry<String, HashMap<String, Double>> entry : auxiliarHashMapVecinos.entrySet()) {
@@ -177,18 +176,49 @@ public class LogicaDeGrafoEspias {
 		}
 
 	}
-	
-	
+
+
 	public String devolverTiempoDeEjecucionDeAGM() {
 		String tiempoDeEjecucion = "Tiempo AGM PRIM: " + tiempoEjecucionPrim
 				+ "-" + "Tiempo AGM KRUSKAL: " + tiempoEjecucionKruskal;
-		
+
 		return tiempoDeEjecucion;
 	}
-	
+
 	public Grafo devolverGrafo() {
-        return this.grafoEspias;
-    }
+		return this.grafoEspias;
+	}
 
+	public boolean verificarEntrada(String string, Double coordenadaXGlobal, Double coordenadaYGlobal) {
 
+		if(string != null && string.length() != 0) 
+		{
+			if(coordenadaXGlobal != null && coordenadaYGlobal != null) 
+			{
+
+				return true;
+
+			}				
+		}
+		return false;
+	}
+
+	public boolean verificarEntrada(String verticeA, String verticeB, String probabilidad) {
+		if(verticeA!= null && verticeB!=null && probabilidad!= null) 
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public Double parsearADouble(String text) {
+		// TODO Auto-generated method stub
+		Double probabilidad=Double.parseDouble(text);
+		return probabilidad;
+	}
+
+	public boolean verificarProbabilidad(Double probabilidad) {
+		
+		return probabilidad >= 0 && probabilidad <=1 ;
+	}
 }
