@@ -69,6 +69,10 @@ public class PresentadorMapa {
 	public String encuentrosIntermedios() {
 		return logicaDeGrafoEspias.encuentrosIntermedios();
 	}
+	
+	public String devolverTiempoDeEjecucionDeAGM() {
+		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGM();
+	}
 
 	public HashMap<String, ArrayList<Double>> devolverGrafoPosicionesArchivo() {
 		try {

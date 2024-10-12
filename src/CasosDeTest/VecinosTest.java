@@ -1,71 +1,58 @@
 package CasosDeTest;
 
 import static org.junit.Assert.*;
-
+import static CasosDeTest.Assert.assertSetEquals;
 import org.junit.Test;
-
 import Modelo.Grafo;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public class VecinosTest
-{
-//	@Test(expected = IllegalArgumentException.class)
-//	public void verticeNegativoTest()
-//	{
-//		Grafo grafo = new Grafo(5);
-//		grafo.vecinosDeVertice(-1);
-//	}
+public class VecinosTest {
 
-//	@Test(expected = IllegalArgumentException.class)
-//	public void verticeExcedidoTest()
-//	{
-//		Grafo grafo = new Grafo(5);
-//		grafo.vecinosDeVertice(5);
-//	}
-
-	@Test
-	public void todosAisladosTest()
-	{
-		Grafo grafo = new Grafo();
-		grafo.agregarVertice("2");
-		grafo.agregarVertice("3");
-		grafo.agregarVertice("4");
-		grafo.agregarVertice("5");
-		assertEquals(0, grafo.vecinosDeVertice("2").size());
-		assertEquals(0, grafo.vecinosDeVertice("3").size());
-		assertEquals(0, grafo.vecinosDeVertice("4").size());
-		assertEquals(0, grafo.vecinosDeVertice("5").size());
-	}
-	
-	@Test
-	public void verticeUniversalTest()
-	{
-		Grafo grafo = new Grafo();
-		grafo.agregarVertice("0");
-		grafo.agregarVertice("1");
-		grafo.agregarVertice("2");
-		grafo.agregarVertice("3");
-		grafo.agregarArista("1", "0",0.0);
-		grafo.agregarArista("1", "2",0.0);
-		grafo.agregarArista("1", "3",0.0);
-		
-		String[] esperado = {"0", "2", "3"};
-		Assert.iguales(esperado, grafo.vecinosDeVertice("1"));
-	}
-	
-	@Test
-	public void verticeNormalTest()
-	{
-		Grafo grafo = new Grafo();
-		grafo.agregarVertice("1");
-		grafo.agregarVertice("2");
-		grafo.agregarVertice("3");
-		grafo.agregarVertice("4");
-		grafo.agregarArista("1", "3",1.0);
-		grafo.agregarArista("2", "3",1.0);
-		grafo.agregarArista("2", "4",1.0);
-		
-		String[] esperados = {"1", "2"};
-		Assert.iguales(esperados, grafo.vecinosDeVertice("3"));
-	}
+    @Test
+    public void todosAisladosTest() {
+        Grafo grafo = new Grafo();
+        grafo.agregarVertice("2");
+        grafo.agregarVertice("3");
+        grafo.agregarVertice("4");
+        grafo.agregarVertice("5");
+        
+        ArrayList<String> empty = new ArrayList<>();
+        assertSetEquals("El vértice 2 debería estar aislado", empty, grafo.vecinosDeVertice("2"));
+        assertSetEquals("El vértice 3 debería estar aislado", empty, grafo.vecinosDeVertice("3"));
+        assertSetEquals("El vértice 4 debería estar aislado", empty, grafo.vecinosDeVertice("4"));
+        assertSetEquals("El vértice 5 debería estar aislado", empty, grafo.vecinosDeVertice("5"));
+    }
+    
+    @Test
+    public void verticeUniversalTest() {
+        Grafo grafo = new Grafo();
+        grafo.agregarVertice("0");
+        grafo.agregarVertice("1");
+        grafo.agregarVertice("2");
+        grafo.agregarVertice("3");
+        grafo.agregarArista("1", "0", 0.0);
+        grafo.agregarArista("1", "2", 0.0);
+        grafo.agregarArista("1", "3", 0.0);
+        
+        ArrayList<String> esperado = new ArrayList<>(Arrays.asList("0", "2", "3"));
+        assertSetEquals("El vértice 1 debería ser universal", esperado, grafo.vecinosDeVertice("1"));
+    }
+    
+    @Test
+    public void verticeNormalTest() {
+        Grafo grafo = new Grafo();
+        grafo.agregarVertice("1");
+        grafo.agregarVertice("2");
+        grafo.agregarVertice("3");
+        grafo.agregarVertice("4");
+        grafo.agregarArista("1", "3", 1.0);
+        grafo.agregarArista("2", "3", 1.0);
+        grafo.agregarArista("2", "4", 1.0);
+        
+        ArrayList<String> esperados = new ArrayList<>(Arrays.asList("1", "2"));
+        assertSetEquals("El vértice 3 debería tener los vecinos correctos", esperados, grafo.vecinosDeVertice("3"));
+    }
 }
-

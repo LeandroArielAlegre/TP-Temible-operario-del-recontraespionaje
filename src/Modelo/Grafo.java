@@ -51,7 +51,7 @@ public class Grafo  {
         return sb.toString();
     }
     
-    public HashMap<String, HashMap<String,Double>> devolverGrafo() {
+    public HashMap<String, HashMap<String,Double>> getGrafo() {
     	return this.grafo;
     }
     public void agregarVertice(String nombre) {
@@ -77,12 +77,15 @@ public class Grafo  {
             throw new IllegalArgumentException("No se admiten loops");
         }
 
-        if (!existeArista(nombre1, nombre2)) {
-            //Random randomProbabilidad = new Random();
-            //int probabilidadDeEncuentro = randomProbabilidad.nextInt(2);
+        if(existeArista(nombre1, nombre2)) {
+            throw new IllegalArgumentException("La arista ya existe en el grafo");
+
+        }else {
             grafo.get(nombre1).put(nombre2, probabilidad);
             grafo.get(nombre2).put(nombre1, probabilidad);
         }
+
+
     }
 //    !formaCircuito(nombre1,nombre2,)
     public void eliminarArista(String nombre1, String nombre2) {

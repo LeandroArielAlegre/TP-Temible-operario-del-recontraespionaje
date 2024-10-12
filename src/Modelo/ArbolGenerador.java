@@ -12,18 +12,13 @@ public class ArbolGenerador extends Grafo {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private Grafo grafo;
 	private String encuentrosIntermedios;
-	private int cantidadDeNodos;
-	private int cantidadDeAristas;
-	private int longitud;
-	private String raiz;
+	
 	public ArbolGenerador(Grafo grafo) {
 		this.grafo = grafo;
-		cantidadDeNodos=0;
-		cantidadDeAristas=0;
-		longitud=0;
+		
+		
 	}
 
 	    
@@ -32,7 +27,7 @@ public class ArbolGenerador extends Grafo {
 	{	
 		if (!BFS.esConexo(grafo)) 
 		{		
-			throw new IllegalArgumentException("El algoritmo de prim funciona sobre grafos conexos");
+			throw new IllegalArgumentException("El algoritmo de prim solo funciona sobre grafos conexos");
 		}
 		
 		Grafo agmPrim = new Grafo();
@@ -73,7 +68,7 @@ public class ArbolGenerador extends Grafo {
 				// Imprimir el estado actual del AGM
 				
 				
-				sb.append("Árbol intermedio (agregando arista " + mejorOrigen + " - " + mejorDestino + "):");
+				sb.append("Árbol intermedio (agregando arista " + mejorOrigen + " - " + mejorDestino + " - "+ mejorPeso + "):");
 				sb.append("\n");
 //				sb.append("\n");
 				
@@ -89,6 +84,7 @@ public class ArbolGenerador extends Grafo {
 		sb.append(agmPrim.toString());
 		
 		this.encuentrosIntermedios=sb.toString();
+		System.out.println(BFS.obtenerEncuentrosIntermedios(agmPrim));
 		
 		return agmPrim;
 	}
@@ -97,7 +93,7 @@ public class ArbolGenerador extends Grafo {
 	public Grafo crearArbolGeneradoMinimoKruskal() {
 		if (!BFS.esConexo(grafo)) 
 		{		
-			throw new IllegalArgumentException("El algoritmo de Kruskal funciona sobre grafos conexos");
+			throw new IllegalArgumentException("El algoritmo de Kruskal solo funciona sobre grafos conexos");
 		}
 		
 		Grafo agmKruskal = grafo.devolverGrafoInconexo();
@@ -148,6 +144,9 @@ public class ArbolGenerador extends Grafo {
 			
 			i+=1;
 		}
+		sb.append("Vertices y sus vecinos");
+		sb.append("\n");
+		sb.append(agmKruskal.toString());
 		this.encuentrosIntermedios=sb.toString();
 		return agmKruskal;
 	}
@@ -173,68 +172,6 @@ public class ArbolGenerador extends Grafo {
 	
 	
 	
-	public void agregarVertice(String vertice) {
-		if (!verificarVertice(vertice)) {
-			throw new IllegalArgumentException("El vértice padre no existe en el árbol.");
-		}
-		if (estaVacioElGrafo()) {
-			agregarVertice(vertice);
-			this.raiz= vertice;
-			cantidadDeNodos++;
-		}
-		agregarVertice(vertice);
-		cantidadDeNodos++;
-		//        agregarArista(padre, hijo);
-	}
-
-	public void agregarHijo(String padre, String hijo, Double probabilidad) {
-		if (!verificarVertice(padre)) {
-			throw new IllegalArgumentException("El vértice padre no existe en el árbol.");
-		}
-		agregarVertice(hijo);
-		cantidadDeNodos++;
-		agregarArista(padre, hijo, probabilidad);
-		cantidadDeAristas++;
-	}
-
-	public ArrayList<String> obtenerHijos(String padre) {
-		if (!verificarVertice(padre)) {
-			throw new IllegalArgumentException("El vértice padre no existe en el árbol.");
-		}
-		return new ArrayList<String>(vecinosDeVertice(padre));
-	}
-
-	public String obtenerRaiz() {
-		return raiz;
-	}
-
-	public boolean esHoja(String vertice) {
-		if (noEsArbolTrivial()) {
-			return (gradoDeVertice(vertice) == 1 && vertice != raiz);
-		}
-		throw new IllegalArgumentException("El conjunto de vertices definido es trivial y no tiene al menos 2 hojas");
-	}
-	//    public String[] obtenerHojas() {
-	//    	
-	//    }
-	private boolean noEsArbolTrivial() {
-		if (cantidadDeNodos>=2) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public void agregarArista(String i, String j, Double probabilidad) {
-		if (i == j) {
-			throw new IllegalArgumentException("No se permiten bucles en un árbol.");
-		}
-		if (existeArista(i, j)) {
-			throw new IllegalArgumentException("La arista ya existe en el árbol.");
-		}
-
-		super.agregarArista(i, j, probabilidad);
-	}
 
 	public String getEncuentrosIntermedios() {
 		return encuentrosIntermedios;

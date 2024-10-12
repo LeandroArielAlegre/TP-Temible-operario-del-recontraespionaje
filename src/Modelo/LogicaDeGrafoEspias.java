@@ -6,15 +6,13 @@ import java.util.Map.Entry;
 
 public class LogicaDeGrafoEspias {
 	private Grafo grafoEspias;
-	//private Arbol arbolDeEspias;
 	private ArbolGenerador arbolGeneradorMinimo;
 	private ArchivoJSON  archivoJSON;
-
+	private String tiempoEjecucionPrim;
+	private String tiempoEjecucionKruskal;
 
 	public LogicaDeGrafoEspias() {
-		//arbolDeEspias = new Arbol();
 		grafoEspias = new Grafo();
-//		grafoEspiasAux=new Grafo();
 		arbolGeneradorMinimo = new ArbolGenerador(grafoEspias);
 		archivoJSON = new ArchivoJSON();
 	}
@@ -30,7 +28,7 @@ public class LogicaDeGrafoEspias {
 			return true;
 
 		} catch (Exception e) {
-			System.out.println("Error inesperado: " + e.getMessage());
+			//System.out.println("Error inesperado: " + e.getMessage());
 			return false;
 		}
 	}
@@ -41,10 +39,10 @@ public class LogicaDeGrafoEspias {
 			return true;
 
 		} catch (IllegalArgumentException e) {
-			System.out.println("Error: la Arista ya existe. " + e.getMessage());
+			//System.out.println("Error: la Arista ya existe. " + e.getMessage());
 			return false;
 		} catch (Exception e) {
-			System.out.println("Error inesperado: " + e.getMessage());
+			//System.out.println("Error inesperado: " + e.getMessage());
 			return false;
 		}
 
@@ -58,16 +56,24 @@ public class LogicaDeGrafoEspias {
 
 	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoPrim() {
 		try {
+			long comenzarTemporizador = System.nanoTime();
 			Grafo grafoEspiasPrim = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoPrim();
-			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasPrim.devolverGrafo();
+			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasPrim.getGrafo();
+			long finTemporizador = System.nanoTime();
+			long duracion = finTemporizador - comenzarTemporizador;
 
+			// Convertir de nanosegundos a milisegundos
+			double milisegundos = duracion / 1_000_000.0;
+
+			//System.out.println("Tiempo de ejecución Arbol Generador Prim: " + milisegundos + " milisegundos");
+			this.tiempoEjecucionPrim =String.valueOf(milisegundos);
 			return hashMapVerticesYVecinos;
 
 		} catch (IllegalArgumentException e) {
-			System.out.println("Error:  " + e.getMessage());
+			//System.out.println("Error:  " + e.getMessage());
 			return null;
 		} catch (Exception e) {
-			System.out.println("Error inesperado: " + e.getMessage());
+			//System.out.println("Error inesperado: " + e.getMessage());
 			return null;
 		}
 
@@ -76,16 +82,21 @@ public class LogicaDeGrafoEspias {
 	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoKruskal() {
 		
 		try {
+			long comenzarTemporizador = System.nanoTime();
 			Grafo grafoEspiasKruskal = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoKruskal();
-			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasKruskal.devolverGrafo();
-
+			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasKruskal.getGrafo();
+			long finTemporizador = System.nanoTime();
+			long duracion = finTemporizador - comenzarTemporizador;
+			double milisegundos = duracion / 1_000_000.0;
+			//System.out.println("Tiempo de ejecución Arbol Generador Kruskal " + milisegundos + " milisegundos");
+			this.tiempoEjecucionKruskal =String.valueOf(milisegundos);
 			return hashMapVerticesYVecinos;
 
 		} catch (IllegalArgumentException e) {
-			System.out.println("Error:  " + e.getMessage());
+			//System.out.println("Error:  " + e.getMessage());
 			return null;
 		} catch (Exception e) {
-			System.out.println("Error inesperado: " + e.getMessage());
+			//System.out.println("Error inesperado: " + e.getMessage());
 			return null;
 		}
 	
@@ -100,10 +111,10 @@ public class LogicaDeGrafoEspias {
 			archivoJSON.generarJSON(NombreArchivo);
 
 		} catch (IllegalArgumentException e) {
-			System.out.println("Error: " + e.getMessage());
+			//System.out.println("Error: " + e.getMessage());
 			return false;
 		} catch (Exception e) {
-			System.out.println("Error inesperado: " + e.getMessage());
+			//System.out.println("Error inesperado: " + e.getMessage());
 			return false;
 		}
 		return false;
@@ -116,7 +127,8 @@ public class LogicaDeGrafoEspias {
 			this.archivoJSON = archivoJSON.leerJSON(NombreArchivo);
 			//Limpio el grafo anterior (SUJETO A CAMBIOS)
 			grafoEspias.reiniciarGrafo();
-
+			this.tiempoEjecucionPrim = " ";
+			this.tiempoEjecucionKruskal = " ";
 			//Sintesis, actualizo el modelo antes de dibujar el nuevo grafo.
 			HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Double>>();
 			auxiliarHashMapVecinos = archivoJSON.getGrafo();
@@ -125,10 +137,10 @@ public class LogicaDeGrafoEspias {
 			crearAristasDesdeArchivo(auxiliarHashMapVecinos);
 			return true;
 		} catch (IllegalArgumentException e) {
-			System.out.println("Error: " + e.getMessage());
+			//System.out.println("Error: " + e.getMessage());
 			return false;
 		} catch (Exception e) {
-			System.out.println("Error inesperado: " + e.getMessage());
+			//System.out.println("Error inesperado: " + e.getMessage());
 			return false;
 		}
 	}
@@ -167,12 +179,16 @@ public class LogicaDeGrafoEspias {
 	}
 	
 	
+	public String devolverTiempoDeEjecucionDeAGM() {
+		String tiempoDeEjecucion = "Tiempo AGM PRIM: " + tiempoEjecucionPrim
+				+ "-" + "Tiempo AGM KRUSKAL: " + tiempoEjecucionKruskal;
+		
+		return tiempoDeEjecucion;
+	}
 	
-
-//	public HashMap<String, HashMap<String, Double>> deshacerAlgoritmo() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	public Grafo devolverGrafo() {
+        return this.grafoEspias;
+    }
 
 
 }

@@ -51,7 +51,7 @@ public class PantallaMapa {
 
 	private JFrame frame;
 	private JMapViewer mapa;
-	//private Sonido sonido;
+	
 	private Coordinate mapaActual = new Coordinate(-34.521, -58.719);
 	private int zoomActual = 12;
 	private PresentadorMapa presentadorMapa;
@@ -298,6 +298,8 @@ public class PantallaMapa {
 						lblEncuentrosIntermedios.setText("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
 						lblEncuentrosIntermedios.setVisible(false);
 						cargarEncuentroIntermedios("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
+						String tiempoDeAGM =presentadorMapa.devolverTiempoDeEjecucionDeAGM();
+						JOptionPane.showMessageDialog(null, tiempoDeAGM);
 					}else {
 						JOptionPane.showMessageDialog(null, "Error: No se puede cargar los encuentros intermedios");
 						lblEncuentrosIntermedios.setVisible(false);
@@ -319,6 +321,8 @@ public class PantallaMapa {
 						lblEncuentrosIntermedios.setText("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
 						lblEncuentrosIntermedios.setVisible(false);
 						cargarEncuentroIntermedios("<html>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</html>");
+						String tiempoDeAGM =presentadorMapa.devolverTiempoDeEjecucionDeAGM();
+						JOptionPane.showMessageDialog(null, tiempoDeAGM);
 					}else {
 						JOptionPane.showMessageDialog(null, "Error: No se puede cargar los encuentros intermedios");
 						lblEncuentrosIntermedios.setVisible(false);
@@ -518,9 +522,8 @@ public class PantallaMapa {
 				}
 			}
 			
-		}else {
-			JOptionPane.showMessageDialog(null, "ERROR: El grafo se encuentra Vacio");
 		}
+		
 		
 		     
 		
