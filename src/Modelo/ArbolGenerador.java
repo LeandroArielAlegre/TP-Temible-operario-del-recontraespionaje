@@ -84,7 +84,7 @@ public class ArbolGenerador extends Grafo {
 		sb.append(agmPrim.toString());
 		
 		this.encuentrosIntermedios=sb.toString();
-		System.out.println(BFS.obtenerEncuentrosIntermedios(agmPrim));
+
 		
 		return agmPrim;
 	}
