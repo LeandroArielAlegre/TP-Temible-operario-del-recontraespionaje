@@ -8,6 +8,7 @@ import java.util.Set;
 public class BFS {
 	private static Set<String> marcados;
 	private static String encuentrosIntermedios;
+	
     public static boolean esConexo(Grafo grafo) {
         if (grafo == null) {
             throw new IllegalArgumentException("El grafo no puede ser null.");

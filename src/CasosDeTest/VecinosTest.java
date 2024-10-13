@@ -1,11 +1,8 @@
 package CasosDeTest;
 
-import static org.junit.Assert.*;
 import static CasosDeTest.Assert.assertSetEquals;
 import org.junit.Test;
 import Modelo.Grafo;
-import java.util.Set;
-import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 

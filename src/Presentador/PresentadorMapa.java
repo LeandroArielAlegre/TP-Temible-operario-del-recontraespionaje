@@ -81,7 +81,12 @@ public class PresentadorMapa {
 	public String devolverTiempoDeEjecucionDeAGM() {
 		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGM();
 	}
-
+	public String devolverTiempoDeEjecucionDeAGMPrim() {
+		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGMPrim();
+	}
+	public String devolverTiempoDeEjecucionDeAGMKruskal() {
+		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGMKruskal();
+	}
 	public HashMap<String, ArrayList<Double>> devolverGrafoPosicionesArchivo() {
 		try {
 			return logicaDeGrafoEspias.devolverGrafoPosicionesArchivo();
@@ -116,5 +121,8 @@ public class PresentadorMapa {
 	
 	public void borrarGrafoActual() {
 		logicaDeGrafoEspias.borrarGrafoActual();;
+	}
+	public void limpiarRegistroBFS() {
+		logicaDeGrafoEspias.limpiarRegistroBFS();
 	}
 }

@@ -138,7 +138,7 @@ public class ArbolGenerador extends Grafo {
 				
 			}else {
 				//Quito del ConjuntoDeAristasDeGrafo
-				//conjuntoDeAristasDeGrafo.remove(aristaDeMenorPeso);
+				conjuntoDeAristasDeGrafo.remove(aristaDeMenorPeso);
 			}
 			
 			

@@ -11,6 +11,7 @@ public class LogicaDeGrafoEspias {
 	private ArchivoJSON  archivoJSON;
 	private String tiempoEjecucionPrim;
 	private String tiempoEjecucionKruskal;
+	private String recorridoBFS;
 
 	public LogicaDeGrafoEspias() {
 		grafoEspias = new Grafo();
@@ -59,6 +60,8 @@ public class LogicaDeGrafoEspias {
 		try {
 			long comenzarTemporizador = System.nanoTime();
 			Grafo grafoEspiasPrim = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoPrim();
+			this.recorridoBFS=BFS.obtenerEncuentrosIntermedios(grafoEspiasPrim);
+			
 			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasPrim.getGrafo();
 			long finTemporizador = System.nanoTime();
 			long duracion = finTemporizador - comenzarTemporizador;
@@ -85,6 +88,8 @@ public class LogicaDeGrafoEspias {
 		try {
 			long comenzarTemporizador = System.nanoTime();
 			Grafo grafoEspiasKruskal = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoKruskal();
+			this.recorridoBFS=BFS.obtenerEncuentrosIntermedios(grafoEspiasKruskal);
+			
 			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasKruskal.getGrafo();
 			long finTemporizador = System.nanoTime();
 			long duracion = finTemporizador - comenzarTemporizador;
@@ -184,7 +189,16 @@ public class LogicaDeGrafoEspias {
 
 		return tiempoDeEjecucion;
 	}
+	public String devolverTiempoDeEjecucionDeAGMPrim() {
+		String tiempoDeEjecucion = "Tiempo AGM PRIM: " + tiempoEjecucionPrim;
 
+		return tiempoDeEjecucion;
+	}
+	public String devolverTiempoDeEjecucionDeAGMKruskal() {
+		String tiempoDeEjecucion = "Tiempo AGM KRUSKAL: " + tiempoEjecucionKruskal;
+
+		return tiempoDeEjecucion;
+	}
 	public HashMap<String, HashMap<String, Double>> devolverGrafo() {
 		
 		return this.grafoEspias.getGrafo();
@@ -195,7 +209,9 @@ public class LogicaDeGrafoEspias {
 	}
 
 	public String recorrerArbolGeneradorMinimoBFS() {
-		return BFS.obtenerEncuentrosIntermedios(grafoEspias);
+		return recorridoBFS;
 	}
-
+	public void limpiarRegistroBFS() {
+		recorridoBFS=null;
+	}
 }
