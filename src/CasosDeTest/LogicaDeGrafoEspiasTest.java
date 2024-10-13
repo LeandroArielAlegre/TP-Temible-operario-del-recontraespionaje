@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import Modelo.LogicaDeGrafoEspias;
 
-public class TestUnitariosLogicaDeMapa {
+public class LogicaDeGrafoEspiasTest {
 	
 	private LogicaDeGrafoEspias logica;
 
@@ -84,7 +84,7 @@ public class TestUnitariosLogicaDeMapa {
 		grafoPrueba.crearArista("A", "B", 0.1);
 		grafoPrueba.crearArista("B", "C", 0.2);
 
-		assertEquals(grafoPrueba.devolverGrafo().getGrafo(), arbol);
+		assertEquals(grafoPrueba.devolverGrafo(), arbol);
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ public class TestUnitariosLogicaDeMapa {
 		grafoPrueba.crearArista("A", "B", 0.1);
 		grafoPrueba.crearArista("B", "C", 0.2);
 
-		assertEquals(grafoPrueba.devolverGrafo().getGrafo(), arbol);
+		assertEquals(grafoPrueba.devolverGrafo(), arbol);
 	}
 
 	// Test para cargar grafo

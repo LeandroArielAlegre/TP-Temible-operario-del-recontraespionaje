@@ -43,7 +43,7 @@ public class ArbolGenerador extends Grafo {
 		while (visitados.size() < grafo.cantidadDeVertices()) {
 			String mejorOrigen = null;
 			String mejorDestino = null;
-			Double mejorPeso = 2.0;//valor que no pertece al intervalo 0-1
+			Double mejorPeso = Double.MAX_VALUE;
 
 			// Buscar la mejor arista(de menor peso)
 			for (String vertice : visitados) {
@@ -178,10 +178,4 @@ public class ArbolGenerador extends Grafo {
 	}
 
 
-
-	// No permitimos eliminar aristas directamente en un árbol
-	@Override
-	public void eliminarArista(String vertice1, String vertice2) {
-		throw new UnsupportedOperationException("No se permite eliminar aristas directamente en un árbol. Ya no seria un arbol");
-	}
 }

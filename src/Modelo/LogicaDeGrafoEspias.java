@@ -185,40 +185,17 @@ public class LogicaDeGrafoEspias {
 		return tiempoDeEjecucion;
 	}
 
-	public Grafo devolverGrafo() {
-		return this.grafoEspias;
-	}
-
-	public boolean verificarEntrada(String string, Double coordenadaXGlobal, Double coordenadaYGlobal) {
-
-		if(string != null && string.length() != 0) 
-		{
-			if(coordenadaXGlobal != null && coordenadaYGlobal != null) 
-			{
-
-				return true;
-
-			}				
-		}
-		return false;
-	}
-
-	public boolean verificarEntrada(String verticeA, String verticeB, String probabilidad) {
-		if(verticeA!= null && verticeB!=null && probabilidad!= null) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	public Double parsearADouble(String text) {
-		// TODO Auto-generated method stub
-		Double probabilidad=Double.parseDouble(text);
-		return probabilidad;
-	}
-
-	public boolean verificarProbabilidad(Double probabilidad) {
+	public HashMap<String, HashMap<String, Double>> devolverGrafo() {
 		
-		return probabilidad >= 0 && probabilidad <=1 ;
+		return this.grafoEspias.getGrafo();
 	}
+	
+	public void borrarGrafoActual() {
+		grafoEspias.reiniciarGrafo();
+	}
+
+	public String recorrerArbolGeneradorMinimoBFS() {
+		return BFS.obtenerEncuentrosIntermedios(grafoEspias);
+	}
+
 }

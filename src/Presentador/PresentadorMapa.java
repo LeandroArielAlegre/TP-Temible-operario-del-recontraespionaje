@@ -18,8 +18,6 @@ public class PresentadorMapa {
 		if(logicaDeGrafoEspias.crearVertice(vertice)) {
 			return true;
 		}
-		//Devuelve True si pudo incluir el vertice en el grafo 
-		//Me da el Okay, entonces le digo a la pantalla que Cree el vertice
 		return false;
 		
 	}
@@ -69,6 +67,17 @@ public class PresentadorMapa {
 		return logicaDeGrafoEspias.encuentrosIntermedios();
 	}
 	
+	public String recorrerArbolGeneradorMinimoBFS() {
+		try {
+			return logicaDeGrafoEspias.recorrerArbolGeneradorMinimoBFS();
+			
+		} catch (IllegalArgumentException e) {
+			//System.out.println("Error: " + e.getMessage());
+			return null;
+		}
+		
+	}
+	
 	public String devolverTiempoDeEjecucionDeAGM() {
 		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGM();
 	}
@@ -78,7 +87,7 @@ public class PresentadorMapa {
 			return logicaDeGrafoEspias.devolverGrafoPosicionesArchivo();
 			
 		} catch (IllegalArgumentException e) {
-			System.out.println("Error: " + e.getMessage());
+			//System.out.println("Error: " + e.getMessage());
 			return null;
 		}
 	}
@@ -88,29 +97,24 @@ public class PresentadorMapa {
 			return logicaDeGrafoEspias.devolverGrafoArchivo();
 			
 		} catch (IllegalArgumentException e) {
-			System.out.println("Error: " + e.getMessage());
+			//System.out.println("Error: " + e.getMessage());
 			return null;
 		}
 	}
+	
+	public HashMap<String, HashMap<String, Double>> devolverGrafo() {
+		try {
+			return logicaDeGrafoEspias.devolverGrafo();
+			
+		} catch (IllegalArgumentException e) {
+			//System.out.println("Error: " + e.getMessage());
+			return null;
+		}
 
-	public boolean verificarEntrada(String string, Double coordenadaXGlobal, Double coordenadaYGlobal) {
-		return logicaDeGrafoEspias.verificarEntrada(string,coordenadaXGlobal,coordenadaYGlobal);
+	
 	}
-
-	public boolean verificarEntrada(String verticeA, String verticeB, String probabilidad) {
-
-		return logicaDeGrafoEspias.verificarEntrada(verticeA,verticeB,probabilidad);
+	
+	public void borrarGrafoActual() {
+		logicaDeGrafoEspias.borrarGrafoActual();;
 	}
-
-	public Double parsearADouble(String text) {
-		// TODO Auto-generated method stub
-		
-		return logicaDeGrafoEspias.parsearADouble(text);
-	}
-
-	public boolean verificarProbabilidad(Double probabilidad) {
-
-		return logicaDeGrafoEspias.verificarProbabilidad(probabilidad);
-	}
-
 }
