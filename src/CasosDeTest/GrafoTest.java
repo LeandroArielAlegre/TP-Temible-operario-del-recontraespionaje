@@ -9,23 +9,12 @@ import Modelo.Grafo;
 
 public class GrafoTest
 {
-//	@Test(expected = IllegalArgumentException.class)
-//	public void verticeNegativoTest()
-//	{
-//		Grafo grafo = new Grafo(4);
-//		grafo.agregarArista(-1, 3);
-//	}
+
 	@Test
 	public void estaVacioElGrafoTest() {
 		Grafo grafo = new Grafo();
 		assertTrue(grafo.estaVacioElGrafo());
 	}
-//	@Test(expected = IllegalArgumentException.class)
-//	public void verticeExcedidoTest()
-//	{
-//		Grafo grafo = new Grafo(4);
-//		grafo.agregarArista(2, 4);
-//	}
 
 	@Test(expected = IllegalArgumentException.class)
 	public void sinLoopsTest()
@@ -68,23 +57,8 @@ public class GrafoTest
 		Grafo grafo = new Grafo();
 		grafo.agregarArista("i", "j",1.0);
 		grafo.agregarArista("i", "j",1.0);
-//		assertTrue(grafo.existeArista("i", "j"));
 	}
 
-//	@Test(expected = IllegalArgumentException.class)
-//	public void eliminarAristaConVerticeNegativoTest()
-//	{
-//		Grafo grafo = new Grafo();
-//		grafo.eliminarArista(2, -1);
-//	}
-
-//	@Test(expected = IllegalArgumentException.class)
-//	public void eliminarAristaConVerticeExcedidoTest()
-//	{
-//		Grafo grafo = new Grafo(4);
-//		grafo.eliminarArista(4, 1);
-//	}
-//	
 	@Test
 	public void eliminarAristaExistenteTest()
 	{
@@ -101,22 +75,7 @@ public class GrafoTest
 	{
 		Grafo grafo = new Grafo();
 		grafo.eliminarArista("i", "j");
-//		assertFalse(grafo.existeArista(0, 3));
 	}
-	
-//	@Test(expected = IllegalArgumentException.class)
-//	public void gradoDeVerticeNegativoTest()
-//	{
-//		Grafo grafo = diamanteConVerticeAislado();
-//		grafo.gradoDeUnVertice(-1);
-//	}
-
-//	@Test(expected = IllegalArgumentException.class)
-//	public void gradoDeVerticeExcedidoTest()
-//	{
-//		Grafo grafo = diamanteConVerticeAislado();
-//		grafo.gradoDeUnVertice("5");
-//	}
 	
 	@Test
 	public void gradoTest()
@@ -148,11 +107,11 @@ public class GrafoTest
 		grafo.eliminarArista("0", "3");
 		setsIguales(new String[] {"2"}, grafo.vecinosDeVertice("0"));
 	}
-//	@Test
-//	public void  obtenerPesoTest() {
-//		Grafo grafo = diamanteConVerticeAislado();
-//		assertEquals(1,grafo.obtenerPesoArista("0","2"));
-//	}
+	@Test
+	public void  obtenerPesoTest() {
+		Grafo grafo = diamanteConVerticeAislado();
+		assertEquals(1,grafo.obtenerPesoArista("0","2").intValue());
+	}
 	private void setsIguales(String[] esperado, ArrayList<String> arrayList) 
 	{
 		for(String elemento: esperado)

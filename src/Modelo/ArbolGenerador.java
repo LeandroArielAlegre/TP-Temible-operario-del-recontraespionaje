@@ -9,9 +9,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public class ArbolGenerador extends Grafo {
-	/**
-	 * 
-	 */
 	private Grafo grafo;
 	private String encuentrosIntermedios;
 	
@@ -19,9 +16,7 @@ public class ArbolGenerador extends Grafo {
 		this.grafo = grafo;
 		
 		
-	}
-
-	    
+	}    
 
 	public Grafo crearArbolGeneradoMinimoPrim() 
 	{	
@@ -70,10 +65,9 @@ public class ArbolGenerador extends Grafo {
 				
 				sb.append("Árbol intermedio (agregando arista " + mejorOrigen + " - " + mejorDestino + " - "+ mejorPeso + "):");
 				sb.append("\n");
-//				sb.append("\n");
 				
 				sb.append("\n");
-//				sb.append("\n");
+				
 			} else {
 				break; // No hay más aristas disponibles
 			}

@@ -7,7 +7,7 @@ public class Assert {
 
 
 
-    public static boolean iguales(ArrayList<String> esperado, ArrayList<String> actual) {
+    public static boolean arrayListIguales(ArrayList<String> esperado, ArrayList<String> actual) {
         // Verificar que los tamaños sean iguales
         if (esperado.size() != actual.size()) {
             return false;
@@ -16,7 +16,7 @@ public class Assert {
         // Verificar que todos los elementos de esperado estén en actual
         return esperado.containsAll(actual);
     }
-    public static boolean iguales(Set<String> esperado, Set<String> actual) {
+    public static boolean setsIguales(Set<String> esperado, Set<String> actual) {
         // Verificar que los tamaños sean iguales
         if (esperado.size() != actual.size()) {
             return false;
@@ -26,8 +26,8 @@ public class Assert {
         return esperado.containsAll(actual);
     }
 
-    public static void assertSetEquals(String mensaje, ArrayList<String> esperado, ArrayList<String> actual) {
-        if (!iguales(esperado, actual)) {
+    public static void assertArrayListIguales(String mensaje, ArrayList<String> esperado, ArrayList<String> actual) {
+        if (!arrayListIguales(esperado, actual)) {
             throw new AssertionError(mensaje + 
                 "\nEsperado: " + esperado + 
                 "\nActual:   " + actual);

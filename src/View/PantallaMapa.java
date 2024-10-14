@@ -148,11 +148,8 @@ public class PantallaMapa {
 
 
 		new DefaultMapController(mapa){
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
-
-
 				// Convertimos la posición del clic (en píxeles) a coordenadas geográficas
 				Coordinate coord = (Coordinate) mapa.getPosition(e.getPoint());
 
@@ -268,11 +265,8 @@ public class PantallaMapa {
 						JOptionPane.showMessageDialog(null, "El tiempo esta en milisegundos" + "\n" + tiempoDeAGM);
 						
 					}else {
-						JOptionPane.showMessageDialog(null, "Error: No se puede cargar los encuentros intermedios");
 						lblOrdenDeEncuentrosConBFS.setVisible(false);
-
 					}
-
 				}
 				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 1) {
 					//Limpio la pantalla primero
@@ -296,7 +290,6 @@ public class PantallaMapa {
 						String tiempoDeAGM =presentadorMapa.devolverTiempoDeEjecucionDeAGMKruskal();
 						JOptionPane.showMessageDialog(null, "El tiempo esta en milisegundos" + "\n" + tiempoDeAGM);
 					}else {
-						JOptionPane.showMessageDialog(null, "Error: No se puede cargar los encuentros intermedios");
 						lblOrdenDeEncuentrosConBFS.setVisible(false);
 					}
 
@@ -316,9 +309,12 @@ public class PantallaMapa {
 		btnRestablecerGrafo.setFocusable(false);
 		btnRestablecerGrafo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				if (!presentadorMapa.devolverGrafo().isEmpty()) {
 				refrescarVista(lblOrdenDeEncuentrosConBFS);
-
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Error: el grafo esta Vacio");
+				}
 			}
 
 		});
@@ -331,15 +327,18 @@ public class PantallaMapa {
 		btnBorrarGrafo.setFocusable(false);
 		btnBorrarGrafo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				limpiarJLabels(mapa,urlEspia);
-				limpiarJLabels(mapa,urlCarta);
-				mapa.removeAllMapMarkers();
-				mapa.removeAllMapPolygons();
-				hashMapVertices.clear();
-				presentadorMapa.borrarGrafoActual();
-				lblOrdenDeEncuentrosConBFS.setText(" ");
-
+				if (!presentadorMapa.devolverGrafo().isEmpty()) {
+					limpiarJLabels(mapa,urlEspia);
+					limpiarJLabels(mapa,urlCarta);
+					mapa.removeAllMapMarkers();
+					mapa.removeAllMapPolygons();
+					hashMapVertices.clear();
+					presentadorMapa.borrarGrafoActual();
+					lblOrdenDeEncuentrosConBFS.setText(" ");
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Error: el grafo esta Vacio");
+					}
 			}
 
 		});
@@ -395,7 +394,7 @@ public class PantallaMapa {
 						auxiliarHashMapVecinos =presentadorMapa.devolverGrafoArchivo();
 
 						//Limpio las hashmap locales
-						//hashMapVerticesYVecinos.clear();
+
 						hashMapVertices.clear();
 
 						//Borro las imagenes residuales, si existieran
@@ -406,10 +405,6 @@ public class PantallaMapa {
 						actualizarMarcadores(auxHashMapCoordenadas);
 						//Dibujo las aristas
 						actualizarGrafoEnMapa(auxiliarHashMapVecinos, color);		
-
-						//Actualizo el hashmap de la view
-						//hashMapVerticesYVecinos = auxiliarHashMapVecinos;
-
 					}
 				}else {
 					JOptionPane.showMessageDialog(null, "Error: No se pudo cargar el archivo");
@@ -423,8 +418,16 @@ public class PantallaMapa {
 		btnCompararTiemposDeEjecucionDeAlgoritmos.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCompararTiemposDeEjecucionDeAlgoritmos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+				if(!presentadorMapa.devolverGrafo().isEmpty()) {
+				
 				String tiempoDeAGM =presentadorMapa.devolverTiempoDeEjecucionDeAGM();
 				JOptionPane.showMessageDialog(null, "El tiempo esta en milisegundos" + "\n" +tiempoDeAGM);
+				}else {
+					JOptionPane.showMessageDialog(null, "No se puede devolver el tiempo de ejecucion de algoritmos no ejecutados");
+				}
+				}catch (RuntimeException ex){
+					JOptionPane.showMessageDialog(null,ex.getMessage());				}
 			}
 		});
 		btnCompararTiemposDeEjecucionDeAlgoritmos.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -475,8 +478,8 @@ public class PantallaMapa {
 		});
 	}
 
-	private void actualizarMarcadores(
-			HashMap<String, ArrayList<Double>> auxHashMapCoordenadas) {
+	private void actualizarMarcadores(HashMap<String, ArrayList<Double>> auxHashMapCoordenadas) {
+		
 		for (Entry<String, ArrayList<Double>> entry : auxHashMapCoordenadas.entrySet()) {
 			String nombreVertice = entry.getKey();
 			ArrayList<Double> valor = entry.getValue();
@@ -521,11 +524,6 @@ public class PantallaMapa {
 			}
 
 		}
-
-
-
-
-
 	}
 
 	private void colocarImagenEnPosicionDeArista(Coordinate coordenadaVertice1, Coordinate coordenadaVertice2, URL urlImagen) {
@@ -550,10 +548,10 @@ public class PantallaMapa {
 		mapa.add(jlabelImagen);
 	}
 	public void actualizarGrafoEnMapa(HashMap<String, HashMap<String,Double>> HashMapnuevoGrafo, Color color ) {
-		//HashMap<String, HashMap<String,Integer>> HashMapnuevoGrafo = presentadorMapa.crearArbolGeneradorMinimoPrim();
+
 		//VER!"!"!"!"!"!
 		if(HashMapnuevoGrafo == null) {
-			JOptionPane.showMessageDialog(null, "Error, Grafo Inconexo");
+			JOptionPane.showMessageDialog(null, "Error, El grafo es disconexo, agregue 1 vertice o 2 vertices y 1 arista");
 		}else {
 			for (String vertice : HashMapnuevoGrafo.keySet()) {
 				HashMap<String, Double> vecinos = HashMapnuevoGrafo.get(vertice);
@@ -576,8 +574,7 @@ public class PantallaMapa {
 		aristaEnMapa.add(coordenada1); 
 		// Crear el polígono (en este caso una línea)
 		MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
-
-		//colocarImagenEnPosicionDeArista(coordenada1, coordenada2);
+		
 		arista.setColor(color);
 		mapa.addMapPolygon(arista);
 
@@ -598,7 +595,7 @@ public class PantallaMapa {
 		mapa.revalidate();
 		mapa.repaint();
 	}
-	//COLOCA TEXTFIELDS!!!!!!!!!!!!!!!!!
+
 	private void colocarTexfields() {
 
 		textFieldProbabilidad = new JTextField();
@@ -609,29 +606,20 @@ public class PantallaMapa {
 
 		textfieldNombreVertice = new JTextField();
 		textfieldNombreVertice.setBorder(new LineBorder(new Color(0, 0, 0)));
-
 		textfieldNombreVertice.setToolTipText("");
-
 		textfieldNombreVertice.setBounds(20, 493, 86, 20);
-
-		//mapa.add(textfieldNombreVertice);
 		panelControles.add(textfieldNombreVertice);
 		textfieldNombreVertice.setColumns(10);
 
 		textFieldVerticeB = new JTextField();
 		textFieldVerticeB.setBorder(new LineBorder(new Color(0, 0, 0)));
-
 		textFieldVerticeB.setBounds(230, 529, 86, 20);
-		//mapa.add(textFieldVertice2);
 		panelControles.add(textFieldVerticeB);
 		textFieldVerticeB.setColumns(10);
 
 		textFieldVerticeA = new JTextField();
 		textFieldVerticeA.setBorder(new LineBorder(new Color(0, 0, 0)));
-
-
 		textFieldVerticeA.setBounds(230, 493, 86, 20);
-		//mapa.add(textFieldVertice1);
 		panelControles.add(textFieldVerticeA);
 		textFieldVerticeA.setColumns(10);
 	}
@@ -639,27 +627,25 @@ public class PantallaMapa {
 	//La View Tiene sus propios metodos para representar marcadores en la pantalla
 	private void crearVerticeEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
 		Coordinate vertice = new Coordinate(CoordenadasX, CoordenadasY);
-		//Si el presentador me da el OKAY (es decir el presentador consulto con la logica de negocio
-		// si, es posible agregar un nuevo vertice en el grafo. devuelve un boolean.
+		
 		if (presentadorMapa.crearVertice(nombreVertice) && !hashMapVertices.containsKey(nombreVertice)) {
 
 			MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, vertice);
 			verticeEnMapa.getStyle().setBackColor(Color.yellow);
 			verticeEnMapa.getStyle().setColor(Color.yellow);
-
+			
 			colocarImagenEnPosicionDeMarcador(vertice,urlEspia);
 			mapa.addMapMarker(verticeEnMapa);
 
-
 			//Guardamos el vertices localmente en un HashMap
 			hashMapVertices.put(nombreVertice, vertice);
-			//Me hago un machete de grafo
-			//hashMapVerticesYVecinos.put(nombreVertice, new HashMap<String, Double>());
 
 			JOptionPane.showMessageDialog(null, "Se creo el vertice Satisfactoriamente");
 
 		}else {
+			
 			JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
+
 		}
 
 

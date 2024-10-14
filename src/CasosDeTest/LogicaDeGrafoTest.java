@@ -7,15 +7,15 @@ import java.util.HashMap;
 import org.junit.Before;
 import org.junit.Test;
 
-import Modelo.LogicaDeGrafoEspias;
+import Modelo.LogicaDeGrafo;
 
-public class LogicaDeGrafoEspiasTest {
+public class LogicaDeGrafoTest {
 	
-	private LogicaDeGrafoEspias logica;
+	private LogicaDeGrafo logica;
 
 	@Before
 	public void setUp() {
-		logica = new LogicaDeGrafoEspias();
+		logica = new LogicaDeGrafo();
 	}
 
 	// Test para crear vértice
@@ -23,7 +23,7 @@ public class LogicaDeGrafoEspiasTest {
 	public void testCrearVerticeExitoso() {
 		assertTrue(logica.crearVertice("Espia1"));
 	}
-
+	//test para no crear 2 vertices con el mismo nombre
 	@Test
 	public void testCrearVerticeRepetido() {
 		logica.crearVertice("Espia1");
@@ -37,7 +37,16 @@ public class LogicaDeGrafoEspiasTest {
 		logica.crearVertice("Espia2");
 		assertTrue(logica.crearArista("Espia1", "Espia2", 0.5));
 	}
+	//test para no crear 2 veces la misma arista
+		@Test 
+		public void testCrearAristaRepetida() {
+			logica.crearVertice("A");
+			logica.crearVertice("B");
+			logica.crearArista("A", "B", 0.5);
 
+			assertFalse(logica.crearArista("A", "B", 0.5));
+
+		}
 	@Test
 	public void testCrearAristaVerticesInexistentes() {
 		assertFalse(logica.crearArista("EspiaX", "EspiaY", 0.5));
@@ -52,21 +61,6 @@ public class LogicaDeGrafoEspiasTest {
 		assertTrue(logica.existeArista("Espia1", "Espia2"));
 	}
 
-	// Test para crear árbol generador mínimo de Prim
-	@Test
-	public void testCrearArbolGeneradorMinimoPrim() {
-		logica.crearVertice("A");
-		logica.crearVertice("B");
-		logica.crearVertice("C");
-		logica.crearArista("A", "B", 0.1);
-		logica.crearArista("B", "C", 0.2);
-		logica.crearArista("A", "C", 0.3);
-
-		HashMap<String, HashMap<String, Double>> arbol = logica.crearArbolGeneradorMinimoPrim();
-		assertNotNull(arbol);
-		assertFalse(arbol.isEmpty());
-	}
-	
 	@Test
 	public void testCrearArbolGeneradorMinimoPrimYVeoSiEsCorrecto() {
 		logica.crearVertice("A");
@@ -77,7 +71,7 @@ public class LogicaDeGrafoEspiasTest {
 		logica.crearArista("A", "C", 0.3);
 
 		HashMap<String, HashMap<String, Double>> arbol = logica.crearArbolGeneradorMinimoPrim();
-		LogicaDeGrafoEspias grafoPrueba = new LogicaDeGrafoEspias();
+		LogicaDeGrafo grafoPrueba = new LogicaDeGrafo();
 		grafoPrueba.crearVertice("A");
 		grafoPrueba.crearVertice("B");
 		grafoPrueba.crearVertice("C");
@@ -97,7 +91,7 @@ public class LogicaDeGrafoEspiasTest {
 		logica.crearArista("A", "C", 0.3);
 
 		HashMap<String, HashMap<String, Double>> arbol = logica.crearArbolGeneradorMinimoKruskal();
-		LogicaDeGrafoEspias grafoPrueba = new LogicaDeGrafoEspias();
+		LogicaDeGrafo grafoPrueba = new LogicaDeGrafo();//creo un grafo que debe ser igual al arbol generador devuelto
 		grafoPrueba.crearVertice("A");
 		grafoPrueba.crearVertice("B");
 		grafoPrueba.crearVertice("C");
@@ -111,24 +105,5 @@ public class LogicaDeGrafoEspiasTest {
 	@Test
 	public void testCargarGrafo() {
 		assertFalse(logica.CargarGrafo("archivoInexistente.json"));
-	}
-
-	@Test 
-	public void testCreoDosVerticesIgualesEsperaFalse() {
-		logica.crearVertice("A");
-		assertFalse(logica.crearVertice("A"));
-
-	}
-	
-	@Test 
-	public void testCreoDosAristasIgualesEsperaFalse() {
-		logica.crearVertice("A");
-		logica.crearVertice("B");
-		logica.crearArista("A", "B", 0.5);
-
-		assertFalse(logica.crearArista("A", "B", 0.5));
-
-	}
-	
-
+	}	
 }

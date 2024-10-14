@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 
-public class LogicaDeGrafoEspias {
+public class LogicaDeGrafo {
 	private Grafo grafoEspias;
 	private ArbolGenerador arbolGeneradorMinimo;
 	private ArchivoJSON  archivoJSON;
@@ -13,7 +13,7 @@ public class LogicaDeGrafoEspias {
 	private String tiempoEjecucionKruskal;
 	private String recorridoBFS;
 
-	public LogicaDeGrafoEspias() {
+	public LogicaDeGrafo() {
 		grafoEspias = new Grafo();
 		arbolGeneradorMinimo = new ArbolGenerador(grafoEspias);
 		archivoJSON = new ArchivoJSON();
@@ -30,7 +30,6 @@ public class LogicaDeGrafoEspias {
 			return true;
 
 		} catch (Exception e) {
-			//System.out.println("Error inesperado: " + e.getMessage());
 			return false;
 		}
 	}
@@ -69,15 +68,14 @@ public class LogicaDeGrafoEspias {
 			// Convertir de nanosegundos a milisegundos
 			double milisegundos = duracion / 1_000_000.0;
 
-			//System.out.println("Tiempo de ejecución Arbol Generador Prim: " + milisegundos + " milisegundos");
 			this.tiempoEjecucionPrim =String.valueOf(milisegundos);
 			return hashMapVerticesYVecinos;
 
 		} catch (IllegalArgumentException e) {
-			//System.out.println("Error:  " + e.getMessage());
+
 			return null;
 		} catch (Exception e) {
-			//System.out.println("Error inesperado: " + e.getMessage());
+
 			return null;
 		}
 
@@ -184,10 +182,19 @@ public class LogicaDeGrafoEspias {
 
 
 	public String devolverTiempoDeEjecucionDeAGM() {
-		String tiempoDeEjecucion = "Tiempo AGM PRIM: " + tiempoEjecucionPrim
-				+ "-" + "Tiempo AGM KRUSKAL: " + tiempoEjecucionKruskal;
-
-		return tiempoDeEjecucion;
+		StringBuilder sb = new StringBuilder();
+		if (!tiempoEjecucionPrim.contains(" ")) {
+			sb.append(devolverTiempoDeEjecucionDeAGMPrim());
+		}else {
+			throw new RuntimeException("Prim aun no fue ejecutado");
+		}
+		if (!tiempoEjecucionKruskal.contains(" ")) {
+			sb.append("-");
+			sb.append(devolverTiempoDeEjecucionDeAGMKruskal());
+		}else {
+			throw new RuntimeException("Kruskal aun no fue ejecutado");
+		}
+		return sb.toString();
 	}
 	public String devolverTiempoDeEjecucionDeAGMPrim() {
 		String tiempoDeEjecucion = "Tiempo AGM PRIM: " + tiempoEjecucionPrim;

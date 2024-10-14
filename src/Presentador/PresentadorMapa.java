@@ -3,13 +3,13 @@ package Presentador;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import Modelo.LogicaDeGrafoEspias;
+import Modelo.LogicaDeGrafo;
 
 public class PresentadorMapa {
-	private LogicaDeGrafoEspias logicaDeGrafoEspias;
+	private LogicaDeGrafo logicaDeGrafoEspias;
 	
 	public PresentadorMapa() {
-		logicaDeGrafoEspias = new LogicaDeGrafoEspias();
+		logicaDeGrafoEspias = new LogicaDeGrafo();
 	}
 
 	public boolean crearVertice(String vertice) {

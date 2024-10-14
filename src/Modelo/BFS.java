@@ -38,13 +38,9 @@ public class BFS {
                     contadorEncuentros++;
                     sb.append("Encuentro: " + contadorEncuentros + " " + actual  + " y "+ vecino).append("\n");
                     listaDePendientes.add(vecino);
-                    
-                   
-                }
-                
-                
-            }
-            
+                                     
+                }                            
+            }            
         }
         encuentrosIntermedios = sb.toString();
         return marcados;

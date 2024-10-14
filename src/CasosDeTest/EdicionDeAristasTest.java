@@ -8,34 +8,6 @@ import Modelo.Grafo;
 
 public class EdicionDeAristasTest
 {
-//	@Test(expected = IllegalArgumentException.class)
-//	public void primerVerticeNegativoTest()
-//	{
-//		Grafo grafo = new Grafo();
-//		
-//		grafo.agregarArista(-1, 3);
-//	}
-
-//	@Test(expected = IllegalArgumentException.class)
-//	public void primerVerticeExcedidoTest()
-//	{
-//		Grafo grafo = new Grafo(5);
-//		grafo.agregarArista(5, 2);
-//	}
-
-//	@Test(expected = IllegalArgumentException.class)
-//	public void segundoVerticeNegativoTest()
-//	{
-//		Grafo grafo = new Grafo(5);
-//		grafo.agregarArista(2, -1);
-//	}
-
-//	@Test(expected = IllegalArgumentException.class)
-//	public void segundoVerticeExcedidoTest()
-//	{
-//		Grafo grafo = new Grafo(5);
-//		grafo.agregarArista(2, 5);
-//	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void agregarLoopTest()
