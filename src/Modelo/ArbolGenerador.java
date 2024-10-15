@@ -18,7 +18,7 @@ public class ArbolGenerador extends Grafo {
 		
 	}    
 
-	public Grafo crearArbolGeneradoMinimoPrim() 
+	public Grafo crearArbolGeneradorMinimoPrim() 
 	{	
 		if (!BFS.esConexo(grafo)) 
 		{		
@@ -84,7 +84,7 @@ public class ArbolGenerador extends Grafo {
 	}
 	
 	
-	public Grafo crearArbolGeneradoMinimoKruskal() {
+	public Grafo crearArbolGeneradorMinimoKruskal() {
 		if (!BFS.esConexo(grafo)) 
 		{		
 			throw new IllegalArgumentException("El algoritmo de Kruskal solo funciona sobre grafos conexos");

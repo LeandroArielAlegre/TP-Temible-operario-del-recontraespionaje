@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 
 public class LogicaDeGrafo {
-	private Grafo grafoEspias;
+	private Grafo grafoLogica;
 	private ArbolGenerador arbolGeneradorMinimo;
 	private ArchivoJSON  archivoJSON;
 	private String tiempoEjecucionPrim;
@@ -14,19 +14,14 @@ public class LogicaDeGrafo {
 	private String recorridoBFS;
 
 	public LogicaDeGrafo() {
-		grafoEspias = new Grafo();
-		arbolGeneradorMinimo = new ArbolGenerador(grafoEspias);
+		grafoLogica = new Grafo();
+		arbolGeneradorMinimo = new ArbolGenerador(grafoLogica);
 		archivoJSON = new ArchivoJSON();
 	}
 
-	public String encuentrosIntermedios() {
-		return arbolGeneradorMinimo.getEncuentrosIntermedios();
-	}
-
-
 	public boolean crearVertice(String vertice) {
 		try {
-			grafoEspias.agregarVertice(vertice);
+			grafoLogica.agregarVertice(vertice);
 			return true;
 
 		} catch (Exception e) {
@@ -36,7 +31,7 @@ public class LogicaDeGrafo {
 
 	public boolean crearArista(String vertice, String vertice2, Double probabilidad) {
 		try {
-			grafoEspias.agregarArista(vertice, vertice2, probabilidad);
+			grafoLogica.agregarArista(vertice, vertice2, probabilidad);
 			return true;
 
 		} catch (IllegalArgumentException e) {
@@ -48,27 +43,29 @@ public class LogicaDeGrafo {
 		}
 
 	}
+	public HashMap<String, HashMap<String, Double>> devolverGrafo() {
+		
+		return this.grafoLogica.getGrafo();
+	}
+	
 
 	public boolean existeArista(String nombre1, String nombre2) {
-		return grafoEspias.existeArista(nombre1, nombre2); 	
+		return grafoLogica.existeArista(nombre1, nombre2); 	
 
 	}
-
-
 	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoPrim() {
 		try {
+			//calentamos la java virtual machine : )
+		    this.arbolGeneradorMinimo.crearArbolGeneradorMinimoPrim();
 			long comenzarTemporizador = System.nanoTime();
-			Grafo grafoEspiasPrim = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoPrim();
-			this.recorridoBFS=BFS.obtenerEncuentrosIntermedios(grafoEspiasPrim);
-			
-			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasPrim.getGrafo();
+			Grafo grafoAGMPrim = this.arbolGeneradorMinimo.crearArbolGeneradorMinimoPrim();
 			long finTemporizador = System.nanoTime();
 			long duracion = finTemporizador - comenzarTemporizador;
-
-			// Convertir de nanosegundos a milisegundos
 			double milisegundos = duracion / 1_000_000.0;
-
 			this.tiempoEjecucionPrim =String.valueOf(milisegundos);
+			this.recorridoBFS=BFS.obtenerEncuentrosIntermedios(grafoAGMPrim);
+			
+			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoAGMPrim.getGrafo();
 			return hashMapVerticesYVecinos;
 
 		} catch (IllegalArgumentException e) {
@@ -84,16 +81,17 @@ public class LogicaDeGrafo {
 	public HashMap<String, HashMap<String,Double>> crearArbolGeneradorMinimoKruskal() {
 
 		try {
+			//calentamos la java virtual machine : )
+		    this.arbolGeneradorMinimo.crearArbolGeneradorMinimoKruskal();
+
 			long comenzarTemporizador = System.nanoTime();
-			Grafo grafoEspiasKruskal = this.arbolGeneradorMinimo.crearArbolGeneradoMinimoKruskal();
-			this.recorridoBFS=BFS.obtenerEncuentrosIntermedios(grafoEspiasKruskal);
-			
-			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoEspiasKruskal.getGrafo();
+			Grafo grafoAGMKruskal = this.arbolGeneradorMinimo.crearArbolGeneradorMinimoKruskal();
 			long finTemporizador = System.nanoTime();
 			long duracion = finTemporizador - comenzarTemporizador;
 			double milisegundos = duracion / 1_000_000.0;
-		
 			this.tiempoEjecucionKruskal =String.valueOf(milisegundos);
+			this.recorridoBFS=BFS.obtenerEncuentrosIntermedios(grafoAGMKruskal);
+			HashMap<String, HashMap<String,Double>> hashMapVerticesYVecinos = grafoAGMKruskal.getGrafo();
 			return hashMapVerticesYVecinos;
 
 		} catch (IllegalArgumentException e) {
@@ -103,7 +101,57 @@ public class LogicaDeGrafo {
 			return null;
 		}
 
+	}
+	
+	public String devolverTiempoDeEjecucionDeAGM() {
+		StringBuilder sb = new StringBuilder();
+		if (!tiempoEjecucionPrim.contains(" ")) {
+			sb.append(devolverTiempoDeEjecucionDeAGMPrim());
+		}else {
+			throw new RuntimeException("Prim aun no fue ejecutado");
+		}
+		if (!tiempoEjecucionKruskal.contains(" ")) {
+			sb.append("-");
+			sb.append(devolverTiempoDeEjecucionDeAGMKruskal());
+		}else {
+			throw new RuntimeException("Kruskal aun no fue ejecutado");
+		}
+		return sb.toString();
+	}
+	public String devolverTiempoDeEjecucionDeAGMPrim() {
+		String tiempoDeEjecucion = "Tiempo AGM PRIM: " + tiempoEjecucionPrim;
+		return tiempoDeEjecucion;
+	}
+	public String devolverTiempoDeEjecucionDeAGMKruskal() {
+		String tiempoDeEjecucion = "Tiempo AGM KRUSKAL: " + tiempoEjecucionKruskal;
 
+		return tiempoDeEjecucion;
+	}
+	public String recorrerArbolGeneradorMinimoBFS() {
+		return recorridoBFS;
+	}
+	public void limpiarRegistroBFS() {
+		recorridoBFS=null;
+	}
+	private void crearVerticesDesdeArchivo( HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos) {
+
+		for (Entry<String, HashMap<String, Double>> entry : auxiliarHashMapVecinos.entrySet()) {
+			String nombreVertice = entry.getKey();
+			crearVertice(nombreVertice);
+		}
+
+	}
+	private void crearAristasDesdeArchivo( HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos) {
+		for (Entry<String, HashMap<String, Double>> entry : auxiliarHashMapVecinos.entrySet()) {
+			HashMap<String,Double> auxVecinos = new HashMap<String,Double>();
+			String nombreVertice1 = entry.getKey();
+			auxVecinos = entry.getValue();
+			for (Entry<String, Double> entrada : auxVecinos.entrySet()) {
+				String nombreVertice2 = entrada.getKey();
+				Double probabilidad = entrada.getValue();
+				crearArista(nombreVertice1, nombreVertice2, probabilidad);
+			}
+		}
 
 	}
 
@@ -127,11 +175,9 @@ public class LogicaDeGrafo {
 	{
 		try {
 			this.archivoJSON = archivoJSON.leerJSON(NombreArchivo);
-			//Limpio el grafo anterior (SUJETO A CAMBIOS)
-			grafoEspias.reiniciarGrafo();
+			borrarGrafoActual();
 			this.tiempoEjecucionPrim = " ";
 			this.tiempoEjecucionKruskal = " ";
-			//Sintesis, actualizo el modelo antes de dibujar el nuevo grafo.
 			HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Double>>();
 			auxiliarHashMapVecinos = archivoJSON.getGrafo();
 			crearVerticesDesdeArchivo(auxiliarHashMapVecinos);
@@ -146,7 +192,6 @@ public class LogicaDeGrafo {
 			return false;
 		}
 	}
-
 	public HashMap<String, HashMap<String,Double>> devolverGrafoArchivo(){
 
 		return this.archivoJSON.getGrafo();
@@ -157,68 +202,12 @@ public class LogicaDeGrafo {
 		return this.archivoJSON.getGrafoPosiciones();
 	}
 
-
-	private void crearVerticesDesdeArchivo( HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos) {
-
-		for (Entry<String, HashMap<String, Double>> entry : auxiliarHashMapVecinos.entrySet()) {
-			String nombreVertice = entry.getKey();
-			crearVertice(nombreVertice);
-		}
-
-	}
-	private void crearAristasDesdeArchivo( HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos) {
-		for (Entry<String, HashMap<String, Double>> entry : auxiliarHashMapVecinos.entrySet()) {
-			HashMap<String,Double> auxVecinos = new HashMap<String,Double>();
-			String nombreVertice1 = entry.getKey();
-			auxVecinos = entry.getValue();
-			for (Entry<String, Double> entrada : auxVecinos.entrySet()) {
-				String nombreVertice2 = entrada.getKey();
-				Double probabilidad = entrada.getValue();
-				crearArista(nombreVertice1, nombreVertice2, probabilidad);
-			}
-		}
-
-	}
-
-
-	public String devolverTiempoDeEjecucionDeAGM() {
-		StringBuilder sb = new StringBuilder();
-		if (!tiempoEjecucionPrim.contains(" ")) {
-			sb.append(devolverTiempoDeEjecucionDeAGMPrim());
-		}else {
-			throw new RuntimeException("Prim aun no fue ejecutado");
-		}
-		if (!tiempoEjecucionKruskal.contains(" ")) {
-			sb.append("-");
-			sb.append(devolverTiempoDeEjecucionDeAGMKruskal());
-		}else {
-			throw new RuntimeException("Kruskal aun no fue ejecutado");
-		}
-		return sb.toString();
-	}
-	public String devolverTiempoDeEjecucionDeAGMPrim() {
-		String tiempoDeEjecucion = "Tiempo AGM PRIM: " + tiempoEjecucionPrim;
-
-		return tiempoDeEjecucion;
-	}
-	public String devolverTiempoDeEjecucionDeAGMKruskal() {
-		String tiempoDeEjecucion = "Tiempo AGM KRUSKAL: " + tiempoEjecucionKruskal;
-
-		return tiempoDeEjecucion;
-	}
-	public HashMap<String, HashMap<String, Double>> devolverGrafo() {
-		
-		return this.grafoEspias.getGrafo();
-	}
-	
 	public void borrarGrafoActual() {
-		grafoEspias.reiniciarGrafo();
+		grafoLogica.reiniciarGrafo();
 	}
 
-	public String recorrerArbolGeneradorMinimoBFS() {
-		return recorridoBFS;
+	public String encuentrosIntermedios() {
+		return arbolGeneradorMinimo.getEncuentrosIntermedios();
 	}
-	public void limpiarRegistroBFS() {
-		recorridoBFS=null;
-	}
+
 }

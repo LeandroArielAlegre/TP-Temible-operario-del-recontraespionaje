@@ -1,8 +1,10 @@
 package View;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -24,6 +26,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import java.awt.event.ActionListener;
@@ -44,7 +47,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.JSeparator;
 
 public class PantallaMapa {
-
 	private JFrame frame;
 	private JMapViewer mapa;
 	private Coordinate mapaActual = new Coordinate(-34.521, -58.719);
@@ -54,23 +56,17 @@ public class PantallaMapa {
 	private Double coordenadaYGlobal;
 	private JPanel panelControles;
 	private HashMap <String ,Coordinate> hashMapVertices;
-
 	private JButton btnCargarEspias;
 	private JButton btnCrearArista;
 	private JButton btnCrearVertice;
-
 	private JTextField textfieldNombreVertice;
 	private JTextField textFieldVerticeB;
 	private JTextField textFieldVerticeA;
 	private JTextField textFieldProbabilidad;
-
 	URL urlEspia = getClass().getClassLoader().getResource("resources/espia.png");
 	ImageIcon iconEspia = new ImageIcon(urlEspia);
 	URL urlCarta = getClass().getClassLoader().getResource("resources/carta.gif");
 	ImageIcon iconMensaje = new ImageIcon(urlCarta);
-
-
-
 	/**
 	 * Launch the application.
 	 */
@@ -111,7 +107,78 @@ public class PantallaMapa {
 		panelControles.setBounds(10, 11, 1015, 615);
 		panelControles.setLayout(null);
 		frame.getContentPane().add(panelControles);
-
+		mapa = new JMapViewer();
+		mapa.setBorder(new LineBorder(new Color(120, 143, 235), 8));
+		mapa.setBounds(0, 0, 786, 457);
+		panelControles.add(mapa);
+		mapa.setFocusable(false);
+		mapa.setZoomControlsVisible(false);
+		mapa.setDisplayPosition(this.mapaActual, zoomActual);
+		mapa.setScrollWrapEnabled(false);  
+		new DefaultMapController(mapa){
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// Convertimos la posición del clic (en píxeles) a coordenadas geográficas
+				Coordinate coord = (Coordinate) mapa.getPosition(e.getPoint());
+				coordenadaXGlobal = coord.getLat();
+				coordenadaYGlobal = coord.getLon();
+				mapa.setDisplayPosition(mapaActual, zoomActual);
+			}
+			public void mouseReleased(MouseEvent e) {
+				mapa.setDisplayPosition(mapaActual, zoomActual);
+			}
+			public void mousePressed(MouseEvent e) {
+				mapa.setDisplayPosition(mapaActual, zoomActual);
+			}
+		};
+		mapa.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent arg0) {
+				mapa.setDisplayPosition(mapaActual, zoomActual);
+			}
+		});
+		JLabel lblOrdenDeEncuentrosConBFS = new JLabel("");
+		lblOrdenDeEncuentrosConBFS.setVerticalAlignment(SwingConstants.TOP);
+		lblOrdenDeEncuentrosConBFS.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+		lblOrdenDeEncuentrosConBFS.setBorder(new LineBorder(new Color(0, 0, 0), 4));
+		lblOrdenDeEncuentrosConBFS.setFocusable(false);
+		lblOrdenDeEncuentrosConBFS.setHorizontalAlignment(SwingConstants.CENTER);
+		lblOrdenDeEncuentrosConBFS.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblOrdenDeEncuentrosConBFS.setOpaque(true);
+		lblOrdenDeEncuentrosConBFS.setVisible(false);
+		lblOrdenDeEncuentrosConBFS.setBounds(790, 11, 210, 435);
+		panelControles.add(lblOrdenDeEncuentrosConBFS);
+		JLabel lblindicativoNombreDeVértice = new JLabel("Nombre de Vértice ");
+		lblindicativoNombreDeVértice.setForeground(new Color(255, 255, 255));
+		lblindicativoNombreDeVértice.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblindicativoNombreDeVértice.setBounds(10, 472, 115, 14);
+		panelControles.add(lblindicativoNombreDeVértice);
+		JLabel lblindicativoVérticeOrigen = new JLabel("Vértice origen");
+		lblindicativoVérticeOrigen.setForeground(new Color(255, 255, 255));
+		lblindicativoVérticeOrigen.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblindicativoVérticeOrigen.setBounds(230, 472, 79, 14);
+		panelControles.add(lblindicativoVérticeOrigen);
+		JLabel lblindicativoVerticeDestino = new JLabel("Vértice destino");
+		lblindicativoVerticeDestino.setForeground(new Color(255, 255, 255));
+		lblindicativoVerticeDestino.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblindicativoVerticeDestino.setBounds(230, 514, 86, 14);
+		panelControles.add(lblindicativoVerticeDestino);
+		JSeparator separator = new JSeparator();
+		separator.setBackground(new Color(17, 37, 132));
+		separator.setOpaque(true);
+		separator.setBounds(135, 457, 85, 157);
+		panelControles.add(separator);
+		JLabel lblPeso = new JLabel("Peso");
+		lblPeso.setForeground(new Color(255, 255, 255));
+		lblPeso.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblPeso.setBounds(354, 472, 27, 14);
+		panelControles.add(lblPeso);
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setOpaque(true);
+		separator_1.setBackground(new Color(17, 37, 132));
+		separator_1.setBounds(422, 457, 85, 157);
+		panelControles.add(separator_1);
+		colocarTexfields();
 		btnCrearVertice = new JButton("Crear vértice ");
 		btnCrearVertice.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnCrearVertice.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -133,43 +200,6 @@ public class PantallaMapa {
 			}
 
 		});
-
-		mapa = new JMapViewer();
-		mapa.setBorder(new LineBorder(new Color(120, 143, 235), 8));
-		mapa.setBounds(0, 0, 786, 457);
-		panelControles.add(mapa);
-		mapa.setFocusable(false);
-		mapa.setZoomControlsVisible(false);
-
-
-
-		mapa.setDisplayPosition(this.mapaActual, zoomActual);
-		mapa.setScrollWrapEnabled(false);  
-
-
-		new DefaultMapController(mapa){
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				// Convertimos la posición del clic (en píxeles) a coordenadas geográficas
-				Coordinate coord = (Coordinate) mapa.getPosition(e.getPoint());
-
-				coordenadaXGlobal = coord.getLat();
-				coordenadaYGlobal = coord.getLon();
-
-
-				mapa.setDisplayPosition(mapaActual, zoomActual);
-			}
-
-			public void mouseReleased(MouseEvent e) {
-				mapa.setDisplayPosition(mapaActual, zoomActual);
-			}
-
-			public void mousePressed(MouseEvent e) {
-				mapa.setDisplayPosition(mapaActual, zoomActual);
-			}
-		};
-
-		colocarTexfields();
 		btnCrearArista = new JButton("Crear arista");
 		btnCrearArista.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnCrearArista.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -209,29 +239,12 @@ public class PantallaMapa {
 		});
 		btnCrearArista.setBounds(230, 560, 86, 44);
 		panelControles.add(btnCrearArista);
-
-
-
-		JLabel lblOrdenDeEncuentrosConBFS = new JLabel("");
-		lblOrdenDeEncuentrosConBFS.setVerticalAlignment(SwingConstants.TOP);
-		lblOrdenDeEncuentrosConBFS.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-		lblOrdenDeEncuentrosConBFS.setBorder(new LineBorder(new Color(0, 0, 0), 4));
-		lblOrdenDeEncuentrosConBFS.setFocusable(false);
-		lblOrdenDeEncuentrosConBFS.setHorizontalAlignment(SwingConstants.CENTER);
-		lblOrdenDeEncuentrosConBFS.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblOrdenDeEncuentrosConBFS.setOpaque(true);
-		lblOrdenDeEncuentrosConBFS.setVisible(false);
-		lblOrdenDeEncuentrosConBFS.setBounds(790, 11, 210, 435);
-
-		panelControles.add(lblOrdenDeEncuentrosConBFS);
-
 		JComboBox<String> comboBoxSeleccionAlgoritmo = new JComboBox<>(new String[] {"Algoritmo De Prim", "Algoritmo de Kruskal"});
 		comboBoxSeleccionAlgoritmo.setBorder(new LineBorder(new Color(0, 0, 0)));
 		comboBoxSeleccionAlgoritmo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		comboBoxSeleccionAlgoritmo.setFocusable(false);
 		comboBoxSeleccionAlgoritmo.setBounds(547, 469, 137, 20);
 		panelControles.add(comboBoxSeleccionAlgoritmo);
-
 		JButton btnAplicarAlgoritmo = new JButton("Generar Arbol generador mínimo");
 		btnAplicarAlgoritmo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnAplicarAlgoritmo.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -239,31 +252,21 @@ public class PantallaMapa {
 		btnAplicarAlgoritmo.setFocusable(false);
 		btnAplicarAlgoritmo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-
 				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 0) {
 					//Limpio la pantalla primero
 					refrescarVista(lblOrdenDeEncuentrosConBFS);
-
 					HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoConPrim = presentadorMapa.crearArbolGeneradorMinimoPrim();
-					
 					Color color = Color.RED;
-					
 					actualizarGrafoEnMapa(HashMapNuevoGrafoConPrim, color);
 					colocarImagenCartaEnAGM(HashMapNuevoGrafoConPrim);
-					
 					String recorridoAGMbfs = presentadorMapa.recorrerArbolGeneradorMinimoBFS();
-					
 					presentadorMapa.limpiarRegistroBFS();
-					
 					if(presentadorMapa.encuentrosIntermedios() != null && recorridoAGMbfs !=null ) {
 						lblOrdenDeEncuentrosConBFS.setText("<html>" + recorridoAGMbfs.replace("\n", "<br>") + "</html>");
 						lblOrdenDeEncuentrosConBFS.setVisible(true);
-						
 						cargarEncuentroIntermedios("<html><body style='width: 190px'>" + presentadorMapa.encuentrosIntermedios().replace("\n", "<br>") + "</body></html>");
 						String tiempoDeAGM = presentadorMapa.devolverTiempoDeEjecucionDeAGMPrim();
 						JOptionPane.showMessageDialog(null, "El tiempo esta en milisegundos" + "\n" + tiempoDeAGM);
-						
 					}else {
 						lblOrdenDeEncuentrosConBFS.setVisible(false);
 					}
@@ -271,18 +274,12 @@ public class PantallaMapa {
 				if(comboBoxSeleccionAlgoritmo.getSelectedIndex() == 1) {
 					//Limpio la pantalla primero
 					refrescarVista(lblOrdenDeEncuentrosConBFS);
-
 					HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoConKruskal = presentadorMapa.crearArbolGeneradorMinimoKruskal();
 					Color color = Color.BLUE;
-					
 					actualizarGrafoEnMapa(HashMapNuevoGrafoConKruskal, color);
 					colocarImagenCartaEnAGM(HashMapNuevoGrafoConKruskal);
-					
-					
 					String recorridoAGMbfs = presentadorMapa.recorrerArbolGeneradorMinimoBFS();
-					
 					presentadorMapa.limpiarRegistroBFS();
-					
 					if(presentadorMapa.encuentrosIntermedios() != null && recorridoAGMbfs !=null)  {
 						lblOrdenDeEncuentrosConBFS.setText("<html>" + recorridoAGMbfs.replace("\n", "<br>") + "</html>");
 						lblOrdenDeEncuentrosConBFS.setVisible(true);
@@ -292,17 +289,11 @@ public class PantallaMapa {
 					}else {
 						lblOrdenDeEncuentrosConBFS.setVisible(false);
 					}
-
-
-
 				}
-
-
 			}
 		});
 		btnAplicarAlgoritmo.setBounds(517, 498, 189, 20);
 		panelControles.add(btnAplicarAlgoritmo);
-
 		JButton btnRestablecerGrafo = new JButton("Restablecer Valores");
 		btnRestablecerGrafo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnRestablecerGrafo.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -320,7 +311,6 @@ public class PantallaMapa {
 		});
 		btnRestablecerGrafo.setBounds(517, 529, 189, 20);
 		panelControles.add(btnRestablecerGrafo);
-
 		JButton btnBorrarGrafo = new JButton("Borrar Grafo");
 		btnBorrarGrafo.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnBorrarGrafo.setBorder(new LineBorder(new Color(0, 0, 0)));
@@ -344,8 +334,6 @@ public class PantallaMapa {
 		});
 		btnBorrarGrafo.setBounds(517, 560, 189, 20);
 		panelControles.add(btnBorrarGrafo);
-
-
 		JButton btnGuardar = new JButton("Guardar Grafo");
 		btnGuardar.setHorizontalAlignment(SwingConstants.LEFT);
 		btnGuardar.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -381,26 +369,18 @@ public class PantallaMapa {
 				String nombreArchivo =cargarEspias();
 				if(nombreArchivo != null) {
 					if(presentadorMapa.cargarGrafo(nombreArchivo)) {
-
 						//Limpio todos los poligonos si existen
 						mapa.removeAllMapMarkers();
 						mapa.removeAllMapPolygons();
 						Color color = Color.GREEN;
-
 						HashMap<String,ArrayList<Double>> auxHashMapCoordenadas= new HashMap<String,ArrayList<Double>>();
 						auxHashMapCoordenadas = presentadorMapa.devolverGrafoPosicionesArchivo();
-
 						HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Double>>();
 						auxiliarHashMapVecinos =presentadorMapa.devolverGrafoArchivo();
-
-						//Limpio las hashmap locales
-
 						hashMapVertices.clear();
-
 						//Borro las imagenes residuales, si existieran
 						limpiarJLabels(mapa,urlEspia);
 						limpiarJLabels(mapa,urlCarta);
-
 						//Dibujo los vertices
 						actualizarMarcadores(auxHashMapCoordenadas);
 						//Dibujo las aristas
@@ -413,7 +393,6 @@ public class PantallaMapa {
 		});
 		btnCargarEspias.setBounds(620, 584, 86, 20);
 		panelControles.add(btnCargarEspias);
-		
 		JButton btnCompararTiemposDeEjecucionDeAlgoritmos = new JButton("Comparar Tiempos De Ejecucion");
 		btnCompararTiemposDeEjecucionDeAlgoritmos.setFont(new Font("Tahoma", Font.BOLD, 11));
 		btnCompararTiemposDeEjecucionDeAlgoritmos.addActionListener(new ActionListener() {
@@ -433,51 +412,82 @@ public class PantallaMapa {
 		btnCompararTiemposDeEjecucionDeAlgoritmos.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnCompararTiemposDeEjecucionDeAlgoritmos.setBounds(793, 584, 207, 20);
 		panelControles.add(btnCompararTiemposDeEjecucionDeAlgoritmos);
-
-		JLabel lblindicativoNombreDeVértice = new JLabel("Nombre de Vértice ");
-		lblindicativoNombreDeVértice.setForeground(new Color(255, 255, 255));
-		lblindicativoNombreDeVértice.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblindicativoNombreDeVértice.setBounds(10, 472, 115, 14);
-		panelControles.add(lblindicativoNombreDeVértice);
-
-		JLabel lblindicativoVérticeOrigen = new JLabel("Vértice origen");
-		lblindicativoVérticeOrigen.setForeground(new Color(255, 255, 255));
-		lblindicativoVérticeOrigen.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblindicativoVérticeOrigen.setBounds(230, 472, 79, 14);
-		panelControles.add(lblindicativoVérticeOrigen);
-
-		JLabel lblindicativoVerticeDestino = new JLabel("Vértice destino");
-		lblindicativoVerticeDestino.setForeground(new Color(255, 255, 255));
-		lblindicativoVerticeDestino.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblindicativoVerticeDestino.setBounds(230, 514, 86, 14);
-		panelControles.add(lblindicativoVerticeDestino);
-
-		JSeparator separator = new JSeparator();
-		separator.setBackground(new Color(17, 37, 132));
-		separator.setOpaque(true);
-		separator.setBounds(135, 457, 85, 157);
-		panelControles.add(separator);
-
-		JLabel lblPeso = new JLabel("Peso");
-		lblPeso.setForeground(new Color(255, 255, 255));
-		lblPeso.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblPeso.setBounds(354, 472, 27, 14);
-		panelControles.add(lblPeso);
-
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setOpaque(true);
-		separator_1.setBackground(new Color(17, 37, 132));
-		separator_1.setBounds(422, 457, 85, 157);
-		panelControles.add(separator_1);
-		
-		mapa.addMouseWheelListener(new MouseWheelListener() {
-			@Override
-			public void mouseWheelMoved(MouseWheelEvent arg0) {
-				mapa.setDisplayPosition(mapaActual, zoomActual);
-			}
-		});
+	} //fin 
+	private void colocarTexfields() {
+		textFieldProbabilidad = new JTextField();
+		textFieldProbabilidad.setBorder(new LineBorder(new Color(0, 0, 0)));
+		textFieldProbabilidad.setBounds(326, 493, 86, 20);
+		panelControles.add(textFieldProbabilidad);
+		textFieldProbabilidad.setColumns(10);
+		textfieldNombreVertice = new JTextField();
+		textfieldNombreVertice.setBorder(new LineBorder(new Color(0, 0, 0)));
+		textfieldNombreVertice.setToolTipText("");
+		textfieldNombreVertice.setBounds(20, 493, 86, 20);
+		panelControles.add(textfieldNombreVertice);
+		textfieldNombreVertice.setColumns(10);
+		textFieldVerticeB = new JTextField();
+		textFieldVerticeB.setBorder(new LineBorder(new Color(0, 0, 0)));
+		textFieldVerticeB.setBounds(230, 529, 86, 20);
+		panelControles.add(textFieldVerticeB);
+		textFieldVerticeB.setColumns(10);
+		textFieldVerticeA = new JTextField();
+		textFieldVerticeA.setBorder(new LineBorder(new Color(0, 0, 0)));
+		textFieldVerticeA.setBounds(230, 493, 86, 20);
+		panelControles.add(textFieldVerticeA);
+		textFieldVerticeA.setColumns(10);
 	}
-
+		private void crearVerticeEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
+			Coordinate vertice = new Coordinate(CoordenadasX, CoordenadasY);
+			if (presentadorMapa.crearVertice(nombreVertice) && !hashMapVertices.containsKey(nombreVertice)) {
+				MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, vertice);
+				verticeEnMapa.getStyle().setBackColor(Color.yellow);
+				verticeEnMapa.getStyle().setColor(Color.yellow);
+				colocarImagenEnPosicionDeMarcador(vertice,urlEspia);
+				mapa.addMapMarker(verticeEnMapa);
+				hashMapVertices.put(nombreVertice, vertice);
+				JOptionPane.showMessageDialog(null, "Se creo el vertice Satisfactoriamente");
+			}else {
+				JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
+			}
+		}
+		private void crearAristaEnMapa(String nombreVertice1, Coordinate vertice1, String nombreVertice2, Coordinate vertice2, Double probabilidad) {
+			if(presentadorMapa.crearArista(nombreVertice1, nombreVertice2, probabilidad)) {
+				List<Coordinate> aristaEnMapa = new ArrayList<>();
+				aristaEnMapa.add(vertice1); 
+				aristaEnMapa.add(vertice2); 
+				aristaEnMapa.add(vertice1); 
+				MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
+				arista.setColor(Color.green);
+				mapa.addMapPolygon(arista);
+				JOptionPane.showMessageDialog(null, "Se creo la Arista Satisfactoriamente");
+			}else {
+				JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear la Arista");
+			}
+		}
+	public boolean verificarEntrada(String string, Double coordenadaXGlobal, Double coordenadaYGlobal) {
+		if(string != null && string.length() != 0) 
+		{
+			if(coordenadaXGlobal != null && coordenadaYGlobal != null) 
+			{
+				return true;
+			}				
+		}
+		return false;
+	}
+	public boolean verificarEntrada(String verticeA, String verticeB, String probabilidad) {
+		if(verticeA!= null && verticeB!=null && probabilidad!= null) 
+		{
+			return true;
+		}
+		return false;
+	}
+	public Double parsearADouble(String text) {
+		Double probabilidad=Double.parseDouble(text);
+		return probabilidad;
+	}
+	public boolean verificarProbabilidad(Double probabilidad) {		
+		return probabilidad >= 0 && probabilidad <=1 ;
+	}
 	private void actualizarMarcadores(HashMap<String, ArrayList<Double>> auxHashMapCoordenadas) {
 		
 		for (Entry<String, ArrayList<Double>> entry : auxHashMapCoordenadas.entrySet()) {
@@ -491,26 +501,37 @@ public class PantallaMapa {
 	private void colocarMarcadoresEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
 		Coordinate coordenadaVertice = new Coordinate(CoordenadasX, CoordenadasY);
 		MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, coordenadaVertice);
-
 		colocarImagenEnPosicionDeMarcador(coordenadaVertice,urlEspia);
-
 		verticeEnMapa.getStyle().setBackColor(Color.yellow);
 		verticeEnMapa.getStyle().setColor(Color.yellow);
 		mapa.addMapMarker(verticeEnMapa);
-		//Guardamos el vertices localmente en un HashMap
 		hashMapVertices.put(nombreVertice, coordenadaVertice);
 	}
-
-	private void refrescarVista(JLabel lblEncuentrosIntermedios) {
-		Color color = Color.GREEN;
-		actualizarGrafoEnMapa(presentadorMapa.devolverGrafo(),color);
-		limpiarJLabels(mapa,urlCarta);
-		lblEncuentrosIntermedios.setText(null);
-		lblEncuentrosIntermedios.setVisible(false);
+	public void actualizarGrafoEnMapa(HashMap<String, HashMap<String,Double>> HashMapnuevoGrafo, Color color ) {
+		if(HashMapnuevoGrafo == null) {
+			JOptionPane.showMessageDialog(null, "Error, El grafo es disconexo, agregue 1 vertice o 2 vertices y 1 arista");
+		}else {
+			for (String vertice : HashMapnuevoGrafo.keySet()) {
+				HashMap<String, Double> vecinos = HashMapnuevoGrafo.get(vertice);
+				for (Map.Entry<String, Double> entry : vecinos.entrySet()) {
+					cambiarColorArista(vertice, entry.getKey(), color);
+				}      
+			}
+		}
 	}
+	public void cambiarColorArista(String vertice1, String vertice2, Color color) {
+		Coordinate coordenada1 = hashMapVertices.get(vertice1);
+		Coordinate coordenada2 = hashMapVertices.get(vertice2);
+		List<Coordinate> aristaEnMapa = new ArrayList<>();
+		aristaEnMapa.add(coordenada1); 
+		aristaEnMapa.add(coordenada2); 
+		aristaEnMapa.add(coordenada1); 
+		MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
+		arista.setColor(color);
+		mapa.addMapPolygon(arista);
 
+	}
 	public void colocarImagenCartaEnAGM(HashMap<String, HashMap<String,Double>> HashMapNuevoGrafoAGM) {
-
 		if(HashMapNuevoGrafoAGM != null) {
 			for (Entry<String, HashMap<String, Double>> entry : HashMapNuevoGrafoAGM.entrySet()) {
 				String claveVertice1 = entry.getKey();
@@ -525,7 +546,6 @@ public class PantallaMapa {
 
 		}
 	}
-
 	private void colocarImagenEnPosicionDeArista(Coordinate coordenadaVertice1, Coordinate coordenadaVertice2, URL urlImagen) {
 		Point posicionEnPantalla1 = mapa.getMapPosition(coordenadaVertice1);
 		Point posicionEnPantalla2 = mapa.getMapPosition(coordenadaVertice2);
@@ -547,41 +567,16 @@ public class PantallaMapa {
 		jlabelImagen.putClientProperty("imageURL", urlEspia);
 		mapa.add(jlabelImagen);
 	}
-	public void actualizarGrafoEnMapa(HashMap<String, HashMap<String,Double>> HashMapnuevoGrafo, Color color ) {
-
-		//VER!"!"!"!"!"!
-		if(HashMapnuevoGrafo == null) {
-			JOptionPane.showMessageDialog(null, "Error, El grafo es disconexo, agregue 1 vertice o 2 vertices y 1 arista");
-		}else {
-			for (String vertice : HashMapnuevoGrafo.keySet()) {
-				HashMap<String, Double> vecinos = HashMapnuevoGrafo.get(vertice);
-				for (Map.Entry<String, Double> entry : vecinos.entrySet()) {
-
-					cambiarColorArista(vertice, entry.getKey(), color);
-				}      
-			}
-		}
+	private void refrescarVista(JLabel lblEncuentrosIntermedios) {
+		Color color = Color.GREEN;
+		actualizarGrafoEnMapa(presentadorMapa.devolverGrafo(),color);
+		limpiarJLabels(mapa,urlCarta);
+		lblEncuentrosIntermedios.setText(null);
+		lblEncuentrosIntermedios.setVisible(false);
 	}
-
-	public void cambiarColorArista(String vertice1, String vertice2, Color color) {
-
-		Coordinate coordenada1 = hashMapVertices.get(vertice1);
-		Coordinate coordenada2 = hashMapVertices.get(vertice2);
-
-		List<Coordinate> aristaEnMapa = new ArrayList<>();
-		aristaEnMapa.add(coordenada1); 
-		aristaEnMapa.add(coordenada2); 
-		aristaEnMapa.add(coordenada1); 
-		// Crear el polígono (en este caso una línea)
-		MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
-		
-		arista.setColor(color);
-		mapa.addMapPolygon(arista);
-
-	}
+	
 	private static void limpiarJLabels(JMapViewer mapa, URL urlAImagenAEliminar) {
 		Component[] componentes = mapa.getComponents();
-
 		for (Component componente : componentes) {
 			if (componente instanceof JLabel) {
 				JLabel label = (JLabel) componente;
@@ -591,195 +586,72 @@ public class PantallaMapa {
 				}
 			}
 		}
-
 		mapa.revalidate();
 		mapa.repaint();
 	}
-
-	private void colocarTexfields() {
-
-		textFieldProbabilidad = new JTextField();
-		textFieldProbabilidad.setBorder(new LineBorder(new Color(0, 0, 0)));
-		textFieldProbabilidad.setBounds(326, 493, 86, 20);
-		panelControles.add(textFieldProbabilidad);
-		textFieldProbabilidad.setColumns(10);
-
-		textfieldNombreVertice = new JTextField();
-		textfieldNombreVertice.setBorder(new LineBorder(new Color(0, 0, 0)));
-		textfieldNombreVertice.setToolTipText("");
-		textfieldNombreVertice.setBounds(20, 493, 86, 20);
-		panelControles.add(textfieldNombreVertice);
-		textfieldNombreVertice.setColumns(10);
-
-		textFieldVerticeB = new JTextField();
-		textFieldVerticeB.setBorder(new LineBorder(new Color(0, 0, 0)));
-		textFieldVerticeB.setBounds(230, 529, 86, 20);
-		panelControles.add(textFieldVerticeB);
-		textFieldVerticeB.setColumns(10);
-
-		textFieldVerticeA = new JTextField();
-		textFieldVerticeA.setBorder(new LineBorder(new Color(0, 0, 0)));
-		textFieldVerticeA.setBounds(230, 493, 86, 20);
-		panelControles.add(textFieldVerticeA);
-		textFieldVerticeA.setColumns(10);
-	}
-
-	//La View Tiene sus propios metodos para representar marcadores en la pantalla
-	private void crearVerticeEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
-		Coordinate vertice = new Coordinate(CoordenadasX, CoordenadasY);
-		
-		if (presentadorMapa.crearVertice(nombreVertice) && !hashMapVertices.containsKey(nombreVertice)) {
-
-			MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, vertice);
-			verticeEnMapa.getStyle().setBackColor(Color.yellow);
-			verticeEnMapa.getStyle().setColor(Color.yellow);
+	private String guardarEspias() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2, 1));
+		JLabel label = new JLabel("Coloque el nombre del archivo:");
+		panel.add(label);
+		JTextField textField = new JTextField(10);
+		panel.add(textField);
+		int resultado = JOptionPane.showConfirmDialog(null, panel, "Guardar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (resultado == JOptionPane.OK_OPTION) {
+			String nombreArchivo = textField.getText().trim();
+			if(nombreArchivo.isEmpty()) {
+				return null;
+			}
+			return nombreArchivo;
 			
-			colocarImagenEnPosicionDeMarcador(vertice,urlEspia);
-			mapa.addMapMarker(verticeEnMapa);
-
-			//Guardamos el vertices localmente en un HashMap
-			hashMapVertices.put(nombreVertice, vertice);
-
-			JOptionPane.showMessageDialog(null, "Se creo el vertice Satisfactoriamente");
-
 		}else {
-			
-			JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
-
-		}
-
-
-
-	}
-
-	private void crearAristaEnMapa(String nombreVertice1, Coordinate vertice1, String nombreVertice2, Coordinate vertice2, Double probabilidad) {
-
-		if(presentadorMapa.crearArista(nombreVertice1, nombreVertice2, probabilidad)) {
-
-			List<Coordinate> aristaEnMapa = new ArrayList<>();
-			aristaEnMapa.add(vertice1); 
-			aristaEnMapa.add(vertice2); 
-			aristaEnMapa.add(vertice1); 
-			// Crear el polígono (en este caso una línea)
-			MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
-
-			arista.setColor(Color.green);
-			
-			mapa.addMapPolygon(arista);
-			JOptionPane.showMessageDialog(null, "Se creo la Arista Satisfactoriamente");
-		}else {
-			JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear la Arista");
+			return null;
 		}
 	}
-
+	private String cargarEspias() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(2, 1));
+		JLabel label = new JLabel("Coloque el nombre del archivo:");
+		panel.add(label);
+		JTextField textField = new JTextField(10);
+		panel.add(textField);
+		int resultado = JOptionPane.showConfirmDialog(null, panel, "Cargar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (resultado == JOptionPane.OK_OPTION) {
+			String nombreArchivo = textField.getText().trim();
+			if(nombreArchivo.isEmpty()) {
+				return null;
+			}
+			return nombreArchivo;
+		} else {
+			return null;
+		}
+	}
 	private HashMap<String,ArrayList<Double>> convertirCoordinateEnDosElementosEnUnArrayList(){
-
 		HashMap<String,ArrayList<Double>> nuevoHashMap = new HashMap<String,ArrayList<Double>>();
-
 		if(hashMapVertices == null) {
 			return null;
 		}
-
-		//Crear un nuevo hashmap, parsear coordinate a 2 doubles
 		for (Entry<String, Coordinate> posicion : this.hashMapVertices.entrySet()) {
 			String Clave = posicion.getKey();
 			Coordinate valor = posicion.getValue();
 			Double coordenadaDoubleX = valor.getLat();
 			Double coordenadaDoubleY = valor.getLon();
-
 			ArrayList<Double> arrayListCoordenadas = new ArrayList<Double>();
 			arrayListCoordenadas.add(coordenadaDoubleX);
 			arrayListCoordenadas.add(coordenadaDoubleY);
-
 			nuevoHashMap.put(Clave, arrayListCoordenadas);
 		}
-
 		return nuevoHashMap;
 	}
-
-	private String guardarEspias() {
-
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2, 1));
-		JLabel label = new JLabel("Coloque el nombre del archivo:");
-		panel.add(label);
-
-		JTextField textField = new JTextField(10);
-		panel.add(textField);
-
-		int resultado = JOptionPane.showConfirmDialog(null, panel, "Guardar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-		if (resultado == JOptionPane.OK_OPTION) {
-			String nombreArchivo = textField.getText().trim();
-			if(nombreArchivo.isEmpty()) {
-				return null;
-			}
-			return nombreArchivo;
-			
-		}else {
-			return null;
-		}
-	}
-
-	private String cargarEspias() {
-
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2, 1));
-		JLabel label = new JLabel("Coloque el nombre del archivo:");
-		panel.add(label);
-
-		JTextField textField = new JTextField(10);
-		panel.add(textField);
-
-		int resultado = JOptionPane.showConfirmDialog(null, panel, "Cargar", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-		if (resultado == JOptionPane.OK_OPTION) {
-			String nombreArchivo = textField.getText().trim();
-			if(nombreArchivo.isEmpty()) {
-				return null;
-			}
-			return nombreArchivo;
-
-		} else {
-			return null;
-		}
-	}
-
-	private void  cargarEncuentroIntermedios(String encuentrosIntermedios) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(2, 1));
-		JLabel label = new JLabel("");
-		label.setText(encuentrosIntermedios);
-		panel.add(label);
-
-		JOptionPane.showMessageDialog(null, panel);
-	}
-
-	public boolean verificarEntrada(String string, Double coordenadaXGlobal, Double coordenadaYGlobal) {
-		if(string != null && string.length() != 0) 
-		{
-			if(coordenadaXGlobal != null && coordenadaYGlobal != null) 
-			{
-				return true;
-			}				
-		}
-		return false;
-	}
-
-	public boolean verificarEntrada(String verticeA, String verticeB, String probabilidad) {
-		if(verticeA!= null && verticeB!=null && probabilidad!= null) 
-		{
-			return true;
-		}
-		return false;
-	}
-
-	public Double parsearADouble(String text) {
-		Double probabilidad=Double.parseDouble(text);
-		return probabilidad;
-	}
-
-	public boolean verificarProbabilidad(Double probabilidad) {		
-		return probabilidad >= 0 && probabilidad <=1 ;
-	}
+	private void cargarEncuentroIntermedios(String encuentrosIntermedios) {
+		 JPanel panel = new JPanel(new BorderLayout());
+		   JLabel label = new JLabel("<html><body style='width: 300px;'>" + 
+		                              encuentrosIntermedios.replace("\n", "<br>") + 
+		                              "</body></html>");
+		    JScrollPane scrollPane = new JScrollPane(label);
+		    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		    scrollPane.setPreferredSize(new Dimension(320, 200));
+		    panel.add(scrollPane, BorderLayout.CENTER);
+		    JOptionPane.showMessageDialog(null, panel);
+}
 }

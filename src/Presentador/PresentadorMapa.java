@@ -30,8 +30,6 @@ public class PresentadorMapa {
 		
 		return false;
 	}
-
-	
 	public boolean existeArista(String vertice, String vertice2) {
 		return logicaDeGrafoEspias.existeArista(vertice, vertice2);
 	    }
@@ -63,30 +61,6 @@ public class PresentadorMapa {
 		
 		
 	}
-	public String encuentrosIntermedios() {
-		return logicaDeGrafoEspias.encuentrosIntermedios();
-	}
-	
-	public String recorrerArbolGeneradorMinimoBFS() {
-		try {
-			return logicaDeGrafoEspias.recorrerArbolGeneradorMinimoBFS();
-			
-		} catch (IllegalArgumentException e) {
-			//System.out.println("Error: " + e.getMessage());
-			return null;
-		}
-		
-	}
-	
-	public String devolverTiempoDeEjecucionDeAGM() {
-		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGM();
-	}
-	public String devolverTiempoDeEjecucionDeAGMPrim() {
-		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGMPrim();
-	}
-	public String devolverTiempoDeEjecucionDeAGMKruskal() {
-		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGMKruskal();
-	}
 	public HashMap<String, ArrayList<Double>> devolverGrafoPosicionesArchivo() {
 		try {
 			return logicaDeGrafoEspias.devolverGrafoPosicionesArchivo();
@@ -117,6 +91,30 @@ public class PresentadorMapa {
 		}
 
 	
+	}
+	public String encuentrosIntermedios() {
+		return logicaDeGrafoEspias.encuentrosIntermedios();
+	}
+	
+	public String recorrerArbolGeneradorMinimoBFS() {
+		try {
+			return logicaDeGrafoEspias.recorrerArbolGeneradorMinimoBFS();
+			
+		} catch (IllegalArgumentException e) {
+			//System.out.println("Error: " + e.getMessage());
+			return null;
+		}
+		
+	}
+	
+	public String devolverTiempoDeEjecucionDeAGM() {
+		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGM();
+	}
+	public String devolverTiempoDeEjecucionDeAGMPrim() {
+		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGMPrim();
+	}
+	public String devolverTiempoDeEjecucionDeAGMKruskal() {
+		return logicaDeGrafoEspias.devolverTiempoDeEjecucionDeAGMKruskal();
 	}
 	
 	public void borrarGrafoActual() {
