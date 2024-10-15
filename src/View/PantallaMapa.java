@@ -239,11 +239,11 @@ public class PantallaMapa {
 								textFieldVerticeB.setText("");
 								textFieldProbabilidad.setText("");
 							}else {
-								JOptionPane.showMessageDialog(null, "No es posible crear Arista entre " + nombreVertice1 + " y " + nombreVertice2);
+								JOptionPane.showMessageDialog(null, "No es posible crear Arista entre " + nombreVertice1 + " y " + nombreVertice2 + "ya existe esa arista");
 							}
 
 						}else {
-							JOptionPane.showMessageDialog(null, "Error, ingrese entradas existentes");
+							JOptionPane.showMessageDialog(null, "Error, ingrese entradas validas");
 						}
 
 					}catch (NumberFormatException ex) {
