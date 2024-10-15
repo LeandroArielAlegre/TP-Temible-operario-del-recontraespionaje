@@ -15,11 +15,7 @@ public class VecinosTest {
 
     @Test
     public void todosLosVerticesAisladosTest() {
-        Grafo grafo = new Grafo();
-        grafo.agregarVertice("2");
-        grafo.agregarVertice("3");
-        grafo.agregarVertice("4");
-        grafo.agregarVertice("5");
+        Grafo grafo = grafoConVerticesAislados();
         
         ArrayList<String> vacio = new ArrayList<>();
         assertFalse(BFS.esConexo(grafo));
@@ -31,14 +27,7 @@ public class VecinosTest {
     
     @Test
     public void verticeUniversalTest() {
-        Grafo grafo = new Grafo();
-        grafo.agregarVertice("0");
-        grafo.agregarVertice("1");
-        grafo.agregarVertice("2");
-        grafo.agregarVertice("3");
-        grafo.agregarArista("1", "0", 0.0);
-        grafo.agregarArista("1", "2", 0.0);
-        grafo.agregarArista("1", "3", 0.0);
+        Grafo grafo = grafoConVerticeUniversal();
         
         ArrayList<String> vecinosEsperadosDe1 = new ArrayList<>(Arrays.asList("0", "2", "3"));
         assertEquals(grafo.cantidadDeVertices()-1,vecinosEsperadosDe1.size());//los vecinos de mi universal deben ser n-1 cantidad de vertices
@@ -47,7 +36,23 @@ public class VecinosTest {
     
     @Test
     public void verticeNormalTest() {
-        Grafo grafo = new Grafo();
+        Grafo grafo = grafoConVerticeNormal();
+        
+        ArrayList<String> vecinosEsperadosDe3 = new ArrayList<>(Arrays.asList("1", "2"));
+        assertArrayListIguales("El vértice 3 debería tener los vecinos correctos", vecinosEsperadosDe3, grafo.vecinosDeVertice("3"));
+    }
+    
+    private Grafo grafoConVerticesAislados() {
+		Grafo grafo = new Grafo();
+        grafo.agregarVertice("2");
+        grafo.agregarVertice("3");
+        grafo.agregarVertice("4");
+        grafo.agregarVertice("5");
+		return grafo;
+	}
+    
+    private Grafo grafoConVerticeNormal() {
+		Grafo grafo = new Grafo();
         grafo.agregarVertice("1");
         grafo.agregarVertice("2");
         grafo.agregarVertice("3");
@@ -55,8 +60,18 @@ public class VecinosTest {
         grafo.agregarArista("1", "3", 1.0);
         grafo.agregarArista("2", "3", 1.0);
         grafo.agregarArista("2", "4", 1.0);
-        
-        ArrayList<String> vecinosEsperadosDe3 = new ArrayList<>(Arrays.asList("1", "2"));
-        assertArrayListIguales("El vértice 3 debería tener los vecinos correctos", vecinosEsperadosDe3, grafo.vecinosDeVertice("3"));
-    }
+		return grafo;
+	}
+    
+	private Grafo grafoConVerticeUniversal() {
+		Grafo grafo = new Grafo();
+        grafo.agregarVertice("0");
+        grafo.agregarVertice("1");
+        grafo.agregarVertice("2");
+        grafo.agregarVertice("3");
+        grafo.agregarArista("1", "0", 0.0);
+        grafo.agregarArista("1", "2", 0.0);
+        grafo.agregarArista("1", "3", 0.0);
+		return grafo;
+	}
 }

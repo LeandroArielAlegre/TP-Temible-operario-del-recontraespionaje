@@ -139,6 +139,14 @@ public class PantallaMapa {
 				mapa.setDisplayPosition(mapaActual, zoomActual);
 			}
 		});
+		JLabel lblAclaracion = new JLabel();
+		lblAclaracion.setBorder(new LineBorder(new Color(0, 0, 0), 2));
+		lblAclaracion.setText("<html>" + "Cliquear en el mapa dos veces para \n obtener la posicion donde \n quieras crear un vertice  \n".replace("\n", "<br>") + "</html>");
+
+		lblAclaracion.setForeground(Color.WHITE);
+		lblAclaracion.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblAclaracion.setBounds(135, 468, 85, 112);
+		panelControles.add(lblAclaracion);
 		JLabel lblOrdenDeEncuentrosConBFS = new JLabel("");
 		lblOrdenDeEncuentrosConBFS.setVerticalAlignment(SwingConstants.TOP);
 		lblOrdenDeEncuentrosConBFS.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -381,7 +389,7 @@ public class PantallaMapa {
 						mapa.removeAllMapPolygons();
 						Color color = Color.GREEN;
 						HashMap<String,ArrayList<Double>> auxHashMapCoordenadas= new HashMap<String,ArrayList<Double>>();
-						auxHashMapCoordenadas = presentadorMapa.devolverGrafoPosicionesArchivo();
+						auxHashMapCoordenadas = presentadorMapa.devolverPosicionDeVerticeEnElMapaArchivo();
 						HashMap<String, HashMap<String,Double>> auxiliarHashMapVecinos = new HashMap<String, HashMap<String,Double>>();
 						auxiliarHashMapVecinos =presentadorMapa.devolverGrafoArchivo();
 						hashMapVertices.clear();
@@ -419,6 +427,8 @@ public class PantallaMapa {
 		btnCompararTiemposDeEjecucionDeAlgoritmos.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnCompararTiemposDeEjecucionDeAlgoritmos.setBounds(793, 584, 207, 20);
 		panelControles.add(btnCompararTiemposDeEjecucionDeAlgoritmos);
+		
+		
 	} //fin 
 	private void colocarTexfields() {
 		textFieldProbabilidad = new JTextField();

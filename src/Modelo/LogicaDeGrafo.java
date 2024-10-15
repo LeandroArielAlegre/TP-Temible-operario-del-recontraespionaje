@@ -197,9 +197,9 @@ public class LogicaDeGrafo {
 		return this.archivoJSON.getGrafo();
 	}
 
-	public HashMap<String,ArrayList<Double>> devolverGrafoPosicionesArchivo(){
+	public HashMap<String,ArrayList<Double>> devolverPosicionDeVerticeEnElMapaArchivo(){
 
-		return this.archivoJSON.getGrafoPosiciones();
+		return this.archivoJSON.obtenerPosicionesDeVerticesEnElMapa();
 	}
 
 	public void borrarGrafoActual() {

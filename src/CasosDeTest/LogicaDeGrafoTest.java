@@ -64,40 +64,22 @@ public class LogicaDeGrafoTest {
 
 	@Test
 	public void testCrearArbolGeneradorMinimoPrimYVeoSiEsCorrecto() {
-		logica.crearVertice("A");
-		logica.crearVertice("B");
-		logica.crearVertice("C");
-		logica.crearArista("A", "B", 0.1);
-		logica.crearArista("B", "C", 0.2);
-		logica.crearArista("A", "C", 0.3);
+		crearGrafoEjemplo();
 
 		HashMap<String, HashMap<String, Double>> arbol = logica.crearArbolGeneradorMinimoPrim();
 		LogicaDeGrafo grafoPrueba = new LogicaDeGrafo();
-		grafoPrueba.crearVertice("A");
-		grafoPrueba.crearVertice("B");
-		grafoPrueba.crearVertice("C");
-		grafoPrueba.crearArista("A", "B", 0.1);
-		grafoPrueba.crearArista("B", "C", 0.2);
+		unGrafoEsperado(grafoPrueba);
 
 		assertEquals(grafoPrueba.devolverGrafo(), arbol);
 	}
 	
 	@Test
 	public void testCrearArbolGeneradorMinimoKruskalYVeoSiEsCorrecto() {
-		logica.crearVertice("A");
-		logica.crearVertice("B");
-		logica.crearVertice("C");
-		logica.crearArista("A", "B", 0.1);
-		logica.crearArista("B", "C", 0.2);
-		logica.crearArista("A", "C", 0.3);
+		crearGrafoEjemplo();
 
 		HashMap<String, HashMap<String, Double>> arbol = logica.crearArbolGeneradorMinimoKruskal();
 		LogicaDeGrafo grafoPrueba = new LogicaDeGrafo();//creo un grafo que debe ser igual al arbol generador devuelto
-		grafoPrueba.crearVertice("A");
-		grafoPrueba.crearVertice("B");
-		grafoPrueba.crearVertice("C");
-		grafoPrueba.crearArista("A", "B", 0.1);
-		grafoPrueba.crearArista("B", "C", 0.2);
+		unGrafoEsperado(grafoPrueba);
 
 		assertEquals(grafoPrueba.devolverGrafo(), arbol);
 	}
@@ -124,7 +106,6 @@ public class LogicaDeGrafoTest {
         assertTrue("Debería cargar el grafo correctamente", logica.cargarGrafo("test_grafo"));
     }
 
-	// Test para cargar grafo
 	@Test
 	public void testCargarGrafoInexistente() {
 		assertFalse(logica.cargarGrafo("archivoInexistente.json"));
@@ -132,4 +113,20 @@ public class LogicaDeGrafoTest {
 	public void testGuardarGrafoVacio() {
 		assertTrue(logica.cargarGrafo("archivoExistente.json"));
 	}	
+	
+	private void crearGrafoEjemplo() {
+		logica.crearVertice("A");
+		logica.crearVertice("B");
+		logica.crearVertice("C");
+		logica.crearArista("A", "B", 0.1);
+		logica.crearArista("B", "C", 0.2);
+		logica.crearArista("A", "C", 0.3);
+	}
+	private void unGrafoEsperado(LogicaDeGrafo grafoPrueba) {
+		grafoPrueba.crearVertice("A");
+		grafoPrueba.crearVertice("B");
+		grafoPrueba.crearVertice("C");
+		grafoPrueba.crearArista("A", "B", 0.1);
+		grafoPrueba.crearArista("B", "C", 0.2);
+	}
 }

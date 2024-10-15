@@ -12,11 +12,11 @@ import com.google.gson.GsonBuilder;
 public class ArchivoJSON {
 
 private HashMap<String, HashMap<String,Double>> grafo;
-private HashMap<String, ArrayList<Double>> grafoPosiciones;
+private HashMap<String, ArrayList<Double>> posicionesDeVertices;
 	
 public ArchivoJSON() {
     this.grafo = new HashMap<>();
-    this.grafoPosiciones = new HashMap<>();
+    this.posicionesDeVertices = new HashMap<>();
 }
 
 public void generarJSON(String archivo) {
@@ -63,12 +63,12 @@ public void setGrafo(HashMap<String, HashMap<String, Double>> grafo) {
     this.grafo = grafo;
 }
 
-public HashMap<String, ArrayList<Double>> getGrafoPosiciones() {
-    return grafoPosiciones;
+public HashMap<String, ArrayList<Double>> obtenerPosicionesDeVerticesEnElMapa() {
+    return posicionesDeVertices;
 }
 
 
 public void setGrafoPosiciones(HashMap<String, ArrayList<Double>> grafoPosiciones) {
-    this.grafoPosiciones = grafoPosiciones;
+    this.posicionesDeVertices = grafoPosiciones;
 }
 }

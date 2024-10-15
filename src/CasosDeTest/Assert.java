@@ -8,21 +8,15 @@ public class Assert {
 
 
     public static boolean arrayListIguales(ArrayList<String> esperado, ArrayList<String> actual) {
-        // Verificar que los tamaños sean iguales
         if (esperado.size() != actual.size()) {
             return false;
         }
-
-        // Verificar que todos los elementos de esperado estén en actual
         return esperado.containsAll(actual);
     }
     public static boolean setsIguales(Set<String> esperado, Set<String> actual) {
-        // Verificar que los tamaños sean iguales
         if (esperado.size() != actual.size()) {
             return false;
         }
-
-        // Verificar que todos los elementos de esperado estén en actual
         return esperado.containsAll(actual);
     }
 

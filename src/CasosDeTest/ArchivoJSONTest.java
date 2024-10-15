@@ -17,8 +17,7 @@ public class ArchivoJSONTest {
 	@Before
 	public void archivoPrueba() {
 		archivo = new ArchivoJSON();
-		grafo = unGrafo();
-		
+		grafo = unGrafoConPosicionesPrecargadas();	
 		archivo.setGrafo(grafo.getGrafo());
 		archivo.setGrafoPosiciones(grafoPosiciones);
 		archivo.generarJSON("archivoPrueba");
@@ -38,10 +37,10 @@ public class ArchivoJSONTest {
     }
 	@Test
 	public void grafoPosicionesGuardadoIdenticoACargadoTest() {
-		assertEquals(archivo.getGrafoPosiciones(), this.grafoPosiciones);
+		assertEquals(archivo.obtenerPosicionesDeVerticesEnElMapa(), this.grafoPosiciones);
               
 	}
-	private Grafo unGrafo()
+	private Grafo unGrafoConPosicionesPrecargadas()
 	{	
 		grafoPosiciones= new HashMap<>();
 		ArrayList<Double> a = new ArrayList<Double>();

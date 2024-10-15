@@ -23,15 +23,7 @@ public class ArbolGeneradorTest {
 
 	        Grafo grafoAGMPrim = this.arbolGenerador.crearArbolGeneradorMinimoPrim();
 	        
-	        HashMap<String, HashMap<String, Double>> arbolEsperado = new HashMap<>();
-	     
-	        arbolEsperado.put("A", new HashMap<>());
-	        arbolEsperado.get("A").put("B", 0.5);
-	        arbolEsperado.put("B", new HashMap<>());
-	        arbolEsperado.get("B").put("A", 0.5);
-	        arbolEsperado.get("B").put("C", 0.7);
-	        arbolEsperado.put("C", new HashMap<>());
-	        arbolEsperado.get("C").put("B", 0.7);
+	        HashMap<String, HashMap<String, Double>> arbolEsperado = arbolGeneradorEsperado();
 	        
 	        assertEquals(grafoAGMPrim.getGrafo().size(), arbolEsperado.size());
 	        
@@ -44,20 +36,13 @@ public class ArbolGeneradorTest {
 	            assertEquals(vecinos, vecinosEsperados);
 	        }
 	    }
+	
 	 @Test
 	    public void testCrearArbolGeneradorMinimokruskal() {
 
 	        Grafo grafoAGMPrim = this.arbolGenerador.crearArbolGeneradorMinimoKruskal();
 	        
-	        HashMap<String, HashMap<String, Double>> arbolEsperado = new HashMap<>();
-	     
-	        arbolEsperado.put("A", new HashMap<>());
-	        arbolEsperado.get("A").put("B", 0.5);
-	        arbolEsperado.put("B", new HashMap<>());
-	        arbolEsperado.get("B").put("A", 0.5);
-	        arbolEsperado.get("B").put("C", 0.7);
-	        arbolEsperado.put("C", new HashMap<>());
-	        arbolEsperado.get("C").put("B", 0.7);
+	        HashMap<String, HashMap<String, Double>> arbolEsperado = arbolGeneradorEsperado();
 	        assertEquals(grafoAGMPrim.getGrafo().size(), arbolEsperado.size());
 	        
 
@@ -81,4 +66,16 @@ public class ArbolGeneradorTest {
 	        grafo.agregarArista("A", "C", 0.9);
 	        return grafo;
 	    }
+	 private HashMap<String, HashMap<String, Double>> arbolGeneradorEsperado() {
+			HashMap<String, HashMap<String, Double>> arbolEsperado = new HashMap<>();
+	    
+			arbolEsperado.put("A", new HashMap<>());
+			arbolEsperado.get("A").put("B", 0.5);
+			arbolEsperado.put("B", new HashMap<>());
+			arbolEsperado.get("B").put("A", 0.5);
+			arbolEsperado.get("B").put("C", 0.7);
+			arbolEsperado.put("C", new HashMap<>());
+			arbolEsperado.get("C").put("B", 0.7);
+			return arbolEsperado;
+		}
 }

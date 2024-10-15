@@ -61,9 +61,9 @@ public class PresentadorMapa {
 		
 		
 	}
-	public HashMap<String, ArrayList<Double>> devolverGrafoPosicionesArchivo() {
+	public HashMap<String, ArrayList<Double>> devolverPosicionDeVerticeEnElMapaArchivo() {
 		try {
-			return logicaDeGrafoEspias.devolverGrafoPosicionesArchivo();
+			return logicaDeGrafoEspias.devolverPosicionDeVerticeEnElMapaArchivo();
 			
 		} catch (IllegalArgumentException e) {
 			//System.out.println("Error: " + e.getMessage());
