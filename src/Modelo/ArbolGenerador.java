@@ -13,9 +13,7 @@ public class ArbolGenerador extends Grafo {
 	private String encuentrosIntermedios;
 	
 	public ArbolGenerador(Grafo grafo) {
-		this.grafo = grafo;
-		
-		
+		this.grafo = grafo;		
 	}    
 
 	public Grafo crearArbolGeneradorMinimoPrim() 
@@ -61,8 +59,7 @@ public class ArbolGenerador extends Grafo {
 				agmPrim.agregarArista(mejorOrigen, mejorDestino, mejorPeso);
 				visitados.add(mejorDestino);
 				// Imprimir el estado actual del AGM
-				
-				
+								
 				sb.append("Árbol intermedio (agregando arista " + mejorOrigen + " - " + mejorDestino + " - "+ mejorPeso + "):");
 				sb.append("\n");
 				
@@ -98,18 +95,9 @@ public class ArbolGenerador extends Grafo {
 		//Conjunto de aristas:
 		 HashMap<ArrayList<String>, Double> conjuntoDeAristasDeGrafo = new HashMap<ArrayList<String>, Double>();
 		 conjuntoDeAristasDeGrafo = grafo.conjuntoDeAristasYSuPeso();
-	
-		
-		//Machete: Iterar sobre todas las aristas y encontrar el de menor peso, lo encuentro 
-		// y lo agrego a aristVisitidas. En cada iteración consulto cual es el elemento con menor o igual peso
-		//dentro de la lista.
-		//Utilizo BFS para consultar los alcanzables de  algunos de los 2 extremos de la arista
-		//de manera que no se generen circuitos.
 		int i = 0;
-		while(i <= grafo.cantidadDeVertices() -1) {
-			
-			ArrayList<String> aristaDeMenorPeso = devolverAristaConMinimoPeso(conjuntoDeAristasDeGrafo);
-			
+		while(i <= grafo.cantidadDeVertices() -1) {			
+			ArrayList<String> aristaDeMenorPeso = devolverAristaConMinimoPeso(conjuntoDeAristasDeGrafo);		
 			Set<String> alcanzablesDeGrafoKruskal = BFS.alcanzables(agmKruskal, aristaDeMenorPeso.get(0));
 			if(!alcanzablesDeGrafoKruskal.contains(aristaDeMenorPeso.get(1))) {
 				//Agregar a aristasVisitadas
@@ -125,17 +113,13 @@ public class ArbolGenerador extends Grafo {
 				sb.append("Árbol intermedio (agregando arista " + aristaDeMenorPeso.get(0) + " - " + aristaDeMenorPeso.get(1) + "peso "
 						+ peso +"):");
 				sb.append("\n");
-//				sb.append("\n");
 				
-				sb.append("\n");
-				
+				sb.append("\n");				
 				
 			}else {
 				//Quito del ConjuntoDeAristasDeGrafo
 				conjuntoDeAristasDeGrafo.remove(aristaDeMenorPeso);
-			}
-			
-			
+			}						
 			i+=1;
 		}
 		sb.append("Vertices y sus vecinos");
@@ -158,18 +142,10 @@ public class ArbolGenerador extends Grafo {
 	            aristaMinima = aristaActual;
 	        }
 	    }
-
 	    return aristaMinima;
 	}
-
 	
-	
-	
-	
-
 	public String getEncuentrosIntermedios() {
 		return encuentrosIntermedios;
 	}
-
-
 }

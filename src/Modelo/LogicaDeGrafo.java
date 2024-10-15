@@ -171,7 +171,7 @@ public class LogicaDeGrafo {
 
 	}
 
-	public boolean CargarGrafo(String NombreArchivo) 
+	public boolean cargarGrafo(String NombreArchivo) 
 	{
 		try {
 			this.archivoJSON = archivoJSON.leerJSON(NombreArchivo);

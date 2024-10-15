@@ -96,6 +96,7 @@ public class PantallaMapa {
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(0, 0, 0));
+		setIconoDeVentana();
 		hashMapVertices = new HashMap<>();
 		presentadorMapa = new PresentadorMapa();
 		frame.setBounds(400, 200, 1050, 676);
@@ -106,6 +107,7 @@ public class PantallaMapa {
 		panelControles.setBackground(new Color(74, 102, 232));
 		panelControles.setBounds(10, 11, 1015, 615);
 		panelControles.setLayout(null);
+		
 		frame.getContentPane().add(panelControles);
 		mapa = new JMapViewer();
 		mapa.setBorder(new LineBorder(new Color(120, 143, 235), 8));
@@ -200,6 +202,8 @@ public class PantallaMapa {
 			}
 
 		});
+		//		//BOTON crear arista
+
 		btnCrearArista = new JButton("Crear arista");
 		btnCrearArista.setBorder(new LineBorder(new Color(0, 0, 0)));
 		btnCrearArista.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -209,31 +213,34 @@ public class PantallaMapa {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				if(verificarEntrada(textFieldVerticeA.getText(), textFieldVerticeB.getText(), textFieldProbabilidad.getText()))
+				if(textFieldVerticeA.getText() != null  
+						&& textFieldVerticeB.getText() !=null 
+						&& textFieldProbabilidad.getText() != null) 
 				{
-					String nombreVerticeA = textFieldVerticeA.getText().toString();
-					String nombreVerticeB = textFieldVerticeB.getText().toString();
-
-					if(verificarProbabilidad(parsearADouble(textFieldProbabilidad.getText()))) 
-					{
-						Double probabilidad = parsearADouble(textFieldProbabilidad.getText());
-
-						if(hashMapVertices.containsKey(nombreVerticeA) && hashMapVertices.containsKey(nombreVerticeB))
+					String nombreVertice1 = textFieldVerticeA.getText().toString();
+					String nombreVertice2 = textFieldVerticeB.getText().toString();
+					try {
+						Double probabilidad = Double.parseDouble(textFieldProbabilidad.getText());
+						if(hashMapVertices.containsKey(nombreVertice1) && hashMapVertices.containsKey(nombreVertice2) 
+								&& verificarProbabilidad(probabilidad)) 
 						{
-							if(!presentadorMapa.existeArista(nombreVerticeA, nombreVerticeB))
-							{ 								   							
-								crearAristaEnMapa(nombreVerticeA, hashMapVertices.get(nombreVerticeA),nombreVerticeB, hashMapVertices.get(nombreVerticeB), probabilidad);
+							if(!presentadorMapa.existeArista(nombreVertice1, nombreVertice2)) 
+							{
+								crearAristaEnMapa(nombreVertice1, hashMapVertices.get(nombreVertice1),nombreVertice2, hashMapVertices.get(nombreVertice2), probabilidad);
 								textFieldVerticeA.setText("");
 								textFieldVerticeB.setText("");
 								textFieldProbabilidad.setText("");
+							}else {
+								JOptionPane.showMessageDialog(null, "No es posible crear Arista entre " + nombreVertice1 + " y " + nombreVertice2);
 							}
+
+						}else {
+							JOptionPane.showMessageDialog(null, "Error, ingrese entradas existentes");
 						}
 
-					}else{
-						JOptionPane.showMessageDialog(null, "Error, ingrese una probabilidad valida");
+					}catch (NumberFormatException ex) {
+						JOptionPane.showMessageDialog(null, "Por favor, ingrese un número válido para la probabilidad.");
 					}
-				}else {
-					JOptionPane.showMessageDialog(null, "Por favor, ingrese una entrada valida");
 				}
 			}
 		});
@@ -301,7 +308,7 @@ public class PantallaMapa {
 		btnRestablecerGrafo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!presentadorMapa.devolverGrafo().isEmpty()) {
-				refrescarVista(lblOrdenDeEncuentrosConBFS);
+					refrescarVista(lblOrdenDeEncuentrosConBFS);
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "Error: el grafo esta Vacio");
@@ -325,10 +332,10 @@ public class PantallaMapa {
 					hashMapVertices.clear();
 					presentadorMapa.borrarGrafoActual();
 					lblOrdenDeEncuentrosConBFS.setText(" ");
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "Error: el grafo esta Vacio");
-					}
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Error: el grafo esta Vacio");
+				}
 			}
 
 		});
@@ -398,13 +405,13 @@ public class PantallaMapa {
 		btnCompararTiemposDeEjecucionDeAlgoritmos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-				if(!presentadorMapa.devolverGrafo().isEmpty()) {
-				
-				String tiempoDeAGM =presentadorMapa.devolverTiempoDeEjecucionDeAGM();
-				JOptionPane.showMessageDialog(null, "El tiempo esta en milisegundos" + "\n" +tiempoDeAGM);
-				}else {
-					JOptionPane.showMessageDialog(null, "No se puede devolver el tiempo de ejecucion de algoritmos no ejecutados");
-				}
+					if(!presentadorMapa.devolverGrafo().isEmpty()) {
+
+						String tiempoDeAGM =presentadorMapa.devolverTiempoDeEjecucionDeAGM();
+						JOptionPane.showMessageDialog(null, "El tiempo esta en milisegundos" + "\n" +tiempoDeAGM);
+					}else {
+						JOptionPane.showMessageDialog(null, "No se puede devolver el tiempo de ejecucion de algoritmos no ejecutados");
+					}
 				}catch (RuntimeException ex){
 					JOptionPane.showMessageDialog(null,ex.getMessage());				}
 			}
@@ -436,34 +443,34 @@ public class PantallaMapa {
 		panelControles.add(textFieldVerticeA);
 		textFieldVerticeA.setColumns(10);
 	}
-		private void crearVerticeEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
-			Coordinate vertice = new Coordinate(CoordenadasX, CoordenadasY);
-			if (presentadorMapa.crearVertice(nombreVertice) && !hashMapVertices.containsKey(nombreVertice)) {
-				MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, vertice);
-				verticeEnMapa.getStyle().setBackColor(Color.yellow);
-				verticeEnMapa.getStyle().setColor(Color.yellow);
-				colocarImagenEnPosicionDeMarcador(vertice,urlEspia);
-				mapa.addMapMarker(verticeEnMapa);
-				hashMapVertices.put(nombreVertice, vertice);
-				JOptionPane.showMessageDialog(null, "Se creo el vertice Satisfactoriamente");
-			}else {
-				JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
-			}
+	private void crearVerticeEnMapa(double CoordenadasX , double CoordenadasY, String nombreVertice) {
+		Coordinate vertice = new Coordinate(CoordenadasX, CoordenadasY);
+		if (presentadorMapa.crearVertice(nombreVertice) && !hashMapVertices.containsKey(nombreVertice)) {
+			MapMarkerDot verticeEnMapa = new MapMarkerDot(nombreVertice, vertice);
+			verticeEnMapa.getStyle().setBackColor(Color.yellow);
+			verticeEnMapa.getStyle().setColor(Color.yellow);
+			colocarImagenEnPosicionDeMarcador(vertice,urlEspia);
+			mapa.addMapMarker(verticeEnMapa);
+			hashMapVertices.put(nombreVertice, vertice);
+			JOptionPane.showMessageDialog(null, "Se creo el vertice Satisfactoriamente");
+		}else {
+			JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear el Vertice");
 		}
-		private void crearAristaEnMapa(String nombreVertice1, Coordinate vertice1, String nombreVertice2, Coordinate vertice2, Double probabilidad) {
-			if(presentadorMapa.crearArista(nombreVertice1, nombreVertice2, probabilidad)) {
-				List<Coordinate> aristaEnMapa = new ArrayList<>();
-				aristaEnMapa.add(vertice1); 
-				aristaEnMapa.add(vertice2); 
-				aristaEnMapa.add(vertice1); 
-				MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
-				arista.setColor(Color.green);
-				mapa.addMapPolygon(arista);
-				JOptionPane.showMessageDialog(null, "Se creo la Arista Satisfactoriamente");
-			}else {
-				JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear la Arista");
-			}
+	}
+	private void crearAristaEnMapa(String nombreVertice1, Coordinate vertice1, String nombreVertice2, Coordinate vertice2, Double probabilidad) {
+		if(presentadorMapa.crearArista(nombreVertice1, nombreVertice2, probabilidad)) {
+			List<Coordinate> aristaEnMapa = new ArrayList<>();
+			aristaEnMapa.add(vertice1); 
+			aristaEnMapa.add(vertice2); 
+			aristaEnMapa.add(vertice1); 
+			MapPolygonImpl arista = new MapPolygonImpl(aristaEnMapa);
+			arista.setColor(Color.green);
+			mapa.addMapPolygon(arista);
+			JOptionPane.showMessageDialog(null, "Se creo la Arista Satisfactoriamente");
+		}else {
+			JOptionPane.showMessageDialog(null, "ERROR: No se puedo crear la Arista");
 		}
+	}
 	public boolean verificarEntrada(String string, Double coordenadaXGlobal, Double coordenadaYGlobal) {
 		if(string != null && string.length() != 0) 
 		{
@@ -489,7 +496,7 @@ public class PantallaMapa {
 		return probabilidad >= 0 && probabilidad <=1 ;
 	}
 	private void actualizarMarcadores(HashMap<String, ArrayList<Double>> auxHashMapCoordenadas) {
-		
+
 		for (Entry<String, ArrayList<Double>> entry : auxHashMapCoordenadas.entrySet()) {
 			String nombreVertice = entry.getKey();
 			ArrayList<Double> valor = entry.getValue();
@@ -574,7 +581,7 @@ public class PantallaMapa {
 		lblEncuentrosIntermedios.setText(null);
 		lblEncuentrosIntermedios.setVisible(false);
 	}
-	
+
 	private static void limpiarJLabels(JMapViewer mapa, URL urlAImagenAEliminar) {
 		Component[] componentes = mapa.getComponents();
 		for (Component componente : componentes) {
@@ -603,7 +610,7 @@ public class PantallaMapa {
 				return null;
 			}
 			return nombreArchivo;
-			
+
 		}else {
 			return null;
 		}
@@ -644,14 +651,18 @@ public class PantallaMapa {
 		return nuevoHashMap;
 	}
 	private void cargarEncuentroIntermedios(String encuentrosIntermedios) {
-		 JPanel panel = new JPanel(new BorderLayout());
-		   JLabel label = new JLabel("<html><body style='width: 300px;'>" + 
-		                              encuentrosIntermedios.replace("\n", "<br>") + 
-		                              "</body></html>");
-		    JScrollPane scrollPane = new JScrollPane(label);
-		    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		    scrollPane.setPreferredSize(new Dimension(320, 200));
-		    panel.add(scrollPane, BorderLayout.CENTER);
-		    JOptionPane.showMessageDialog(null, panel);
-}
+		JPanel panel = new JPanel(new BorderLayout());
+		JLabel label = new JLabel("<html><body style='width: 300px;'>" + 
+				encuentrosIntermedios.replace("\n", "<br>") + 
+				"</body></html>");
+		JScrollPane scrollPane = new JScrollPane(label);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setPreferredSize(new Dimension(320, 200));
+		panel.add(scrollPane, BorderLayout.CENTER);
+		JOptionPane.showMessageDialog(null, panel);
+	}
+	private void setIconoDeVentana() {
+		Image icon = new ImageIcon(getClass().getResource("/resources/espia.png")).getImage();	
+		frame.setIconImage(icon);
+	}
 }

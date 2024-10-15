@@ -2,6 +2,7 @@ package CasosDeTest;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.Before;
@@ -100,10 +101,35 @@ public class LogicaDeGrafoTest {
 
 		assertEquals(grafoPrueba.devolverGrafo(), arbol);
 	}
+	@Test
+    public void testGuardarYCargarGrafo() {
+
+        HashMap<String, HashMap<String, Double>> grafo = logica.crearArbolGeneradorMinimoPrim();
+        HashMap<String, ArrayList<Double>> posiciones = new HashMap<>();
+        ArrayList<Double> coordenadaA = new ArrayList<Double>();
+        ArrayList<Double> coordenadaB = new ArrayList<Double>();
+        ArrayList<Double> coordenadaC = new ArrayList<Double>();
+        coordenadaA.add(1.0); 
+        coordenadaA.add(1.0); 
+        coordenadaB.add(2.0); 
+        coordenadaB.add(2.0); 
+        coordenadaC.add(3.0); 
+        coordenadaC.add(3.0); 
+        
+        posiciones.put("A", coordenadaA);
+        posiciones.put("B", coordenadaB);
+        posiciones.put("C", coordenadaC);
+
+        assertTrue("Debería guardar el grafo correctamente", logica.guardarGrafo(grafo, posiciones, "test_grafo"));
+        assertTrue("Debería cargar el grafo correctamente", logica.cargarGrafo("test_grafo"));
+    }
 
 	// Test para cargar grafo
 	@Test
-	public void testCargarGrafo() {
-		assertFalse(logica.CargarGrafo("archivoInexistente.json"));
+	public void testCargarGrafoInexistente() {
+		assertFalse(logica.cargarGrafo("archivoInexistente.json"));
+	}
+	public void testGuardarGrafoVacio() {
+		assertTrue(logica.cargarGrafo("archivoExistente.json"));
 	}	
 }

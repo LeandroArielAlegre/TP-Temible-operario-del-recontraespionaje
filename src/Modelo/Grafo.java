@@ -1,16 +1,11 @@
 package Modelo;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 public class Grafo  {
-    /**
-	 * 
-	 */
 	
 	// Mapa de nombres de vértices a sus índices
     private HashMap<String, Integer> nombresAIndices;
@@ -26,10 +21,7 @@ public class Grafo  {
         indicesANombres = new HashMap<>();
         contadorVertices = 0;
     } 
-    
-    
- 
-    
+        
     public String toString() {
         StringBuilder sb = new StringBuilder();
         
@@ -54,6 +46,7 @@ public class Grafo  {
     public HashMap<String, HashMap<String,Double>> getGrafo() {
     	return this.grafo;
     }
+    
     public void agregarVertice(String nombre) {
         if (nombresAIndices.containsKey(nombre)) {
             throw new IllegalArgumentException("El vértice ya existe: " + nombre);
@@ -87,7 +80,7 @@ public class Grafo  {
 
 
     }
-//    !formaCircuito(nombre1,nombre2,)
+    
     public void eliminarArista(String nombre1, String nombre2) {
         if (!existeArista(nombre1, nombre2)) {
             throw new IllegalArgumentException("No existe la arista: " + nombre1 + " , " + nombre2);
@@ -99,8 +92,7 @@ public class Grafo  {
     public boolean existeArista(String nombre1, String nombre2) {
         return grafo.containsKey(nombre1) && grafo.containsKey(nombre2) && grafo.get(nombre1).containsKey(nombre2);
     }
-    
-    
+        
     public boolean existeVertice(String vertice) {
     	return grafo.containsKey(vertice);
     }
@@ -111,6 +103,7 @@ public class Grafo  {
     	}
     	return 0.0;
     }
+    
     public int tamano() {
         return grafo.size();
     }
@@ -142,9 +135,6 @@ public class Grafo  {
         return ret;
     }
     
-    
-    
-   
     public HashMap<ArrayList<String>, Double> conjuntoDeAristasYSuPeso() {
         HashMap<ArrayList<String>, Double> ret = new HashMap<ArrayList<String>, Double>();
 
@@ -182,7 +172,6 @@ public class Grafo  {
     	return nuevoGrafo;
     }
     
-
     public int gradoDeVertice(String nombre) {
         if (!grafo.containsKey(nombre)) {
             throw new IllegalArgumentException("El vértice no existe: " + nombre);
@@ -197,6 +186,7 @@ public class Grafo  {
         }
         return nombre;
     }
+    
     public int obtenerIndice(String nombre) {
         int indiceDeNombre = nombresAIndices.get(nombre);
         if (nombre == null) {
@@ -204,6 +194,7 @@ public class Grafo  {
         }
         return indiceDeNombre;
     }
+   
     public int cantidadDeVertices() {
         return contadorVertices;
     }
@@ -214,11 +205,11 @@ public class Grafo  {
         }
         throw new IllegalArgumentException("el grafo esta vacio");
     }
-	protected boolean verificarVertice(String vertice)
+	
+    protected boolean verificarVertice(String vertice)
 	{
 		return grafo.containsKey(vertice);
 	}
-
 	
 	public void reiniciarGrafo() {
 		nombresAIndices.clear();
@@ -228,6 +219,3 @@ public class Grafo  {
 		
 	}
 }
-
-//}
-//

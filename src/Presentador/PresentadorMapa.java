@@ -57,7 +57,7 @@ public class PresentadorMapa {
 	}
 	
 	public boolean cargarGrafo(String NombreArchivo) {
-		return logicaDeGrafoEspias.CargarGrafo(NombreArchivo);
+		return logicaDeGrafoEspias.cargarGrafo(NombreArchivo);
 		
 		
 	}
